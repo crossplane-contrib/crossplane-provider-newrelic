@@ -1,0 +1,13 @@
+---
+apiVersion: alert.newrelic.upbound.io/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alert/v1alpha1/policy
+  labels:
+    testing.upbound.io/example-name: example-policy
+  name: example-policy
+spec:
+  forProvider:
+    incidentPreference: PER_POLICY
+    name: example-policy

@@ -1,0 +1,21 @@
+apiVersion: alert.newrelic.upbound.io/v1alpha1
+kind: Channel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alert/v1alpha1/channel
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    accountId: 12345678
+    destinationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: webhook-example
+    product: IINT
+    property:
+    - key: payload
+      label: Payload Template
+      value: 'name: {{ foo }}'
+    type: WEBHOOK

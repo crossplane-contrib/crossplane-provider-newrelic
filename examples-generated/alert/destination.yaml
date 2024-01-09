@@ -1,0 +1,22 @@
+apiVersion: alert.newrelic.upbound.io/v1alpha1
+kind: Destination
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alert/v1alpha1/destination
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    accountId: 12345678
+    authBasic:
+    - passwordSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
+      user: username
+    name: foo
+    property:
+    - key: url
+      value: https://webhook.mywebhook.com
+    type: WEBHOOK

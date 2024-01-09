@@ -1,0 +1,11 @@
+apiVersion: dashboard.newrelic.upbound.io/v1alpha1
+kind: DashboardJSON
+metadata:
+  annotations:
+    meta.upbound.io/example-id: dashboard/v1alpha1/dashboardjson
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    json: ${file("dashboard.json")}

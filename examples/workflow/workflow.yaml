@@ -1,0 +1,62 @@
+---
+apiVersion: alert.newrelic.upbound.io/v1alpha1
+kind: Destination
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alert/v1alpha1/destination
+  labels:
+    testing.upbound.io/example-name: example-destination
+  name: foo
+spec:
+  forProvider:
+    name: email-example
+    property:
+      - key: email
+        value: "email@email.com,email2@email.com"
+    type: EMAIL
+---
+apiVersion: alert.newrelic.upbound.io/v1alpha1
+kind: Channel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alert/v1alpha1/channel
+  labels:
+    testing.upbound.io/example-name: example-channel
+  name: foo
+spec:
+  forProvider:
+    destinationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example-destination
+    name: webhook-example
+    product: IINT
+    property:
+      - key: customDetailsEmail
+        label: Payload Template
+        value: 'issue id - {{issueId}}'
+    type: EMAIL
+---
+apiVersion: workflow.newrelic.upbound.io/v1alpha1
+kind: Workflow
+metadata:
+  annotations:
+    meta.upbound.io/example-id: workflow/v1alpha1/workflow
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    destination:
+      - channelIdSelector:
+          matchLabels:
+            testing.upbound.io/example-name: example-channel
+    issuesFilter:
+      - name: filter-name
+        predicate:
+          - attribute: accumulations.tag.team
+            operator: EXACTLY_MATCHES
+            values:
+              - growth
+        type: FILTER
+    mutingRulesHandling: NOTIFY_ALL_ISSUES
+    name: workflow-example

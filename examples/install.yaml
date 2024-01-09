@@ -1,0 +1,6 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-newrelic
+spec:
+  package: crossplane-contrib/crossplane-provider-newrelic:v0.1.0

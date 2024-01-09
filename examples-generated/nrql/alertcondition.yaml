@@ -1,0 +1,55 @@
+apiVersion: nrql.newrelic.upbound.io/v1alpha1
+kind: AlertCondition
+metadata:
+  annotations:
+    meta.upbound.io/example-id: nrql/v1alpha1/alertcondition
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    accountId: 12345678
+    aggregationDelay: "120"
+    aggregationMethod: event_flow
+    aggregationWindow: 60
+    closeViolationsOnExpiration: true
+    critical:
+    - operator: above
+      threshold: 5.5
+      thresholdDuration: 300
+      thresholdOccurrences: ALL
+    description: Alert when transactions are taking too long
+    enabled: true
+    expirationDuration: 120
+    fillOption: static
+    fillValue: 1
+    name: foo
+    nrql:
+    - query: SELECT average(duration) FROM Transaction where appName = 'Your App'
+    openViolationOnExpiration: true
+    policyIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: foo
+    runbookUrl: https://www.example.com
+    slideBy: 30
+    type: static
+    violationTimeLimitSeconds: 3600
+    warning:
+    - operator: above
+      threshold: 3.5
+      thresholdDuration: 600
+      thresholdOccurrences: ALL
+
+---
+
+apiVersion: alert.newrelic.upbound.io/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: nrql/v1alpha1/alertcondition
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    name: foo

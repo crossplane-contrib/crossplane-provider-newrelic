@@ -1,0 +1,1355 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.13.0
+  name: alertconditions.nrql.newrelic.upbound.io
+spec:
+  group: nrql.newrelic.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - newrelic
+    kind: AlertCondition
+    listKind: AlertConditionList
+    plural: alertconditions
+    singular: alertcondition
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AlertCondition is the Schema for the AlertConditions API. Create
+          and manage a NRQL alert condition for a policy in New Relic.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AlertConditionSpec defines the desired state of AlertCondition
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: 'DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource. This field is planned to be deprecated
+                  in favor of the ManagementPolicies field in a future release. Currently,
+                  both could be set independently and non-default values would be
+                  honored if the feature flag is enabled. See the design doc for more
+                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  accountId:
+                    description: The New Relic account ID of the account you wish
+                      to create the condition. Defaults to the account ID set in your
+                      environment variable NEW_RELIC_ACCOUNT_ID. The New Relic account
+                      ID for managing your NRQL alert conditions.
+                    type: number
+                  aggregationDelay:
+                    description: How long we wait for data that belongs in each aggregation
+                      window. Depending on your data, a longer delay may increase
+                      accuracy but delay notifications. Use aggregation_delay with
+                      the event_flow and cadence methods. The maximum delay is 1200
+                      seconds (20 minutes) when using event_flow and 3600 seconds
+                      (60 minutes) when using cadence. In both cases, the minimum
+                      delay is 0 seconds and the default is 120 seconds. aggregation_delay
+                      cannot be set with nrql.evaluation_offset. How long we wait
+                      for data that belongs in each aggregation window. Depending
+                      on your data, a longer delay may increase accuracy but delay
+                      notifications. Use aggregationDelay with the EVENT_FLOW and
+                      CADENCE aggregation methods.
+                    type: string
+                  aggregationMethod:
+                    description: Determines when we consider an aggregation window
+                      to be complete so that we can evaluate the signal for incidents.
+                      Possible values are cadence, event_flow or event_timer. Default
+                      is event_flow. aggregation_method cannot be set with nrql.evaluation_offset.
+                      The method that determines when we consider an aggregation window
+                      to be complete so that we can evaluate the signal for incidents.
+                      Default is EVENT_FLOW.
+                    type: string
+                  aggregationTimer:
+                    description: How long we wait after each data point arrives to
+                      make sure we've processed the whole batch. Use aggregation_timer
+                      with the event_timer method. The timer value can range from
+                      0 seconds to 1200 seconds (20 minutes); the default is 60 seconds.
+                      aggregation_timer cannot be set with nrql.evaluation_offset.
+                      How long we wait after each data point arrives to make sure
+                      we've processed the whole batch. Use aggregationTimer with the
+                      EVENT_TIMER aggregation method.
+                    type: string
+                  aggregationWindow:
+                    description: The duration of the time window used to evaluate
+                      the NRQL query, in seconds. The value must be at least 30 seconds,
+                      and no more than 21600 seconds (6 hours). Default is 60 seconds.
+                      The duration of the time window used to evaluate the NRQL query,
+                      in seconds.
+                    type: number
+                  baselineDirection:
+                    description: 'The baseline direction of a baseline NRQL alert
+                      condition. Valid values are: lower_only, upper_and_lower, upper_only
+                      (case insensitive). The baseline direction of a baseline NRQL
+                      alert condition. Valid values are: ''LOWER_ONLY'', ''UPPER_AND_LOWER'',
+                      ''UPPER_ONLY'' (case insensitive).'
+                    type: string
+                  closeViolationsOnExpiration:
+                    description: Whether to close all open incidents when the signal
+                      expires. Whether to close all open incidents when the signal
+                      expires.
+                    type: boolean
+                  critical:
+                    description: A list containing the critical threshold values.
+                      At least one critical or warning threshold must be defined.
+                      See Terms below for details. A condition term with priority
+                      set to critical.
+                    items:
+                      properties:
+                        duration:
+                          description: 'DEPRECATED: Use threshold_duration instead.
+                            The duration of time, in minutes, that the threshold must
+                            violate for in order to create an incident. Must be within
+                            1-120 (inclusive). In minutes, must be in the range of
+                            1 to 120 (inclusive).'
+                          type: number
+                        operator:
+                          description: Valid values are above, above_or_equals, below,
+                            below_or_equals, equals, or not_equals (case insensitive).
+                            Defaults to equals. Note that when using a type of baseline,
+                            the only valid option here is above. One of (above, above_or_equals,
+                            below, below_or_equals, equals, not_equals). Defaults
+                            to 'equals'.
+                          type: string
+                        threshold:
+                          description: The value which will trigger an incident. For
+                            baseline NRQL alert conditions, the value must be in the
+                            range [1, 1000]. The value is the number of standard deviations
+                            from the baseline that the metric must exceed in order
+                            to create an incident. For baseline conditions must be
+                            in range [1, 1000].
+                          type: number
+                        thresholdDuration:
+                          description: The duration, in seconds, that the threshold
+                            must violate in order to create an incident. Value must
+                            be a multiple of the aggregation_window (which has a default
+                            of 60 seconds). For baseline NRQL alert conditions, the
+                            value must be within 120-86400 seconds (inclusive). For
+                            static NRQL alert conditions, the value must be within
+                            60-86400 seconds (inclusive). The duration, in seconds,
+                            that the threshold must violate in order to create an
+                            incident. Value must be a multiple of the 'aggregation_window'
+                            (which has a default of 60 seconds). Value must be within
+                            120-86400 seconds for baseline conditions, and within
+                            60-86400 seconds for static conditions
+                          type: number
+                        thresholdOccurrences:
+                          description: 'The criteria for how many data points must
+                            be in violation for the specified threshold duration.
+                            Valid values are: all or at_least_once (case insensitive).
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            ''ALL'' or ''AT_LEAST_ONCE'' (case insensitive).'
+                          type: string
+                        timeFunction:
+                          description: 'DEPRECATED: Use threshold_occurrences instead.
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            all or any. Valid values are: ''all'' or ''any'''
+                          type: string
+                      type: object
+                    type: array
+                  description:
+                    description: The description of the NRQL alert condition. The
+                      description of the NRQL alert condition.
+                    type: string
+                  enabled:
+                    description: Whether to enable the alert condition. Valid values
+                      are true and false. Defaults to true. Whether or not to enable
+                      the alert condition.
+                    type: boolean
+                  evaluationDelay:
+                    description: How long we wait until the signal starts evaluating.
+                      The maximum delay is 7200 seconds (120 minutes). How long we
+                      wait until the signal starts evaluating. The maximum delay is
+                      7200 seconds (120 minutes)
+                    type: number
+                  expirationDuration:
+                    description: The amount of time (in seconds) to wait before considering
+                      the signal expired. The value must be at least 30 seconds, and
+                      no more than 172800 seconds (48 hours). The amount of time (in
+                      seconds) to wait before considering the signal expired.  Must
+                      be in the range of 30 to 172800 (inclusive)
+                    type: number
+                  fillOption:
+                    description: 'Which strategy to use when filling gaps in the signal.
+                      Possible values are none, last_value or static. If static, the
+                      fill_value field will be used for filling gaps in the signal.
+                      Which strategy to use when filling gaps in the signal. If static,
+                      the ''fill value'' will be used for filling gaps in the signal.
+                      Valid values are: ''NONE'', ''LAST_VALUE'', or ''STATIC'' (case
+                      insensitive).'
+                    type: string
+                  fillValue:
+                    description: This value will be used for filling gaps in the signal.
+                      If using the 'static' fill option, this value will be used for
+                      filling gaps in the signal.
+                    type: number
+                  name:
+                    description: The title of the condition. The title of the condition.
+                    type: string
+                  nrql:
+                    description: A NRQL query. See NRQL below for details. A NRQL
+                      query.
+                    items:
+                      properties:
+                        evaluationOffset:
+                          description: 'DEPRECATED: Use aggregation_method instead.
+                            Represented in minutes and must be within 1-20 minutes
+                            (inclusive). NRQL queries are evaluated based on their
+                            aggregation_window size. The start time depends on this
+                            value. It''s recommended to set this to 3 windows. An
+                            offset of less than 3 windows will trigger incidents sooner,
+                            but you may see more false positives and negatives due
+                            to data latency. With evaluation_offset set to 3 windows
+                            and an aggregation_window of 60 seconds, the NRQL time
+                            window applied to your query will be: SINCE 3 minutes
+                            ago UNTIL 2 minutes ago. evaluation_offset cannot be set
+                            with aggregation_method, aggregation_delay, or aggregation_timer.
+                            NRQL queries are evaluated in one-minute time windows.
+                            The start time depends on the value you provide in the
+                            NRQL condition''s `evaluation_offset`.'
+                          type: number
+                        query:
+                          description: The NRQL query to execute for the condition.
+                          type: string
+                        sinceValue:
+                          description: 'DEPRECATED: Use aggregation_method instead.
+                            The value to be used in the SINCE <X> minutes ago clause
+                            for the NRQL query. Must be between 1-20 (inclusive).
+                            NRQL queries are evaluated in one-minute time windows.
+                            The start time depends on the value you provide in the
+                            NRQL condition''s `since_value`.'
+                          type: string
+                      type: object
+                    type: array
+                  openViolationOnExpiration:
+                    description: Whether to create a new incident to capture that
+                      the signal expired. Whether to create a new incident to capture
+                      that the signal expired.
+                    type: boolean
+                  policyId:
+                    description: The ID of the policy where this condition should
+                      be used. The ID of the policy where this condition should be
+                      used.
+                    type: number
+                  policyIdRef:
+                    description: Reference to a Policy in alert to populate policyId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  policyIdSelector:
+                    description: Selector for a Policy in alert to populate policyId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  runbookUrl:
+                    description: Runbook URL to display in notifications. Runbook
+                      URL to display in notifications.
+                    type: string
+                  slideBy:
+                    description: Gathers data in overlapping time windows to smooth
+                      the chart line, making it easier to spot trends. The slide_by
+                      value is specified in seconds and must be smaller than and a
+                      factor of the aggregation_window. The duration of overlapping
+                      time windows used to smooth the chart line, in seconds. Must
+                      be a factor of `aggregation_window` and less than the aggregation
+                      window. If `aggregation_window` is less than or equal to 3600
+                      seconds, it should be greater or equal to 30 seconds. If `aggregation_window`
+                      is greater than 3600 seconds but less than 7200 seconds, it
+                      should be greater or equal to `aggregation_window / 120`.  If
+                      `aggregation_window` is greater than 7200 seconds, it should
+                      be greater or equal to `aggregation_window / 24
+                    type: number
+                  type:
+                    description: 'The type of the condition. Valid values are static
+                      or baseline. Defaults to static. The type of NRQL alert condition
+                      to create. Valid values are: ''static'', ''baseline''.'
+                    type: string
+                  violationTimeLimitSeconds:
+                    description: 'Sets a time limit, in seconds, that will automatically
+                      force-close a long-lasting incident after the time limit you
+                      select. The value must be between 300 seconds (5 minutes) to
+                      2592000 seconds (30 days) (inclusive). *Note: One of violation_time_limit
+                      or violation_time_limit_seconds must be set, but not both. Sets
+                      a time limit, in seconds, that will automatically force-close
+                      a long-lasting incident after the time limit you select.  Must
+                      be in the range of 300 to 2592000 (inclusive)'
+                    type: number
+                  warning:
+                    description: A list containing the warning threshold values. At
+                      least one critical or warning threshold must be defined. See
+                      Terms below for details. A condition term with priority set
+                      to warning.
+                    items:
+                      properties:
+                        duration:
+                          description: 'DEPRECATED: Use threshold_duration instead.
+                            The duration of time, in minutes, that the threshold must
+                            violate for in order to create an incident. Must be within
+                            1-120 (inclusive). In minutes, must be in the range of
+                            1 to 120 (inclusive).'
+                          type: number
+                        operator:
+                          description: Valid values are above, above_or_equals, below,
+                            below_or_equals, equals, or not_equals (case insensitive).
+                            Defaults to equals. Note that when using a type of baseline,
+                            the only valid option here is above. One of (above, above_or_equals,
+                            below, below_or_equals, equals, not_equals). Defaults
+                            to 'equals'.
+                          type: string
+                        threshold:
+                          description: The value which will trigger an incident. For
+                            baseline NRQL alert conditions, the value must be in the
+                            range [1, 1000]. The value is the number of standard deviations
+                            from the baseline that the metric must exceed in order
+                            to create an incident. For baseline conditions must be
+                            in range [1, 1000].
+                          type: number
+                        thresholdDuration:
+                          description: The duration, in seconds, that the threshold
+                            must violate in order to create an incident. Value must
+                            be a multiple of the aggregation_window (which has a default
+                            of 60 seconds). For baseline NRQL alert conditions, the
+                            value must be within 120-86400 seconds (inclusive). For
+                            static NRQL alert conditions, the value must be within
+                            60-86400 seconds (inclusive). The duration, in seconds,
+                            that the threshold must violate in order to create an
+                            incident. Value must be a multiple of the 'aggregation_window'
+                            (which has a default of 60 seconds). Value must be within
+                            120-86400 seconds for baseline conditions, and within
+                            60-86400 seconds for static conditions
+                          type: number
+                        thresholdOccurrences:
+                          description: 'The criteria for how many data points must
+                            be in violation for the specified threshold duration.
+                            Valid values are: all or at_least_once (case insensitive).
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            ''ALL'' or ''AT_LEAST_ONCE'' (case insensitive).'
+                          type: string
+                        timeFunction:
+                          description: 'DEPRECATED: Use threshold_occurrences instead.
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            all or any. Valid values are: ''all'' or ''any'''
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  accountId:
+                    description: The New Relic account ID of the account you wish
+                      to create the condition. Defaults to the account ID set in your
+                      environment variable NEW_RELIC_ACCOUNT_ID. The New Relic account
+                      ID for managing your NRQL alert conditions.
+                    type: number
+                  aggregationDelay:
+                    description: How long we wait for data that belongs in each aggregation
+                      window. Depending on your data, a longer delay may increase
+                      accuracy but delay notifications. Use aggregation_delay with
+                      the event_flow and cadence methods. The maximum delay is 1200
+                      seconds (20 minutes) when using event_flow and 3600 seconds
+                      (60 minutes) when using cadence. In both cases, the minimum
+                      delay is 0 seconds and the default is 120 seconds. aggregation_delay
+                      cannot be set with nrql.evaluation_offset. How long we wait
+                      for data that belongs in each aggregation window. Depending
+                      on your data, a longer delay may increase accuracy but delay
+                      notifications. Use aggregationDelay with the EVENT_FLOW and
+                      CADENCE aggregation methods.
+                    type: string
+                  aggregationMethod:
+                    description: Determines when we consider an aggregation window
+                      to be complete so that we can evaluate the signal for incidents.
+                      Possible values are cadence, event_flow or event_timer. Default
+                      is event_flow. aggregation_method cannot be set with nrql.evaluation_offset.
+                      The method that determines when we consider an aggregation window
+                      to be complete so that we can evaluate the signal for incidents.
+                      Default is EVENT_FLOW.
+                    type: string
+                  aggregationTimer:
+                    description: How long we wait after each data point arrives to
+                      make sure we've processed the whole batch. Use aggregation_timer
+                      with the event_timer method. The timer value can range from
+                      0 seconds to 1200 seconds (20 minutes); the default is 60 seconds.
+                      aggregation_timer cannot be set with nrql.evaluation_offset.
+                      How long we wait after each data point arrives to make sure
+                      we've processed the whole batch. Use aggregationTimer with the
+                      EVENT_TIMER aggregation method.
+                    type: string
+                  aggregationWindow:
+                    description: The duration of the time window used to evaluate
+                      the NRQL query, in seconds. The value must be at least 30 seconds,
+                      and no more than 21600 seconds (6 hours). Default is 60 seconds.
+                      The duration of the time window used to evaluate the NRQL query,
+                      in seconds.
+                    type: number
+                  baselineDirection:
+                    description: 'The baseline direction of a baseline NRQL alert
+                      condition. Valid values are: lower_only, upper_and_lower, upper_only
+                      (case insensitive). The baseline direction of a baseline NRQL
+                      alert condition. Valid values are: ''LOWER_ONLY'', ''UPPER_AND_LOWER'',
+                      ''UPPER_ONLY'' (case insensitive).'
+                    type: string
+                  closeViolationsOnExpiration:
+                    description: Whether to close all open incidents when the signal
+                      expires. Whether to close all open incidents when the signal
+                      expires.
+                    type: boolean
+                  critical:
+                    description: A list containing the critical threshold values.
+                      At least one critical or warning threshold must be defined.
+                      See Terms below for details. A condition term with priority
+                      set to critical.
+                    items:
+                      properties:
+                        duration:
+                          description: 'DEPRECATED: Use threshold_duration instead.
+                            The duration of time, in minutes, that the threshold must
+                            violate for in order to create an incident. Must be within
+                            1-120 (inclusive). In minutes, must be in the range of
+                            1 to 120 (inclusive).'
+                          type: number
+                        operator:
+                          description: Valid values are above, above_or_equals, below,
+                            below_or_equals, equals, or not_equals (case insensitive).
+                            Defaults to equals. Note that when using a type of baseline,
+                            the only valid option here is above. One of (above, above_or_equals,
+                            below, below_or_equals, equals, not_equals). Defaults
+                            to 'equals'.
+                          type: string
+                        threshold:
+                          description: The value which will trigger an incident. For
+                            baseline NRQL alert conditions, the value must be in the
+                            range [1, 1000]. The value is the number of standard deviations
+                            from the baseline that the metric must exceed in order
+                            to create an incident. For baseline conditions must be
+                            in range [1, 1000].
+                          type: number
+                        thresholdDuration:
+                          description: The duration, in seconds, that the threshold
+                            must violate in order to create an incident. Value must
+                            be a multiple of the aggregation_window (which has a default
+                            of 60 seconds). For baseline NRQL alert conditions, the
+                            value must be within 120-86400 seconds (inclusive). For
+                            static NRQL alert conditions, the value must be within
+                            60-86400 seconds (inclusive). The duration, in seconds,
+                            that the threshold must violate in order to create an
+                            incident. Value must be a multiple of the 'aggregation_window'
+                            (which has a default of 60 seconds). Value must be within
+                            120-86400 seconds for baseline conditions, and within
+                            60-86400 seconds for static conditions
+                          type: number
+                        thresholdOccurrences:
+                          description: 'The criteria for how many data points must
+                            be in violation for the specified threshold duration.
+                            Valid values are: all or at_least_once (case insensitive).
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            ''ALL'' or ''AT_LEAST_ONCE'' (case insensitive).'
+                          type: string
+                        timeFunction:
+                          description: 'DEPRECATED: Use threshold_occurrences instead.
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            all or any. Valid values are: ''all'' or ''any'''
+                          type: string
+                      type: object
+                    type: array
+                  description:
+                    description: The description of the NRQL alert condition. The
+                      description of the NRQL alert condition.
+                    type: string
+                  enabled:
+                    description: Whether to enable the alert condition. Valid values
+                      are true and false. Defaults to true. Whether or not to enable
+                      the alert condition.
+                    type: boolean
+                  evaluationDelay:
+                    description: How long we wait until the signal starts evaluating.
+                      The maximum delay is 7200 seconds (120 minutes). How long we
+                      wait until the signal starts evaluating. The maximum delay is
+                      7200 seconds (120 minutes)
+                    type: number
+                  expirationDuration:
+                    description: The amount of time (in seconds) to wait before considering
+                      the signal expired. The value must be at least 30 seconds, and
+                      no more than 172800 seconds (48 hours). The amount of time (in
+                      seconds) to wait before considering the signal expired.  Must
+                      be in the range of 30 to 172800 (inclusive)
+                    type: number
+                  fillOption:
+                    description: 'Which strategy to use when filling gaps in the signal.
+                      Possible values are none, last_value or static. If static, the
+                      fill_value field will be used for filling gaps in the signal.
+                      Which strategy to use when filling gaps in the signal. If static,
+                      the ''fill value'' will be used for filling gaps in the signal.
+                      Valid values are: ''NONE'', ''LAST_VALUE'', or ''STATIC'' (case
+                      insensitive).'
+                    type: string
+                  fillValue:
+                    description: This value will be used for filling gaps in the signal.
+                      If using the 'static' fill option, this value will be used for
+                      filling gaps in the signal.
+                    type: number
+                  name:
+                    description: The title of the condition. The title of the condition.
+                    type: string
+                  nrql:
+                    description: A NRQL query. See NRQL below for details. A NRQL
+                      query.
+                    items:
+                      properties:
+                        evaluationOffset:
+                          description: 'DEPRECATED: Use aggregation_method instead.
+                            Represented in minutes and must be within 1-20 minutes
+                            (inclusive). NRQL queries are evaluated based on their
+                            aggregation_window size. The start time depends on this
+                            value. It''s recommended to set this to 3 windows. An
+                            offset of less than 3 windows will trigger incidents sooner,
+                            but you may see more false positives and negatives due
+                            to data latency. With evaluation_offset set to 3 windows
+                            and an aggregation_window of 60 seconds, the NRQL time
+                            window applied to your query will be: SINCE 3 minutes
+                            ago UNTIL 2 minutes ago. evaluation_offset cannot be set
+                            with aggregation_method, aggregation_delay, or aggregation_timer.
+                            NRQL queries are evaluated in one-minute time windows.
+                            The start time depends on the value you provide in the
+                            NRQL condition''s `evaluation_offset`.'
+                          type: number
+                        query:
+                          description: The NRQL query to execute for the condition.
+                          type: string
+                        sinceValue:
+                          description: 'DEPRECATED: Use aggregation_method instead.
+                            The value to be used in the SINCE <X> minutes ago clause
+                            for the NRQL query. Must be between 1-20 (inclusive).
+                            NRQL queries are evaluated in one-minute time windows.
+                            The start time depends on the value you provide in the
+                            NRQL condition''s `since_value`.'
+                          type: string
+                      type: object
+                    type: array
+                  openViolationOnExpiration:
+                    description: Whether to create a new incident to capture that
+                      the signal expired. Whether to create a new incident to capture
+                      that the signal expired.
+                    type: boolean
+                  policyId:
+                    description: The ID of the policy where this condition should
+                      be used. The ID of the policy where this condition should be
+                      used.
+                    type: number
+                  policyIdRef:
+                    description: Reference to a Policy in alert to populate policyId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  policyIdSelector:
+                    description: Selector for a Policy in alert to populate policyId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  runbookUrl:
+                    description: Runbook URL to display in notifications. Runbook
+                      URL to display in notifications.
+                    type: string
+                  slideBy:
+                    description: Gathers data in overlapping time windows to smooth
+                      the chart line, making it easier to spot trends. The slide_by
+                      value is specified in seconds and must be smaller than and a
+                      factor of the aggregation_window. The duration of overlapping
+                      time windows used to smooth the chart line, in seconds. Must
+                      be a factor of `aggregation_window` and less than the aggregation
+                      window. If `aggregation_window` is less than or equal to 3600
+                      seconds, it should be greater or equal to 30 seconds. If `aggregation_window`
+                      is greater than 3600 seconds but less than 7200 seconds, it
+                      should be greater or equal to `aggregation_window / 120`.  If
+                      `aggregation_window` is greater than 7200 seconds, it should
+                      be greater or equal to `aggregation_window / 24
+                    type: number
+                  type:
+                    description: 'The type of the condition. Valid values are static
+                      or baseline. Defaults to static. The type of NRQL alert condition
+                      to create. Valid values are: ''static'', ''baseline''.'
+                    type: string
+                  violationTimeLimitSeconds:
+                    description: 'Sets a time limit, in seconds, that will automatically
+                      force-close a long-lasting incident after the time limit you
+                      select. The value must be between 300 seconds (5 minutes) to
+                      2592000 seconds (30 days) (inclusive). *Note: One of violation_time_limit
+                      or violation_time_limit_seconds must be set, but not both. Sets
+                      a time limit, in seconds, that will automatically force-close
+                      a long-lasting incident after the time limit you select.  Must
+                      be in the range of 300 to 2592000 (inclusive)'
+                    type: number
+                  warning:
+                    description: A list containing the warning threshold values. At
+                      least one critical or warning threshold must be defined. See
+                      Terms below for details. A condition term with priority set
+                      to warning.
+                    items:
+                      properties:
+                        duration:
+                          description: 'DEPRECATED: Use threshold_duration instead.
+                            The duration of time, in minutes, that the threshold must
+                            violate for in order to create an incident. Must be within
+                            1-120 (inclusive). In minutes, must be in the range of
+                            1 to 120 (inclusive).'
+                          type: number
+                        operator:
+                          description: Valid values are above, above_or_equals, below,
+                            below_or_equals, equals, or not_equals (case insensitive).
+                            Defaults to equals. Note that when using a type of baseline,
+                            the only valid option here is above. One of (above, above_or_equals,
+                            below, below_or_equals, equals, not_equals). Defaults
+                            to 'equals'.
+                          type: string
+                        threshold:
+                          description: The value which will trigger an incident. For
+                            baseline NRQL alert conditions, the value must be in the
+                            range [1, 1000]. The value is the number of standard deviations
+                            from the baseline that the metric must exceed in order
+                            to create an incident. For baseline conditions must be
+                            in range [1, 1000].
+                          type: number
+                        thresholdDuration:
+                          description: The duration, in seconds, that the threshold
+                            must violate in order to create an incident. Value must
+                            be a multiple of the aggregation_window (which has a default
+                            of 60 seconds). For baseline NRQL alert conditions, the
+                            value must be within 120-86400 seconds (inclusive). For
+                            static NRQL alert conditions, the value must be within
+                            60-86400 seconds (inclusive). The duration, in seconds,
+                            that the threshold must violate in order to create an
+                            incident. Value must be a multiple of the 'aggregation_window'
+                            (which has a default of 60 seconds). Value must be within
+                            120-86400 seconds for baseline conditions, and within
+                            60-86400 seconds for static conditions
+                          type: number
+                        thresholdOccurrences:
+                          description: 'The criteria for how many data points must
+                            be in violation for the specified threshold duration.
+                            Valid values are: all or at_least_once (case insensitive).
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            ''ALL'' or ''AT_LEAST_ONCE'' (case insensitive).'
+                          type: string
+                        timeFunction:
+                          description: 'DEPRECATED: Use threshold_occurrences instead.
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            all or any. Valid values are: ''all'' or ''any'''
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: 'THIS IS A BETA FIELD. It is on by default but can be
+                  opted out through a Crossplane feature flag. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.nrql is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.nrql)
+                || (has(self.initProvider) && has(self.initProvider.nrql))'
+          status:
+            description: AlertConditionStatus defines the observed state of AlertCondition.
+            properties:
+              atProvider:
+                properties:
+                  accountId:
+                    description: The New Relic account ID of the account you wish
+                      to create the condition. Defaults to the account ID set in your
+                      environment variable NEW_RELIC_ACCOUNT_ID. The New Relic account
+                      ID for managing your NRQL alert conditions.
+                    type: number
+                  aggregationDelay:
+                    description: How long we wait for data that belongs in each aggregation
+                      window. Depending on your data, a longer delay may increase
+                      accuracy but delay notifications. Use aggregation_delay with
+                      the event_flow and cadence methods. The maximum delay is 1200
+                      seconds (20 minutes) when using event_flow and 3600 seconds
+                      (60 minutes) when using cadence. In both cases, the minimum
+                      delay is 0 seconds and the default is 120 seconds. aggregation_delay
+                      cannot be set with nrql.evaluation_offset. How long we wait
+                      for data that belongs in each aggregation window. Depending
+                      on your data, a longer delay may increase accuracy but delay
+                      notifications. Use aggregationDelay with the EVENT_FLOW and
+                      CADENCE aggregation methods.
+                    type: string
+                  aggregationMethod:
+                    description: Determines when we consider an aggregation window
+                      to be complete so that we can evaluate the signal for incidents.
+                      Possible values are cadence, event_flow or event_timer. Default
+                      is event_flow. aggregation_method cannot be set with nrql.evaluation_offset.
+                      The method that determines when we consider an aggregation window
+                      to be complete so that we can evaluate the signal for incidents.
+                      Default is EVENT_FLOW.
+                    type: string
+                  aggregationTimer:
+                    description: How long we wait after each data point arrives to
+                      make sure we've processed the whole batch. Use aggregation_timer
+                      with the event_timer method. The timer value can range from
+                      0 seconds to 1200 seconds (20 minutes); the default is 60 seconds.
+                      aggregation_timer cannot be set with nrql.evaluation_offset.
+                      How long we wait after each data point arrives to make sure
+                      we've processed the whole batch. Use aggregationTimer with the
+                      EVENT_TIMER aggregation method.
+                    type: string
+                  aggregationWindow:
+                    description: The duration of the time window used to evaluate
+                      the NRQL query, in seconds. The value must be at least 30 seconds,
+                      and no more than 21600 seconds (6 hours). Default is 60 seconds.
+                      The duration of the time window used to evaluate the NRQL query,
+                      in seconds.
+                    type: number
+                  baselineDirection:
+                    description: 'The baseline direction of a baseline NRQL alert
+                      condition. Valid values are: lower_only, upper_and_lower, upper_only
+                      (case insensitive). The baseline direction of a baseline NRQL
+                      alert condition. Valid values are: ''LOWER_ONLY'', ''UPPER_AND_LOWER'',
+                      ''UPPER_ONLY'' (case insensitive).'
+                    type: string
+                  closeViolationsOnExpiration:
+                    description: Whether to close all open incidents when the signal
+                      expires. Whether to close all open incidents when the signal
+                      expires.
+                    type: boolean
+                  critical:
+                    description: A list containing the critical threshold values.
+                      At least one critical or warning threshold must be defined.
+                      See Terms below for details. A condition term with priority
+                      set to critical.
+                    items:
+                      properties:
+                        duration:
+                          description: 'DEPRECATED: Use threshold_duration instead.
+                            The duration of time, in minutes, that the threshold must
+                            violate for in order to create an incident. Must be within
+                            1-120 (inclusive). In minutes, must be in the range of
+                            1 to 120 (inclusive).'
+                          type: number
+                        operator:
+                          description: Valid values are above, above_or_equals, below,
+                            below_or_equals, equals, or not_equals (case insensitive).
+                            Defaults to equals. Note that when using a type of baseline,
+                            the only valid option here is above. One of (above, above_or_equals,
+                            below, below_or_equals, equals, not_equals). Defaults
+                            to 'equals'.
+                          type: string
+                        threshold:
+                          description: The value which will trigger an incident. For
+                            baseline NRQL alert conditions, the value must be in the
+                            range [1, 1000]. The value is the number of standard deviations
+                            from the baseline that the metric must exceed in order
+                            to create an incident. For baseline conditions must be
+                            in range [1, 1000].
+                          type: number
+                        thresholdDuration:
+                          description: The duration, in seconds, that the threshold
+                            must violate in order to create an incident. Value must
+                            be a multiple of the aggregation_window (which has a default
+                            of 60 seconds). For baseline NRQL alert conditions, the
+                            value must be within 120-86400 seconds (inclusive). For
+                            static NRQL alert conditions, the value must be within
+                            60-86400 seconds (inclusive). The duration, in seconds,
+                            that the threshold must violate in order to create an
+                            incident. Value must be a multiple of the 'aggregation_window'
+                            (which has a default of 60 seconds). Value must be within
+                            120-86400 seconds for baseline conditions, and within
+                            60-86400 seconds for static conditions
+                          type: number
+                        thresholdOccurrences:
+                          description: 'The criteria for how many data points must
+                            be in violation for the specified threshold duration.
+                            Valid values are: all or at_least_once (case insensitive).
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            ''ALL'' or ''AT_LEAST_ONCE'' (case insensitive).'
+                          type: string
+                        timeFunction:
+                          description: 'DEPRECATED: Use threshold_occurrences instead.
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            all or any. Valid values are: ''all'' or ''any'''
+                          type: string
+                      type: object
+                    type: array
+                  description:
+                    description: The description of the NRQL alert condition. The
+                      description of the NRQL alert condition.
+                    type: string
+                  enabled:
+                    description: Whether to enable the alert condition. Valid values
+                      are true and false. Defaults to true. Whether or not to enable
+                      the alert condition.
+                    type: boolean
+                  entityGuid:
+                    description: The unique entity identifier of the NRQL Condition
+                      in New Relic. The unique entity identifier of the NRQL Condition
+                      in New Relic.
+                    type: string
+                  evaluationDelay:
+                    description: How long we wait until the signal starts evaluating.
+                      The maximum delay is 7200 seconds (120 minutes). How long we
+                      wait until the signal starts evaluating. The maximum delay is
+                      7200 seconds (120 minutes)
+                    type: number
+                  expirationDuration:
+                    description: The amount of time (in seconds) to wait before considering
+                      the signal expired. The value must be at least 30 seconds, and
+                      no more than 172800 seconds (48 hours). The amount of time (in
+                      seconds) to wait before considering the signal expired.  Must
+                      be in the range of 30 to 172800 (inclusive)
+                    type: number
+                  fillOption:
+                    description: 'Which strategy to use when filling gaps in the signal.
+                      Possible values are none, last_value or static. If static, the
+                      fill_value field will be used for filling gaps in the signal.
+                      Which strategy to use when filling gaps in the signal. If static,
+                      the ''fill value'' will be used for filling gaps in the signal.
+                      Valid values are: ''NONE'', ''LAST_VALUE'', or ''STATIC'' (case
+                      insensitive).'
+                    type: string
+                  fillValue:
+                    description: This value will be used for filling gaps in the signal.
+                      If using the 'static' fill option, this value will be used for
+                      filling gaps in the signal.
+                    type: number
+                  id:
+                    description: The ID of the NRQL alert condition. This is a composite
+                      ID with the format <policy_id>:<condition_id> - e.g. 538291:6789035.
+                    type: string
+                  name:
+                    description: The title of the condition. The title of the condition.
+                    type: string
+                  nrql:
+                    description: A NRQL query. See NRQL below for details. A NRQL
+                      query.
+                    items:
+                      properties:
+                        evaluationOffset:
+                          description: 'DEPRECATED: Use aggregation_method instead.
+                            Represented in minutes and must be within 1-20 minutes
+                            (inclusive). NRQL queries are evaluated based on their
+                            aggregation_window size. The start time depends on this
+                            value. It''s recommended to set this to 3 windows. An
+                            offset of less than 3 windows will trigger incidents sooner,
+                            but you may see more false positives and negatives due
+                            to data latency. With evaluation_offset set to 3 windows
+                            and an aggregation_window of 60 seconds, the NRQL time
+                            window applied to your query will be: SINCE 3 minutes
+                            ago UNTIL 2 minutes ago. evaluation_offset cannot be set
+                            with aggregation_method, aggregation_delay, or aggregation_timer.
+                            NRQL queries are evaluated in one-minute time windows.
+                            The start time depends on the value you provide in the
+                            NRQL condition''s `evaluation_offset`.'
+                          type: number
+                        query:
+                          description: The NRQL query to execute for the condition.
+                          type: string
+                        sinceValue:
+                          description: 'DEPRECATED: Use aggregation_method instead.
+                            The value to be used in the SINCE <X> minutes ago clause
+                            for the NRQL query. Must be between 1-20 (inclusive).
+                            NRQL queries are evaluated in one-minute time windows.
+                            The start time depends on the value you provide in the
+                            NRQL condition''s `since_value`.'
+                          type: string
+                      type: object
+                    type: array
+                  openViolationOnExpiration:
+                    description: Whether to create a new incident to capture that
+                      the signal expired. Whether to create a new incident to capture
+                      that the signal expired.
+                    type: boolean
+                  policyId:
+                    description: The ID of the policy where this condition should
+                      be used. The ID of the policy where this condition should be
+                      used.
+                    type: number
+                  runbookUrl:
+                    description: Runbook URL to display in notifications. Runbook
+                      URL to display in notifications.
+                    type: string
+                  slideBy:
+                    description: Gathers data in overlapping time windows to smooth
+                      the chart line, making it easier to spot trends. The slide_by
+                      value is specified in seconds and must be smaller than and a
+                      factor of the aggregation_window. The duration of overlapping
+                      time windows used to smooth the chart line, in seconds. Must
+                      be a factor of `aggregation_window` and less than the aggregation
+                      window. If `aggregation_window` is less than or equal to 3600
+                      seconds, it should be greater or equal to 30 seconds. If `aggregation_window`
+                      is greater than 3600 seconds but less than 7200 seconds, it
+                      should be greater or equal to `aggregation_window / 120`.  If
+                      `aggregation_window` is greater than 7200 seconds, it should
+                      be greater or equal to `aggregation_window / 24
+                    type: number
+                  type:
+                    description: 'The type of the condition. Valid values are static
+                      or baseline. Defaults to static. The type of NRQL alert condition
+                      to create. Valid values are: ''static'', ''baseline''.'
+                    type: string
+                  violationTimeLimit:
+                    description: 'DEPRECATED: Use violation_time_limit_seconds instead.
+                      Sets a time limit, in hours, that will automatically force-close
+                      a long-lasting incident after the time limit you select. Possible
+                      values are ONE_HOUR, TWO_HOURS, FOUR_HOURS, EIGHT_HOURS, TWELVE_HOURS,
+                      TWENTY_FOUR_HOURS, THIRTY_DAYS (case insensitive). *Note: One
+                      of violation_time_limit or violation_time_limit_seconds must
+                      be set, but not both. Sets a time limit, in hours, that will
+                      automatically force-close a long-lasting incident after the
+                      time limit you select. Possible values are ''ONE_HOUR'', ''TWO_HOURS'',
+                      ''FOUR_HOURS'', ''EIGHT_HOURS'', ''TWELVE_HOURS'', ''TWENTY_FOUR_HOURS'',
+                      ''THIRTY_DAYS'' (case insensitive).'
+                    type: string
+                  violationTimeLimitSeconds:
+                    description: 'Sets a time limit, in seconds, that will automatically
+                      force-close a long-lasting incident after the time limit you
+                      select. The value must be between 300 seconds (5 minutes) to
+                      2592000 seconds (30 days) (inclusive). *Note: One of violation_time_limit
+                      or violation_time_limit_seconds must be set, but not both. Sets
+                      a time limit, in seconds, that will automatically force-close
+                      a long-lasting incident after the time limit you select.  Must
+                      be in the range of 300 to 2592000 (inclusive)'
+                    type: number
+                  warning:
+                    description: A list containing the warning threshold values. At
+                      least one critical or warning threshold must be defined. See
+                      Terms below for details. A condition term with priority set
+                      to warning.
+                    items:
+                      properties:
+                        duration:
+                          description: 'DEPRECATED: Use threshold_duration instead.
+                            The duration of time, in minutes, that the threshold must
+                            violate for in order to create an incident. Must be within
+                            1-120 (inclusive). In minutes, must be in the range of
+                            1 to 120 (inclusive).'
+                          type: number
+                        operator:
+                          description: Valid values are above, above_or_equals, below,
+                            below_or_equals, equals, or not_equals (case insensitive).
+                            Defaults to equals. Note that when using a type of baseline,
+                            the only valid option here is above. One of (above, above_or_equals,
+                            below, below_or_equals, equals, not_equals). Defaults
+                            to 'equals'.
+                          type: string
+                        threshold:
+                          description: The value which will trigger an incident. For
+                            baseline NRQL alert conditions, the value must be in the
+                            range [1, 1000]. The value is the number of standard deviations
+                            from the baseline that the metric must exceed in order
+                            to create an incident. For baseline conditions must be
+                            in range [1, 1000].
+                          type: number
+                        thresholdDuration:
+                          description: The duration, in seconds, that the threshold
+                            must violate in order to create an incident. Value must
+                            be a multiple of the aggregation_window (which has a default
+                            of 60 seconds). For baseline NRQL alert conditions, the
+                            value must be within 120-86400 seconds (inclusive). For
+                            static NRQL alert conditions, the value must be within
+                            60-86400 seconds (inclusive). The duration, in seconds,
+                            that the threshold must violate in order to create an
+                            incident. Value must be a multiple of the 'aggregation_window'
+                            (which has a default of 60 seconds). Value must be within
+                            120-86400 seconds for baseline conditions, and within
+                            60-86400 seconds for static conditions
+                          type: number
+                        thresholdOccurrences:
+                          description: 'The criteria for how many data points must
+                            be in violation for the specified threshold duration.
+                            Valid values are: all or at_least_once (case insensitive).
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            ''ALL'' or ''AT_LEAST_ONCE'' (case insensitive).'
+                          type: string
+                        timeFunction:
+                          description: 'DEPRECATED: Use threshold_occurrences instead.
+                            The criteria for how many data points must be in violation
+                            for the specified threshold duration. Valid values are:
+                            all or any. Valid values are: ''all'' or ''any'''
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

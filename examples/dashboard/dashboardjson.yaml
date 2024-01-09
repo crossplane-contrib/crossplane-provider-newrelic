@@ -1,0 +1,50 @@
+apiVersion: dashboard.newrelic.upbound.io/v1alpha1
+kind: DashboardJSON
+metadata:
+  annotations:
+    meta.upbound.io/example-id: dashboard/v1alpha1/dashboardjson
+  labels:
+    testing.upbound.io/example-name: foo-json
+  name: foo-json
+spec:
+  forProvider:
+    json: |
+      {
+        "name": "New Relic Terraform Example JSON",
+        "description": null,
+        "permissions": "PUBLIC_READ_ONLY",
+        "pages": [{
+          "name": "New Relic Terraform Example JSON",
+          "description": null,
+          "widgets": [{
+            "title": "Requests per minute",
+            "layout": {
+              "column": 1,
+              "row": 1,
+              "width": 6,
+              "height": 3
+            },
+            "linkedEntityGuids": null,
+            "visualization": {
+              "id": "viz.billboard"
+            },
+            "rawConfiguration": {
+              "facet": {},
+              "legend": {
+                "enabled": true
+              },
+              "nrqlQueries": [{
+                "accountId": 123456789,
+                "query": "FROM Transaction SELECT rate(count(*), 1 minute)"
+              }
+              ],
+              "platformOptions": {},
+              "yAxisLeft": {
+                "min": 0
+              }
+            }
+          }
+          ]
+        }
+        ]
+      }

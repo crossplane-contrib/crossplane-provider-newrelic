@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: monthly
+    ignore:
+      - dependency-name: "k8s.io/apimachinery"
+      - dependency-name: "k8s.io/client-go"
+      - dependency-name: "sigs.k8s.io/controller-runtime"
+      - dependency-name: "sigs.k8s.io/controller-tools"
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

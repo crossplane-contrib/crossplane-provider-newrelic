@@ -1,0 +1,16 @@
+---
+apiVersion: alert.newrelic.upbound.io/v1alpha1
+kind: Destination
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alert/v1alpha1/destination
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    name: email-example
+    property:
+      - key: email
+        value: email@email.com
+    type: EMAIL

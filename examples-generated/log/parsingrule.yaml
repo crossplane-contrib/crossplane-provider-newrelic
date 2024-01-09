@@ -1,0 +1,16 @@
+apiVersion: log.newrelic.upbound.io/v1alpha1
+kind: ParsingRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: log/v1alpha1/parsingrule
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    attribute: message
+    enabled: true
+    grok: sampleattribute='%{NUMBER:test:int}'
+    lucene: logtype:linux_messages
+    name: log_parse_rule
+    nrql: SELECT * FROM Log WHERE logtype = 'linux_messages'

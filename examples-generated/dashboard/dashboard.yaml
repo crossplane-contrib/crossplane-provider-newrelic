@@ -1,0 +1,121 @@
+apiVersion: dashboard.newrelic.upbound.io/v1alpha1
+kind: Dashboard
+metadata:
+  annotations:
+    meta.upbound.io/example-id: dashboard/v1alpha1/dashboard
+  labels:
+    testing.upbound.io/example-name: exampledash
+  name: exampledash
+spec:
+  forProvider:
+    name: New Relic Terraform Example
+    page:
+    - name: New Relic Terraform Example
+      widgetBar:
+      - column: 7
+        height: 3
+        linkedEntityGuids:
+        - abc123
+        nrqlQuery:
+        - accountId: 12345
+          query: FROM Transaction SELECT average(duration) FACET appName
+        row: 1
+        title: Average transaction duration, by application
+        width: 6
+      - colors:
+        - color: '#722727'
+          seriesOverrides:
+          - color: '#722322'
+            seriesName: Node
+          - color: '#236f70'
+            seriesName: Java
+        column: 1
+        filterCurrentDashboard: true
+        height: 3
+        nrqlQuery:
+        - accountId: 12345
+          query: FROM Transaction SELECT average(duration) FACET appName
+        row: 4
+        title: Average transaction duration, by application
+        width: 6
+      widgetBillboard:
+      - column: 1
+        height: 3
+        nrqlQuery:
+        - query: FROM Transaction SELECT rate(count(*), 1 minute)
+        row: 1
+        title: Requests per minute
+        width: 6
+      widgetLine:
+      - column: 7
+        height: 3
+        ignoreTimeRange: false
+        legendEnabled: true
+        nrqlQuery:
+        - accountId: 12345
+          query: FROM Transaction select max(duration) as 'max duration' where httpResponseCode
+            = '504' timeseries since 5 minutes ago
+        - query: FROM Transaction SELECT rate(count(*), 1 minute)
+        row: 4
+        title: Average transaction duration and the request per minute, by application
+        units:
+        - seriesOverrides:
+          - seriesName: max duration
+            unit: ms
+          unit: ms
+        width: 6
+        yAxisLeftMax: 1
+        yAxisLeftMin: 0
+        yAxisLeftZero: true
+      - column: 5
+        facetShowOtherSeries: false
+        height: 3
+        ignoreTimeRange: false
+        legendEnabled: true
+        nrqlQuery:
+        - query: |
+            SELECT average(cpuSystemPercent), average(cpuUserPercent), average(cpuIdlePercent), average(cpuIOWaitPercent) FROM SystemSample  SINCE 1 hour ago TIMESERIES
+        nullValues:
+        - nullValue: default
+          seriesOverrides:
+          - nullValue: remove
+            seriesName: Avg Cpu User Percent
+          - nullValue: zero
+            seriesName: Avg Cpu Idle Percent
+          - nullValue: default
+            seriesName: Avg Cpu IO Wait Percent
+          - nullValue: preserve
+            seriesName: Avg Cpu System Percent
+        row: 1
+        title: Overall CPU % Statistics
+        width: 4
+        yAxisLeftMax: 0
+        yAxisLeftMin: 0
+        yAxisLeftZero: true
+      widgetMarkdown:
+      - column: 1
+        height: 3
+        row: 7
+        text: |-
+          ### Helpful Links
+
+          * [New Relic One](https://one.newrelic.com)
+          * [Developer Portal](https://developer.newrelic.com)
+        title: Dashboard Note
+        width: 12
+    permissions: public_read_only
+    variable:
+    - defaultValues:
+      - value
+      isMultiSelection: true
+      item:
+      - title: item
+        value: ITEM
+      name: variable
+      nrqlQuery:
+      - accountIds:
+        - 12345
+        query: FROM Transaction SELECT average(duration) FACET appName
+      replacementStrategy: default
+      title: title
+      type: nrql
