@@ -1,4 +1,4 @@
-package notification_destination
+package notificationdestination
 
 import (
 	"github.com/crossplane/upjet/pkg/config"

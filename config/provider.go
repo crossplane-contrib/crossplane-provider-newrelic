@@ -7,14 +7,15 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
-	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/alert_policy"
+
+	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/alertpolicy"
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/dashboard"
-	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/dashboard_json"
-	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/log_parsing_rule"
-	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/notification_channel"
-	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/notification_destination"
-	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/nrql_alert_condition"
-	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/nrql_drop_rule"
+	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/dashboardjson"
+	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/logparsingrule"
+	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/notificationchannel"
+	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/notificationdestination"
+	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/nrqlalertcondition"
+	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/nrqldroprule"
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/workflow"
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
@@ -43,14 +44,14 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		alert_policy.Configure,
-		notification_channel.Configure,
-		notification_destination.Configure,
+		alertpolicy.Configure,
+		notificationchannel.Configure,
+		notificationdestination.Configure,
 		dashboard.Configure,
-		dashboard_json.Configure,
-		log_parsing_rule.Configure,
-		nrql_alert_condition.Configure,
-		nrql_drop_rule.Configure,
+		dashboardjson.Configure,
+		logparsingrule.Configure,
+		nrqlalertcondition.Configure,
+		nrqldroprule.Configure,
 		workflow.Configure,
 	} {
 		configure(pc)

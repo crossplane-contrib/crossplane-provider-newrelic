@@ -1,4 +1,4 @@
-package nrql_alert_condition
+package nrqlalertcondition
 
 import (
 	"github.com/crossplane/upjet/pkg/config"
