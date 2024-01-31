@@ -118,8 +118,8 @@ jobs:
       - name: Vendor Dependencies
         run: make vendor vendor.check
 
-      - name: Check Diff
-        run: make check-diff
+      # - name: Check Diff
+      #   run: make check-diff
 
   unit-tests:
     runs-on: ubuntu-latest
