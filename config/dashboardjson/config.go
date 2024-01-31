@@ -1,4 +1,4 @@
-package dashboard_json
+package dashboardjson
 
 import "github.com/crossplane/upjet/pkg/config"
 

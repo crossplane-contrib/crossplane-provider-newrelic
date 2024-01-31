@@ -1,4 +1,4 @@
-package notification_channel
+package notificationchannel
 
 import (
 	"github.com/crossplane/upjet/pkg/config"

@@ -1,4 +1,4 @@
-package alert_policy
+package alertpolicy
 
 import (
 	"github.com/crossplane/upjet/pkg/config"
