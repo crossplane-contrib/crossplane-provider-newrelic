@@ -2848,7 +2848,7 @@ resources:
               manifest: |-
                 {
                   "account_id": 12345678,
-                  "aggregation_delay": "120",
+                  "aggregation_delay": 120,
                   "aggregation_method": "event_flow",
                   "aggregation_window": 60,
                   "close_violations_on_expiration": true,
@@ -2897,7 +2897,7 @@ resources:
               manifest: |-
                 {
                   "account_id": 12345678,
-                  "aggregation_delay": "120",
+                  "aggregation_delay": 120,
                   "aggregation_method": "event_flow",
                   "baseline_direction": "upper_only",
                   "critical": [
@@ -2941,7 +2941,7 @@ resources:
               manifest: |-
                 {
                   "account_id": 12345678,
-                  "aggregation_delay": "120",
+                  "aggregation_delay": 120,
                   "aggregation_method": "event_flow",
                   "aggregation_window": 60,
                   "close_violations_on_expiration": true,

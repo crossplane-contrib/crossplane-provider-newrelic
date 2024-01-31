@@ -9,7 +9,7 @@ metadata:
 spec:
   forProvider:
     accountId: 12345678
-    aggregationDelay: "120"
+    aggregationDelay: 120
     aggregationMethod: event_flow
     aggregationWindow: 60
     closeViolationsOnExpiration: true
