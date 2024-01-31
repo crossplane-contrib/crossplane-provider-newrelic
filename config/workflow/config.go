@@ -8,7 +8,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "workflow"
 
 		// Remove deprecated
-		//if s, ok := r.TerraformResource.Schema["destinations_enabled"]; ok {
+		// if s, ok := r.TerraformResource.Schema["destinations_enabled"]; ok {
 		//	s.Required = false
 		//	s.Optional = false
 		//}

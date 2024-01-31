@@ -2,6 +2,7 @@ package dashboard
 
 import "github.com/crossplane/upjet/pkg/config"
 
+// Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("newrelic_one_dashboard", func(r *config.Resource) {
 		r.ShortGroup = "dashboard"
@@ -14,7 +15,7 @@ func Configure(p *config.Provider) {
 		// as an input. And by defining it as a reference to Repository
 		// object, we can build cross resource referencing. See
 		// repositoryRef in the example in the Testing section below.
-		//r.References["dashboard"] = config.Reference{
+		// r.References["dashboard"] = config.Reference{
 		//	Type: "github.com/upbound/provider-newrelic/apis/dashboard/v1alpha1.Dashboard",
 		//}
 	})

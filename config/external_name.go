@@ -7,10 +7,11 @@ package config
 import (
 	"context"
 	"fmt"
-	"github.com/crossplane/upjet/pkg/config"
-	"github.com/pkg/errors"
 	"strconv"
 	"strings"
+
+	"github.com/crossplane/upjet/pkg/config"
+	"github.com/pkg/errors"
 )
 
 // TODO: Inject account_id on Channel, Destination, alert condition, drop rule
@@ -82,14 +83,14 @@ func configAlertPolicy() config.ExternalName {
 			return "", nil
 		}
 
-		accountId, ok := parameters["account_id"]
+		accountID, ok := parameters["account_id"]
 		if !ok {
 			return "", errors.New("Can't get account_id from alert policy")
 		}
-		accountIdStr := strconv.FormatFloat(accountId.(float64), 'f', 0, 64)
+		accountIDStr := strconv.FormatFloat(accountID.(float64), 'f', 0, 64)
 
 		// <id>:<account_id>
-		return fmt.Sprintf("%s:%s", externalName, accountIdStr), nil
+		return fmt.Sprintf("%s:%s", externalName, accountIDStr), nil
 	}
 	return e
 }
@@ -122,11 +123,11 @@ func configNrqAlertCondition() config.ExternalName {
 			return "", nil
 		}
 
-		policyId, ok := parameters["policy_id"]
+		policyID, ok := parameters["policy_id"]
 		if !ok {
 			return "", errors.New("Can't get policy_id from nrql alert condition")
 		}
-		policyIdStr := strconv.FormatFloat(policyId.(float64), 'f', 0, 64)
+		policyIDStr := strconv.FormatFloat(policyID.(float64), 'f', 0, 64)
 
 		conditionType, ok := parameters["type"]
 		if !ok {
@@ -139,7 +140,7 @@ func configNrqAlertCondition() config.ExternalName {
 		}
 
 		// <policy_id>:<condition_id>:<conditionType>
-		return fmt.Sprintf("%s:%s:%s", policyIdStr, externalName, conditionTypeStr), nil
+		return fmt.Sprintf("%s:%s:%s", policyIDStr, externalName, conditionTypeStr), nil
 	}
 	return e
 }
@@ -187,14 +188,14 @@ func configNrqDropRule() config.ExternalName {
 			return "", nil
 		}
 
-		accountId, ok := parameters["account_id"]
+		accountID, ok := parameters["account_id"]
 		if !ok {
 			return "", errors.New("Can't get account_id from nrql_drop_rule")
 		}
-		accountIdStr := strconv.FormatFloat(accountId.(float64), 'f', 0, 64)
+		accountIDStr := strconv.FormatFloat(accountID.(float64), 'f', 0, 64)
 
 		// <account_id>:<rule_id>
-		return fmt.Sprintf("%s:%s", accountIdStr, externalName), nil
+		return fmt.Sprintf("%s:%s", accountIDStr, externalName), nil
 	}
 	return e
 }
