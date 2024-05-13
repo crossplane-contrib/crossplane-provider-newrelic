@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2024 Upbound Inc.
 */
@@ -18,18 +14,18 @@ import (
 	"github.com/crossplane/upjet/pkg/resource/json"
 )
 
-// GetTerraformResourceType returns Terraform resource type for this ParsingRule
-func (mg *ParsingRule) GetTerraformResourceType() string {
-	return "newrelic_log_parsing_rule"
+// GetTerraformResourceType returns Terraform resource type for this Channel
+func (mg *Channel) GetTerraformResourceType() string {
+	return "newrelic_notification_channel"
 }
 
-// GetConnectionDetailsMapping for this ParsingRule
-func (tr *ParsingRule) GetConnectionDetailsMapping() map[string]string {
+// GetConnectionDetailsMapping for this Channel
+func (tr *Channel) GetConnectionDetailsMapping() map[string]string {
 	return nil
 }
 
-// GetObservation of this ParsingRule
-func (tr *ParsingRule) GetObservation() (map[string]any, error) {
+// GetObservation of this Channel
+func (tr *Channel) GetObservation() (map[string]any, error) {
 	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
 	if err != nil {
 		return nil, err
@@ -38,8 +34,8 @@ func (tr *ParsingRule) GetObservation() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(o, &base)
 }
 
-// SetObservation for this ParsingRule
-func (tr *ParsingRule) SetObservation(obs map[string]any) error {
+// SetObservation for this Channel
+func (tr *Channel) SetObservation(obs map[string]any) error {
 	p, err := json.TFParser.Marshal(obs)
 	if err != nil {
 		return err
@@ -47,16 +43,16 @@ func (tr *ParsingRule) SetObservation(obs map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
 }
 
-// GetID returns ID of underlying Terraform resource of this ParsingRule
-func (tr *ParsingRule) GetID() string {
+// GetID returns ID of underlying Terraform resource of this Channel
+func (tr *Channel) GetID() string {
 	if tr.Status.AtProvider.ID == nil {
 		return ""
 	}
 	return *tr.Status.AtProvider.ID
 }
 
-// GetParameters of this ParsingRule
-func (tr *ParsingRule) GetParameters() (map[string]any, error) {
+// GetParameters of this Channel
+func (tr *Channel) GetParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
 	if err != nil {
 		return nil, err
@@ -65,8 +61,8 @@ func (tr *ParsingRule) GetParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// SetParameters for this ParsingRule
-func (tr *ParsingRule) SetParameters(params map[string]any) error {
+// SetParameters for this Channel
+func (tr *Channel) SetParameters(params map[string]any) error {
 	p, err := json.TFParser.Marshal(params)
 	if err != nil {
 		return err
@@ -74,8 +70,8 @@ func (tr *ParsingRule) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
-// GetInitParameters of this ParsingRule
-func (tr *ParsingRule) GetInitParameters() (map[string]any, error) {
+// GetInitParameters of this Channel
+func (tr *Channel) GetInitParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
 	if err != nil {
 		return nil, err
@@ -84,8 +80,8 @@ func (tr *ParsingRule) GetInitParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// GetInitParameters of this ParsingRule
-func (tr *ParsingRule) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
+// GetInitParameters of this Channel
+func (tr *Channel) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
 	params, err := tr.GetParameters()
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get parameters for resource '%q'", tr.GetName())
@@ -114,10 +110,10 @@ func (tr *ParsingRule) GetMergedParameters(shouldMergeInitProvider bool) (map[st
 	return params, nil
 }
 
-// LateInitialize this ParsingRule using its observed tfState.
+// LateInitialize this Channel using its observed tfState.
 // returns True if there are any spec changes for the resource.
-func (tr *ParsingRule) LateInitialize(attrs []byte) (bool, error) {
-	params := &ParsingRuleParameters{}
+func (tr *Channel) LateInitialize(attrs []byte) (bool, error) {
+	params := &ChannelParameters{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
@@ -128,6 +124,6 @@ func (tr *ParsingRule) LateInitialize(attrs []byte) (bool, error) {
 }
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *ParsingRule) GetTerraformSchemaVersion() int {
+func (tr *Channel) GetTerraformSchemaVersion() int {
 	return 0
 }
