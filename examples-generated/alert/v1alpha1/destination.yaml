@@ -9,14 +9,20 @@ metadata:
 spec:
   forProvider:
     accountId: 12345678
-    authBasic:
-    - passwordSecretRef:
+    authCustomHeader:
+    - key: API_KEY
+      valueSecretRef:
         key: example-key
         name: example-secret
         namespace: upbound-system
-      user: username
     name: foo
     property:
-    - key: url
-      value: https://webhook.mywebhook.com
+    - key: source
+      value: terraform
+    secureUrl:
+    - prefix: https://webhook.mywebhook.com/
+      secureSuffixSecretRef:
+        key: example-key
+        name: example-secret
+        namespace: upbound-system
     type: WEBHOOK

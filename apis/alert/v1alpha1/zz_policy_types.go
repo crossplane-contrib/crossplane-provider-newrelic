@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2024 Upbound Inc.
 */
@@ -27,7 +23,7 @@ type PolicyInitParameters struct {
 	// An array of channel IDs (integers) to assign to the policy. Adding or removing channel IDs from this array will result in a new alert policy resource being created and the old one being destroyed.
 	ChannelIds []*float64 `json:"channelIds,omitempty" tf:"channel_ids,omitempty"`
 
-	// The rollup strategy for the policy.  Options include: PER_POLICY, PER_CONDITION, or PER_CONDITION_AND_TARGET.  The default is PER_POLICY.
+	// The rollup strategy for the policy, which can have one of the following values (the default value is PER_POLICY):
 	// The rollup strategy for the policy. Options include: PER_POLICY, PER_CONDITION, or PER_CONDITION_AND_TARGET. The default is PER_POLICY.
 	IncidentPreference *string `json:"incidentPreference,omitempty" tf:"incident_preference,omitempty"`
 
@@ -49,7 +45,7 @@ type PolicyObservation struct {
 	// The ID of the policy.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The rollup strategy for the policy.  Options include: PER_POLICY, PER_CONDITION, or PER_CONDITION_AND_TARGET.  The default is PER_POLICY.
+	// The rollup strategy for the policy, which can have one of the following values (the default value is PER_POLICY):
 	// The rollup strategy for the policy. Options include: PER_POLICY, PER_CONDITION, or PER_CONDITION_AND_TARGET. The default is PER_POLICY.
 	IncidentPreference *string `json:"incidentPreference,omitempty" tf:"incident_preference,omitempty"`
 
@@ -70,7 +66,7 @@ type PolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	ChannelIds []*float64 `json:"channelIds,omitempty" tf:"channel_ids,omitempty"`
 
-	// The rollup strategy for the policy.  Options include: PER_POLICY, PER_CONDITION, or PER_CONDITION_AND_TARGET.  The default is PER_POLICY.
+	// The rollup strategy for the policy, which can have one of the following values (the default value is PER_POLICY):
 	// The rollup strategy for the policy. Options include: PER_POLICY, PER_CONDITION, or PER_CONDITION_AND_TARGET. The default is PER_POLICY.
 	// +kubebuilder:validation:Optional
 	IncidentPreference *string `json:"incidentPreference,omitempty" tf:"incident_preference,omitempty"`
@@ -105,13 +101,14 @@ type PolicyStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Policy is the Schema for the Policys API. Create and manage alert policies in New Relic.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,newrelic}
 type Policy struct {
 	metav1.TypeMeta   `json:",inline"`

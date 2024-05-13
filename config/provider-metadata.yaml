@@ -384,10 +384,13 @@ resources:
                   "name": "example-with-channels"
                 }
         argumentDocs:
+            PER_CONDITION: '- This sets the incident grouping preference of the policy to One issue per condition. Refer to this page for more details on this incident grouping preference.'
+            PER_CONDITION_AND_TARGET: '- This sets the incident grouping preference of the policy to One issue per condition and signal. Refer to this page for more details on this incident grouping preference.'
+            PER_POLICY: '- This sets the incident grouping preference of the policy to One issue per policy. Refer to this page for more details on this incident grouping preference.'
             account_id: '- (Optional) The New Relic account ID to operate on.  This allows the user to override the account_id attribute set on the provider. Defaults to the environment variable NEW_RELIC_ACCOUNT_ID.'
             channel_ids: '- (Optional) DEPRECATED The channel_ids argument is deprecated and will be removed in the next major release of the provider. An array of channel IDs (integers) to assign to the policy. Adding or removing channel IDs from this array will result in a new alert policy resource being created and the old one being destroyed. Also note that channel IDs cannot be imported via terraform import (see Import for info).'
             id: '- The ID of the policy.'
-            incident_preference: '- (Optional) The rollup strategy for the policy.  Options include: PER_POLICY, PER_CONDITION, or PER_CONDITION_AND_TARGET.  The default is PER_POLICY.'
+            incident_preference: '- (Optional) The rollup strategy for the policy, which can have one of the following values (the default value is PER_POLICY):'
             name: '- (Required) The name of the policy.'
         importStatements: []
     newrelic_alert_policy_channel:
@@ -486,11 +489,13 @@ resources:
                   "name": "example-browser-app"
                 }
         argumentDocs:
-            account_id: '- (Optional) The New Relic account ID of the account you wish to create the browser application. Defaults to the account ID set in your environment variable NEW_RELIC_ACCOUNT_ID.'
-            cookies_enabled: '- (Optional) Configure cookies. The default is enabled: true.'
-            distributed_tracing_enabled: '- (Optional) Configure distributed tracing in browser apps. The default is enabled: true.'
+            account_id: '- (Optional) The account ID of the New Relic account you wish to create the browser application in. Defaults to the value of the environment variable NEW_RELIC_ACCOUNT_ID if not specified.'
+            application_id: '- The application ID of the browser application (not to be confused with GUID).'
+            cookies_enabled: '- (Optional) Configures cookies. Defaults to true, if not specified.'
+            distributed_tracing_enabled: '- (Optional) Configures distributed tracing in browser apps. Defaults to true, if not specified.'
             id: '- The GUID of the browser application.'
-            loader_type: '- (Optional) Determines which browser loader is configured. Valid values are SPA, PRO, and LITE. The default is SPA. See the browser agent loader documentation for a for information on the valid loader types.'
+            js_config: '- The JavaScript configuration of the browser application, encoded into a string.'
+            loader_type: '- (Optional) Determines the browser loader configured. Valid values are SPA, PRO, and LITE. The default is SPA. Refer to the browser agent loader documentation for more information on valid loader types.'
             name: '- (Required) The name of the browser application.'
         importStatements: []
     newrelic_cloud_aws_govcloud_integrations:
@@ -819,7 +824,7 @@ resources:
                       "load_balancer_prefixes": [
                         "load balancer prefix"
                       ],
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -829,7 +834,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "stage_prefixes": [
                         "stage prefix"
                       ],
@@ -842,7 +847,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_app_sync": [
@@ -850,7 +855,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_athena": [
@@ -858,7 +863,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_cognito": [
@@ -866,7 +871,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_connect": [
@@ -874,7 +879,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_direct_connect": [
@@ -882,7 +887,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_fsx": [
@@ -890,7 +895,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_glue": [
@@ -898,7 +903,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_kinesis_analytics": [
@@ -906,7 +911,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_media_convert": [
@@ -914,7 +919,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_media_package_vod": [
@@ -922,7 +927,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_mq": [
@@ -930,7 +935,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_msk": [
@@ -938,7 +943,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_neptune": [
@@ -946,7 +951,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_qldb": [
@@ -954,7 +959,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_route53resolver": [
@@ -962,7 +967,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_states": [
@@ -970,7 +975,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_transit_gateway": [
@@ -978,7 +983,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_waf": [
@@ -986,7 +991,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "aws_wafv2": [
@@ -994,17 +999,19 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "billing": [
-                    {}
+                    {
+                      "metrics_polling_interval": 3600
+                    }
                   ],
                   "cloudfront": [
                     {
                       "fetch_lambdas_at_edge": true,
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1015,12 +1022,12 @@ resources:
                         "us-east-1",
                         "us-east-2"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "doc_db": [
                     {
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "dynamodb": [
@@ -1030,7 +1037,7 @@ resources:
                       ],
                       "fetch_extended_inventory": true,
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1041,7 +1048,7 @@ resources:
                         "us-east-1"
                       ],
                       "fetch_extended_inventory": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 900,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1053,7 +1060,7 @@ resources:
                       ],
                       "duplicate_ec2_tags": true,
                       "fetch_ip_addresses": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1064,7 +1071,7 @@ resources:
                         "us-east-1"
                       ],
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1075,7 +1082,7 @@ resources:
                         "us-east-1"
                       ],
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1086,7 +1093,7 @@ resources:
                         "us-east-1"
                       ],
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1098,7 +1105,7 @@ resources:
                       ],
                       "fetch_extended_inventory": true,
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1109,7 +1116,7 @@ resources:
                         "us-east-1"
                       ],
                       "fetch_nodes": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1121,7 +1128,7 @@ resources:
                       ],
                       "fetch_extended_inventory": true,
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "emr": [
@@ -1130,19 +1137,19 @@ resources:
                         "us-east-1"
                       ],
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
                   ],
                   "health": [
                     {
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "iam": [
                     {
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1152,7 +1159,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "kinesis": [
@@ -1162,7 +1169,7 @@ resources:
                       ],
                       "fetch_shards": true,
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 900,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1172,7 +1179,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "lambda": [
@@ -1181,7 +1188,7 @@ resources:
                         "us-east-1"
                       ],
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1193,7 +1200,7 @@ resources:
                         "us-east-1"
                       ],
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1203,7 +1210,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1211,12 +1218,12 @@ resources:
                   "route53": [
                     {
                       "fetch_extended_inventory": true,
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "s3": [
                     {
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 3600
                     }
                   ],
                   "ses": [
@@ -1224,7 +1231,7 @@ resources:
                       "aws_regions": [
                         "us-east-1"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "sns": [
@@ -1233,7 +1240,7 @@ resources:
                         "us-east-1"
                       ],
                       "fetch_extended_inventory": true,
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "sqs": [
@@ -1243,7 +1250,7 @@ resources:
                       ],
                       "fetch_extended_inventory": true,
                       "fetch_tags": true,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 300,
                       "queue_prefixes": [
                         "queue prefix"
                       ],
@@ -1253,7 +1260,7 @@ resources:
                   ],
                   "trusted_advisor": [
                     {
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 3600
                     }
                   ],
                   "vpc": [
@@ -1264,7 +1271,7 @@ resources:
                       ],
                       "fetch_nat_gateway": true,
                       "fetch_vpn": false,
-                      "metrics_polling_interval": 6000,
+                      "metrics_polling_interval": 900,
                       "tag_key": "tag key",
                       "tag_value": "tag value"
                     }
@@ -1275,7 +1282,7 @@ resources:
                         "us-east-1",
                         "us-east-2"
                       ],
-                      "metrics_polling_interval": 6000
+                      "metrics_polling_interval": 300
                     }
                   ]
                 }
@@ -1295,6 +1302,58 @@ resources:
             integration.auto_scaling: ',aws_app_sync,aws_athena,aws_cognito,aws_connect,aws_direct_connect,aws_fsx,aws_glue,aws_kinesis_analytics,aws_media_convert,aws_media_package_vod,aws_mq,aws_msk,aws_neptune,aws_qldb,aws_route53resolver,aws_states,aws_transit_gateway,aws_waf,aws_wafv2,iot,kinesis_firehose and ses.'
             integration.metrics_polling_interval: '- (Optional) The data polling interval in seconds.'
             linked_account_id: '- (Required) The ID of the linked AWS account in New Relic.'
+            metrics_polling_interval.alb: '- (Optional) AWS ALB. See Integration blocks below for details.'
+            metrics_polling_interval.api_gateway: '- (Optional) AWS API Gateway. See Integration blocks below for details.'
+            metrics_polling_interval.auto_scaling: '- (Optional) AWS Auto Scaling. See Integration blocks below for details.'
+            metrics_polling_interval.aws_app_sync: '- (Optional) AWS AppSync. See Integration blocks below for details.'
+            metrics_polling_interval.aws_athena: '- (Optional) AWS Athena. See Integration blocks below for details.'
+            metrics_polling_interval.aws_cognito: '- (Optional) AWS Cognito. See Integration blocks below for details.'
+            metrics_polling_interval.aws_connect: '- (Optional) AWS Connect. See Integration blocks below for details.'
+            metrics_polling_interval.aws_direct_connect: '- (Optional) AWS Direct Connect. See Integration blocks below for details.'
+            metrics_polling_interval.aws_fsx: '- (Optional) AWS FSx. See Integration blocks below for details.'
+            metrics_polling_interval.aws_glue: '- (Optional) AWS Glue. See Integration blocks below for details.'
+            metrics_polling_interval.aws_kinesis_analytics: '- (Optional) AWS Kinesis Data Analytics. See Integration blocks below for details.'
+            metrics_polling_interval.aws_media_convert: '- (Optional) AWS Media Convert. See Integration blocks below for details.'
+            metrics_polling_interval.aws_media_package_vod: '- (Optional) AWS MediaPackage VOD. See Integration blocks below for details.'
+            metrics_polling_interval.aws_mq: '- (Optional) AWS MQ. See Integration blocks below for details.'
+            metrics_polling_interval.aws_msk: '- (Optional) Amazon Managed Kafka (MSK). See Integration blocks below for details.'
+            metrics_polling_interval.aws_neptune: '- (Optional) AWS Neptune. See Integration blocks below for details.'
+            metrics_polling_interval.aws_qldb: '- (Optional) Amazon QLDB. See Integration blocks below for details.'
+            metrics_polling_interval.aws_route53resolver: '- (Optional) AWS Route53 Resolver. See Integration blocks below for details.'
+            metrics_polling_interval.aws_transit_gateway: '- (Optional) Amazon Transit Gateway. See Integration blocks below for details.'
+            metrics_polling_interval.aws_waf: '- (Optional) AWS WAF. See Integration blocks below for details.'
+            metrics_polling_interval.aws_wafv2: '- (Optional) AWS WAF V2. See Integration blocks below for details.'
+            metrics_polling_interval.billing: '- (Optional) AWS Billing. See Integration blocks below for details.'
+            metrics_polling_interval.cloudfront: '- (Optional) AWS CloudFront. See Integration blocks below for details.'
+            metrics_polling_interval.cloudtrail: '- (Optional) AWS CloudTrail. See Integration blocks below for details.'
+            metrics_polling_interval.doc_db: '- (Optional) AWS DocumentDB. See Integration blocks below for details.'
+            metrics_polling_interval.dynamodb: '- (Optional) Amazon DynamoDB. See Integration blocks below for details.'
+            metrics_polling_interval.ebs: '- (Optional) Amazon EBS. See Integration blocks below for details.'
+            metrics_polling_interval.ec2: '- (Optional) Amazon EC2. See Integration blocks below for details.'
+            metrics_polling_interval.ecs: '- (Optional) Amazon ECS. See Integration blocks below for details.'
+            metrics_polling_interval.efs: '- (Optional) Amazon EFS. See Integration blocks below for details.'
+            metrics_polling_interval.elasticache: '- (Optional) AWS ElastiCache. See Integration blocks below for details.'
+            metrics_polling_interval.elasticbeanstalk: '- (Optional) AWS Elastic Beanstalk. See Integration blocks below for details.'
+            metrics_polling_interval.elasticsearch: '- (Optional) AWS ElasticSearch. See Integration blocks below for details.'
+            metrics_polling_interval.elb: '- (Optional) AWS ELB (Classic). See Integration blocks below for details.'
+            metrics_polling_interval.emr: '- (Optional) AWS EMR. See Integration blocks below for details.'
+            metrics_polling_interval.health: '- (Optional) AWS Health. See Integration blocks below for details.'
+            metrics_polling_interval.iam: '- (Optional) AWS IAM. See Integration blocks below for details.'
+            metrics_polling_interval.iot: '- (Optional) AWS IoT. See Integration blocks below for details.'
+            metrics_polling_interval.kinesis: '- (Optional) AWS Kinesis. See Integration blocks below for details.'
+            metrics_polling_interval.kinesis_firehose: '- (Optional) Amazon Kinesis Data Firehose. See Integration blocks below for details.'
+            metrics_polling_interval.lambda: '- (Optional) AWS Lambda. See Integration blocks below for details.'
+            metrics_polling_interval.rds: '- (Optional) Amazon RDS. See Integration blocks below for details.'
+            metrics_polling_interval.redshift: '- (Optional) Amazon Redshift. See Integration blocks below for details.'
+            metrics_polling_interval.route53: '- (Optional) Amazon Route 53. See Integration blocks below for details.'
+            metrics_polling_interval.s3: '- (Optional) Amazon S3. See Integration blocks below for details.'
+            metrics_polling_interval.ses: '- (Optional) Amazon SES. See Integration blocks below for details.'
+            metrics_polling_interval.sns: '- (Optional) AWS SNS. See Integration blocks below for details.'
+            metrics_polling_interval.sqs: '- (Optional) AWS SQS. See Integration blocks below for details.'
+            metrics_polling_interval.trusted_advisor: '- (Optional) AWS Trusted Advisor. See Integration blocks below for details.'
+            metrics_polling_interval.x_ray: |-
+                - (Optional) AWS X-Ray. See Integration blocks below for details.
+                x
         importStatements: []
     newrelic_cloud_aws_link_account:
         subCategory: ""
@@ -1328,7 +1387,7 @@ resources:
                   "account_id": "The New Relic account ID",
                   "api_management": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1336,7 +1395,7 @@ resources:
                   ],
                   "app_gateway": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1344,7 +1403,7 @@ resources:
                   ],
                   "app_service": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1352,7 +1411,7 @@ resources:
                   ],
                   "containers": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1360,7 +1419,7 @@ resources:
                   ],
                   "cosmos_db": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1376,7 +1435,7 @@ resources:
                   ],
                   "data_factory": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1384,7 +1443,7 @@ resources:
                   ],
                   "event_hub": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1392,7 +1451,7 @@ resources:
                   ],
                   "express_route": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1400,7 +1459,7 @@ resources:
                   ],
                   "firewalls": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1408,7 +1467,7 @@ resources:
                   ],
                   "front_door": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1416,7 +1475,7 @@ resources:
                   ],
                   "functions": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1424,7 +1483,7 @@ resources:
                   ],
                   "key_vault": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1433,7 +1492,7 @@ resources:
                   "linked_account_id": "${newrelic_cloud_azure_link_account.foo.id}",
                   "load_balancer": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1441,7 +1500,7 @@ resources:
                   ],
                   "logic_apps": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1449,7 +1508,7 @@ resources:
                   ],
                   "machine_learning": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1457,7 +1516,7 @@ resources:
                   ],
                   "maria_db": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 3600,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1473,7 +1532,7 @@ resources:
                       "include_tags": [
                         "env:production"
                       ],
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 60,
                       "resource_groups": [
                         "resource_groups"
                       ],
@@ -1484,7 +1543,7 @@ resources:
                   ],
                   "mysql": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 3600,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1492,7 +1551,7 @@ resources:
                   ],
                   "mysql_flexible": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 3600,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1500,7 +1559,7 @@ resources:
                   ],
                   "postgresql": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 3600,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1508,7 +1567,7 @@ resources:
                   ],
                   "postgresql_flexible": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 3600,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1516,7 +1575,7 @@ resources:
                   ],
                   "power_bi_dedicated": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1524,7 +1583,7 @@ resources:
                   ],
                   "redis_cache": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1532,7 +1591,7 @@ resources:
                   ],
                   "service_bus": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1540,7 +1599,7 @@ resources:
                   ],
                   "sql": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1548,7 +1607,7 @@ resources:
                   ],
                   "sql_managed": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1556,7 +1615,7 @@ resources:
                   ],
                   "storage": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 1800,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1564,7 +1623,7 @@ resources:
                   ],
                   "virtual_machine": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1572,7 +1631,7 @@ resources:
                   ],
                   "virtual_networks": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1580,7 +1639,7 @@ resources:
                   ],
                   "vms": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1588,7 +1647,7 @@ resources:
                   ],
                   "vpn_gateway": [
                     {
-                      "metrics_polling_interval": 1200,
+                      "metrics_polling_interval": 300,
                       "resource_groups": [
                         "resource_groups"
                       ]
@@ -1609,47 +1668,47 @@ resources:
                     }
         argumentDocs:
             account_id: '- (Optional) The New Relic account ID to operate on.  This allows the user to override the account_id attribute set on the provider. Defaults to the environment variable NEW_RELIC_ACCOUNT_ID.'
-            api_management: '- (Optional) Azure API Management. See Integration blocks below for details.'
-            app_gateway: '- (Optional) Azure App Gateway. See Integration blocks below for details.'
-            app_service: '- (Optional) Azure App Service. See Integration blocks below for details.'
-            containers: '- (Optional) Azure Containers. See Integration blocks below for details.'
-            cosmos_db: '- (Optional) Azure CosmosDB. See Integration blocks below for details.'
-            cost_management: '- (Optional) Azure Cost Management. See Integration blocks below for details.'
-            data_factory: '- (Optional) Azure Data Factory. See Integration blocks below for details.'
             enabled: '- (Optional) A boolean value, that specifies if the integration needs to be active. Defaults to ''true'' if not specified.'
-            event_hub: '- (Optional) Azure Event Hub. See Integration blocks below for details.'
             exclude_tags: '- (Optional) A list of resource tags associated with the resources that need to be excluded from monitoring.'
-            express_route: '- (Optional) Azure Express Route. See Integration blocks below for details.'
-            firewalls: '- (Optional) Azure Firewalls. See Integration blocks below for details.'
-            front_door: '- (Optional) Azure Front Door. See Integration blocks below for details.'
-            functions: '- (Optional) Azure Functions. See Integration blocks below for details.'
             id: '- The ID of the linked Azure account in New Relic.'
             include_tags: '- (Optional) A list of resource tags associated with the resources that need to be monitored, in a "key:value" format. If this is not specified, all resources will be monitored.'
             integration.metrics_polling_interval: '- (Optional) The data polling interval in seconds.'
             integration.resource_groups: '- (Optional) Specify each Resource group associated with the resources that you want to monitor. Filter values are case-sensitive'
-            key_vault: '- (Optional) Azure Key Vault. See Integration blocks below for details.'
             linked_account_id: '- (Required) The ID of the linked Azure account in New Relic.'
-            load_balancer: '- (Optional) Azure Load Balancer. See Integration blocks below for details.'
-            logic_apps: '- (Optional) Azure Logic Apps. See Integration blocks below for details.'
-            machine_learning: '- (Optional) Azure Machine Learning. See Integration blocks below for details.'
-            maria_db: '- (Optional) Azure MariaDB. See Integration blocks below for details.'
-            monitor: '- (Optional) Azure Monitor. See Integration blocks below for details.'
-            mysql: '- (Optional) Azure MySQL. See Integration blocks below for details.'
-            mysql_flexible: '- (Optional) Azure MySQL Flexible Server. See Integration blocks below for details.'
-            postgresql: '- (Optional) Azure PostgreSQL. See Integration blocks below for details.'
-            postgresql_flexible: '- (Optional) Azure PostgreSQL Flexible Server. See Integration blocks below for details.'
-            power_bi_dedicated: '- (Optional) Azure Power BI Dedicated. See Integration blocks below for details.'
-            redis_cache: '- (Optional) Azure Redis Cache. See Integration blocks below for details.'
+            metrics_polling_interval.api_management: '- (Optional) Azure API Management. See Integration blocks below for details.'
+            metrics_polling_interval.app_gateway: '- (Optional) Azure App Gateway. See Integration blocks below for details.'
+            metrics_polling_interval.app_service: '- (Optional) Azure App Service. See Integration blocks below for details.'
+            metrics_polling_interval.containers: '- (Optional) Azure Containers. See Integration blocks below for details.'
+            metrics_polling_interval.cosmos_db: '- (Optional) Azure CosmosDB. See Integration blocks below for details.'
+            metrics_polling_interval.cost_management: '- (Optional) Azure Cost Management. See Integration blocks below for details.'
+            metrics_polling_interval.data_factory: '- (Optional) Azure Data Factory. See Integration blocks below for details.'
+            metrics_polling_interval.event_hub: '- (Optional) Azure Event Hub. See Integration blocks below for details.'
+            metrics_polling_interval.express_route: '- (Optional) Azure Express Route. See Integration blocks below for details.'
+            metrics_polling_interval.firewalls: '- (Optional) Azure Firewalls. See Integration blocks below for details.'
+            metrics_polling_interval.front_door: '- (Optional) Azure Front Door. See Integration blocks below for details.'
+            metrics_polling_interval.functions: '- (Optional) Azure Functions. See Integration blocks below for details.'
+            metrics_polling_interval.key_vault: '- (Optional) Azure Key Vault. See Integration blocks below for details.'
+            metrics_polling_interval.load_balancer: '- (Optional) Azure Load Balancer. See Integration blocks below for details.'
+            metrics_polling_interval.logic_apps: '- (Optional) Azure Logic Apps. See Integration blocks below for details.'
+            metrics_polling_interval.machine_learning: '- (Optional) Azure Machine Learning. See Integration blocks below for details.'
+            metrics_polling_interval.maria_db: '- (Optional) Azure MariaDB. See Integration blocks below for details.'
+            metrics_polling_interval.monitor: '- (Optional) Azure Monitor. See Integration blocks below for details.'
+            metrics_polling_interval.mysql: '- (Optional) Azure MySQL. See Integration blocks below for details.'
+            metrics_polling_interval.mysql_flexible: '- (Optional) Azure MySQL Flexible Server. See Integration blocks below for details.'
+            metrics_polling_interval.postgresql: '- (Optional) Azure PostgreSQL. See Integration blocks below for details.'
+            metrics_polling_interval.postgresql_flexible: '- (Optional) Azure PostgreSQL Flexible Server. See Integration blocks below for details.'
+            metrics_polling_interval.power_bi_dedicated: '- (Optional) Azure Power BI Dedicated. See Integration blocks below for details.'
+            metrics_polling_interval.redis_cache: '- (Optional) Azure Redis Cache. See Integration blocks below for details.'
+            metrics_polling_interval.service_bus: '- (Optional) Azure Service Bus. See Integration blocks below for details.'
+            metrics_polling_interval.sql: '- (Optional) Azure SQL. See Integration blocks below for details.'
+            metrics_polling_interval.sql_managed: '- (Optional) Azure SQL Managed. See Integration blocks below for details.'
+            metrics_polling_interval.storage: '- (Optional) for Azure Storage. See Integration blocks below for details.'
+            metrics_polling_interval.virtual_machine: '- (Optional) Azure Virtual machine. See Integration blocks below for details.'
+            metrics_polling_interval.virtual_networks: '- (Optional) for Azure Virtual networks. See Integration blocks below for details.'
+            metrics_polling_interval.vms: '- (Optional) Azure VMs. See Integration blocks below for details.'
+            metrics_polling_interval.vpn_gateway: '- (Optional) Azure VPN Gateway. See Integration blocks below for details.'
             resource_types: '- (Optional) A list of Azure resource types that need to be monitored.'
-            service_bus: '- (Optional) Azure Service Bus. See Integration blocks below for details.'
-            sql: '- (Optional) Azure SQL. See Integration blocks below for details.'
-            sql_managed: '- (Optional) Azure SQL Managed. See Integration blocks below for details.'
-            storage: '- (Optional) for Azure Storage. See Integration blocks below for details.'
             tag_keys: '- (Optional) Specify a Tag key associated with the resources that you want to monitor. Filter values are case-sensitive.'
-            virtual_machine: '- (Optional) Azure Virtual machine. See Integration blocks below for details.'
-            virtual_networks: '- (Optional) for Azure Virtual networks. See Integration blocks below for details.'
-            vms: '- (Optional) Azure VMs. See Integration blocks below for details.'
-            vpn_gateway: '- (Optional) Azure VPN Gateway. See Integration blocks below for details.'
         importStatements: []
     newrelic_cloud_azure_link_account:
         subCategory: ""
@@ -1687,132 +1746,132 @@ resources:
                 {
                   "app_engine": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "big_query": [
                     {
                       "fetch_tags": true,
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "big_table": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "composer": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "data_flow": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "data_proc": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "data_store": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "fire_base_database": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "fire_base_hosting": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "fire_base_storage": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "fire_store": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "functions": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "interconnect": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "kubernetes": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "linked_account_id": "${newrelic_cloud_gcp_link_account.foo.id}",
                   "load_balancing": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "mem_cache": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "pub_sub": [
                     {
                       "fetch_tags": true,
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "redis": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "router": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "run": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "spanner": [
                     {
                       "fetch_tags": true,
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "sql": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "storage": [
                     {
                       "fetch_tags": true,
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "virtual_machines": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ],
                   "vpc_access": [
                     {
-                      "metrics_polling_interval": 400
+                      "metrics_polling_interval": 300
                     }
                   ]
                 }
@@ -1826,37 +1885,37 @@ resources:
                     }
         argumentDocs:
             account_id: '- (Optional) The New Relic account ID to operate on.  This allows the user to override the account_id attribute set on the provider. Defaults to the environment variable NEW_RELIC_ACCOUNT_ID.'
-            alloy_db: '- (Optional) Alloy DB integration. See Integration blocks below for details.'
-            app_engine: '- (Optional) App Engine integration. See Integration blocks below for details.'
-            big_query: '- (Optional) Biq Query integration. See Integration blocks below for details.'
-            big_table: '- (Optional) Big Table. See Integration blocks below for details.'
-            composer: '- (Optional) Composer integration. See Integration blocks below for details.'
-            data_flow: '- (Optional) Data Flow integration. See Integration blocks below for details.'
-            data_proc: '- (Optional) Data Proc integration. See Integration blocks below for details.'
-            data_store: '- (Optional) Data Store integration. See Integration blocks below for details.'
             fetch_tags: '- (Optional) Specify if labels and the extended inventory should be collected. May affect total data collection time and contribute to the Cloud provider API rate limit.'
-            fire_base_database: '- (Optional) Fire Base Database integration. See Integration blocks below for details.'
-            fire_base_hosting: '- (Optional) Fire Base Hosting integration. See Integration blocks below for details.'
-            fire_base_storage: '- (Optional) Fire Base Storage integration. See Integration blocks below for details.'
-            fire_store: '- (Optional) Fire Store integration. See Integration blocks below for details.'
-            functions: '- (Optional) Functions integration. See Integration blocks below for details.'
             id: '- The ID of the GCP linked account.'
             integration.metrics_polling_interval: '- (Optional) The data polling interval in seconds.'
             integration.storage: ""
-            interconnect: '- (Optional) Interconnect integration. See Integration blocks below for details.'
-            kubernetes: '- (Optional) Kubernetes integration. See Integration blocks below for details.'
             linked_account_id: '- (Required) The ID of the linked GCP account in New Relic.'
-            load_balancing: '- (Optional) Load Balancing integration. See Integration blocks below for details.'
-            mem_cache: '- (Optional) Mem cache integration. See Integration blocks below for details.'
-            pub_sub: '- (Optional) Pub/Sub integration. See Integration blocks below for details.'
-            redis: '- (Optional) Redis integration. See Integration blocks below for details.'
-            router: '- (Optional) Router integration. See Integration blocks below for details.'
-            run: '- (Optional) Run integration. See Integration blocks below for details.'
-            spanner: '- (Optional) Spanner integration. See Integration blocks below for details.'
-            sql: '- (Optional) SQL integration. See Integration blocks below for details.'
-            storage: '- (Optional) Storage integration. See Integration blocks below for details.'
-            virtual_machines: '- (Optional) Virtual machines integration. See Integration blocks below for details.'
-            vpc_access: '- (Optional) VPC Access integration. See Integration blocks below for details.'
+            metrics_polling_interval.alloy_db: '- (Optional) Alloy DB integration. See Integration blocks below for details.'
+            metrics_polling_interval.app_engine: '- (Optional) App Engine integration. See Integration blocks below for details.'
+            metrics_polling_interval.big_query: '- (Optional) Biq Query integration. See Integration blocks below for details.'
+            metrics_polling_interval.big_table: '- (Optional) Big Table. See Integration blocks below for details.'
+            metrics_polling_interval.composer: '- (Optional) Composer integration. See Integration blocks below for details.'
+            metrics_polling_interval.data_flow: '- (Optional) Data Flow integration. See Integration blocks below for details.'
+            metrics_polling_interval.data_proc: '- (Optional) Data Proc integration. See Integration blocks below for details.'
+            metrics_polling_interval.data_store: '- (Optional) Data Store integration. See Integration blocks below for details.'
+            metrics_polling_interval.fire_base_database: '- (Optional) Fire Base Database integration. See Integration blocks below for details.'
+            metrics_polling_interval.fire_base_hosting: '- (Optional) Fire Base Hosting integration. See Integration blocks below for details.'
+            metrics_polling_interval.fire_base_storage: '- (Optional) Fire Base Storage integration. See Integration blocks below for details.'
+            metrics_polling_interval.fire_store: '- (Optional) Fire Store integration. See Integration blocks below for details.'
+            metrics_polling_interval.functions: '- (Optional) Functions integration. See Integration blocks below for details.'
+            metrics_polling_interval.interconnect: '- (Optional) Interconnect integration. See Integration blocks below for details.'
+            metrics_polling_interval.kubernetes: '- (Optional) Kubernetes integration. See Integration blocks below for details.'
+            metrics_polling_interval.load_balancing: '- (Optional) Load Balancing integration. See Integration blocks below for details.'
+            metrics_polling_interval.mem_cache: '- (Optional) Mem cache integration. See Integration blocks below for details.'
+            metrics_polling_interval.pub_sub: '- (Optional) Pub/Sub integration. See Integration blocks below for details.'
+            metrics_polling_interval.redis: '- (Optional) Redis integration. See Integration blocks below for details.'
+            metrics_polling_interval.router: '- (Optional) Router integration. See Integration blocks below for details.'
+            metrics_polling_interval.run: '- (Optional) Run integration. See Integration blocks below for details.'
+            metrics_polling_interval.spanner: '- (Optional) Spanner integration. See Integration blocks below for details.'
+            metrics_polling_interval.sql: '- (Optional) SQL integration. See Integration blocks below for details.'
+            metrics_polling_interval.storage: '- (Optional) Storage integration. See Integration blocks below for details.'
+            metrics_polling_interval.virtual_machines: '- (Optional) Virtual machines integration. See Integration blocks below for details.'
+            metrics_polling_interval.vpc_access: '- (Optional) VPC Access integration. See Integration blocks below for details.'
         importStatements: []
     newrelic_cloud_gcp_link_account:
         subCategory: ""
@@ -1983,6 +2042,70 @@ resources:
             nrql: '- (Required) Explains how to create metrics from events.'
             rule_id: '- The id, uniquely identifying the rule.'
         importStatements: []
+    newrelic_group:
+        subCategory: ""
+        description: Create and manage groups in New Relic.
+        name: newrelic_group
+        title: newrelic_group'
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "authentication_domain_id": "${data.newrelic_authentication_domain.foo.id}",
+                  "name": "Test Group",
+                  "user_ids": [
+                    "0001112222",
+                    "2221110000"
+                  ]
+                }
+              references:
+                authentication_domain_id: data.newrelic_authentication_domain.foo.id
+            - name: foo
+              manifest: |-
+                {
+                  "authentication_domain_id": "${data.newrelic_authentication_domain.foo.id}",
+                  "name": "Test Group",
+                  "user_ids": [
+                    "${newrelic_user.foo.id}",
+                    "${newrelic_user.bar.id}"
+                  ]
+                }
+              references:
+                authentication_domain_id: data.newrelic_authentication_domain.foo.id
+              dependencies:
+                newrelic_user.bar: |-
+                    {
+                      "authentication_domain_id": "${data.newrelic_authentication_domain.foo.id}",
+                      "email_id": "test_user_two@test.com",
+                      "name": "Test User Two",
+                      "user_type": "BASIC_USER_TIER"
+                    }
+                newrelic_user.foo: |-
+                    {
+                      "authentication_domain_id": "${data.newrelic_authentication_domain.foo.id}",
+                      "email_id": "test_user_one@test.com",
+                      "name": "Test User One",
+                      "user_type": "CORE_USER_TIER"
+                    }
+            - name: foo
+              manifest: |-
+                {
+                  "authentication_domain_id": "${data.newrelic_authentication_domain.foo.id}",
+                  "name": "Test Group",
+                  "user_ids": [
+                    "${data.newrelic_user.foo.id}",
+                    "${data.newrelic_user.bar.id}"
+                  ]
+                }
+              references:
+                authentication_domain_id: data.newrelic_authentication_domain.foo.id
+        argumentDocs:
+            authentication_domain_id: '- (Required) The ID of the authentication domain to which the group to be created would belong.'
+            id: '- The ID of the created group.'
+            name: '- (Required) The name of the group to be created.'
+            user_ids: '- (Optional) A list of IDs of users to be included in the group to be created.'
+        importStatements:
+            - $ terraform import newrelic_group.foo <group_id>
     newrelic_infra_alert_condition:
         subCategory: ""
         description: Create and manage an Infrastructure alert condition for a policy in New Relic.
@@ -2502,6 +2625,7 @@ resources:
                     },
                     {
                       "key": "service",
+                      "label": "Service Name",
                       "value": "PTQK3FM"
                     },
                     {
@@ -2643,17 +2767,23 @@ resources:
               manifest: |-
                 {
                   "account_id": 12345678,
-                  "auth_basic": [
+                  "auth_custom_header": [
                     {
-                      "password": "password",
-                      "user": "username"
+                      "key": "API_KEY",
+                      "value": "test-api-key"
                     }
                   ],
                   "name": "foo",
                   "property": [
                     {
-                      "key": "url",
-                      "value": "https://webhook.mywebhook.com"
+                      "key": "source",
+                      "value": "terraform"
+                    }
+                  ],
+                  "secure_url": [
+                    {
+                      "prefix": "https://webhook.mywebhook.com/",
+                      "secure_suffix": "service_id/123456"
                     }
                   ],
                   "type": "WEBHOOK"
@@ -2815,10 +2945,14 @@ resources:
             auth_basic: '- (Optional) A nested block that describes a basic username and password authentication credentials. Only one auth_basic block is permitted per notification destination definition.  See Nested auth_basic blocks below for details.'
             auth_basic.password: '- (Required) Specifies an authentication password for use with a destination.'
             auth_basic.user: '- (Required) The username of the basic auth.'
+            auth_custom_header: '- (Optional) A nested block that describes a custom header authentication credentials. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.'
+            auth_custom_header.key: '- (Required) The key of the header.'
+            auth_custom_header.value: '- (Required) The secret value of the header.'
             auth_token: '- (Optional) A nested block that describes a token authentication credentials. Only one auth_token block is permitted per notification destination definition.  See Nested auth_token blocks below for details.'
             auth_token.prefix: '- (Required) The prefix of the token auth.'
             auth_token.token: '- (Required) Specifies the token for integrating.'
             email: '- (Required) A list of email addresses.'
+            guid: '- The unique entity identifier of the destination in New Relic.'
             id: '- The ID of the destination.'
             name: '- (Required) The name of the destination.'
             property: '- (Required) A nested block that describes a notification destination property. See Nested property blocks below for details.'
@@ -2833,6 +2967,9 @@ resources:
             property.key: '- (Required) The notification property key.'
             property.label: '- (Optional) The notification property label.'
             property.value: '- (Required) The notification property value.'
+            secure_url: '- (Optional) A nested block that describes a URL that contains sensitive data at the path or parameters. Only one secure_url block is permitted per notification destination definition. See Nested secure_url blocks below for details.'
+            secure_url.prefix: '- (Required) The prefix of the URL.'
+            secure_url.secure_suffix: '- (Required) The suffix of the URL, which contains sensitive data.'
             two_way_integration: '- (Optional) A boolean that represents the two-way integration on/off flag.'
             type: '- (Required) The type of destination.  One of: EMAIL, SERVICE_NOW, WEBHOOK, JIRA, MOBILE_PUSH, EVENT_BRIDGE, PAGERDUTY_ACCOUNT_INTEGRATION or PAGERDUTY_SERVICE_INTEGRATION. The types SLACK and SLACK_COLLABORATION can only be imported, updated and destroyed (cannot be created via terraform).'
             url: '- (Required) The webhook url.'
@@ -3450,6 +3587,7 @@ resources:
             description: '- (Optional) Brief text describing the dashboard.'
             filter_current_dashboard: ': (Optional) Use this item to filter the current dashboard.'
             guid: '- The unique entity identifier of the dashboard in New Relic.'
+            ignore_time_range: '- (Optional) An argument with a boolean value that is supported only by variables of type nrql - when true, the time range specified in the query will override the time picker on dashboards and other pages.'
             limit: '- (Required) Visualization limit for the widget.'
             linked_entity_guids: ': (Optional) Related entity GUIDs. Currently only supports Dashboard entity GUIDs.'
             name: '- (Required) The title of the dashboard.'
@@ -3488,6 +3626,7 @@ resources:
             variable.item: '- (Optional) List of possible values for variables of type enum. See Nested item blocks below for details.'
             variable.name: '- (Required) The variable identifier.'
             variable.nrql_query: '- (Optional) Configuration for variables of type nrql. See Nested nrql_query blocks for details.'
+            variable.options: '- (Optional) Specifies additional options to be added to dashboard variables. Supports the following nested attribute(s) -'
             variable.replacement_strategy: '- (Optional) Indicates the strategy to apply when replacing a variable in a NRQL query. One of default, identifier, number or string.'
             variable.title: '- (Optional) Human-friendly display string for this variable.'
             variable.type: '- (Required) Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string'
@@ -3915,14 +4054,16 @@ resources:
         name: newrelic_synthetics_broken_links_monitor
         title: newrelic_synthetics_broken_links_monitor
         examples:
-            - name: monitor
+            - name: foo
               manifest: |-
                 {
                   "locations_public": [
                     "AP_SOUTH_1"
                   ],
-                  "name": "broken-links-monitor",
+                  "name": "Sample Broken Links Monitor",
                   "period": "EVERY_6_HOURS",
+                  "runtime_type": "NODE_API",
+                  "runtime_type_version": "16.10",
                   "status": "ENABLED",
                   "tag": [
                     {
@@ -3934,13 +4075,13 @@ resources:
                   ],
                   "uri": "https://www.one.example.com"
                 }
-            - name: monitor
+            - name: foo
               manifest: |-
                 {
                   "locations_private": [
-                    "${newrelic_synthetics_private_location.location.id}"
+                    "${newrelic_synthetics_private_location.foo.id}"
                   ],
-                  "name": "broken-links-monitor",
+                  "name": "Sample Broken Links Monitor",
                   "period": "EVERY_6_HOURS",
                   "status": "ENABLED",
                   "tag": [
@@ -3954,10 +4095,10 @@ resources:
                   "uri": "https://www.one.example.com"
                 }
               dependencies:
-                newrelic_synthetics_private_location.location: |-
+                newrelic_synthetics_private_location.foo: |-
                     {
-                      "description": "Test Description",
-                      "name": "private_location",
+                      "description": "Sample Private Location Description",
+                      "name": "Sample Private Location",
                       "verified_script_execution": false
                     }
         argumentDocs:
@@ -3968,7 +4109,9 @@ resources:
             name: '- (Required) The name for the monitor.'
             period: '- (Required) The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.'
             period_in_minutes: '- The interval in minutes at which Synthetic monitor should run.'
-            status: '- (Required) The run state of the monitor. (i.e. ENABLED, DISABLED, MUTED).'
+            runtime_type: '- (Optional) The runtime that the monitor will use to run jobs.'
+            runtime_type_version: '- (Optional) The specific version of the runtime type selected.'
+            status: '- (Required) The run state of the monitor. (ENABLED or DISABLED).'
             tag: '- (Optional) The tags that will be associated with the monitor. See Nested tag blocks below for details'
             tag.key: '- (Required) Name of the tag key.'
             tag.values: '- (Required) Values associated with the tag key.'
@@ -3980,7 +4123,7 @@ resources:
         name: newrelic_synthetics_cert_check_monitor
         title: newrelic_synthetics_cert_check_monitor
         examples:
-            - name: cert-check-monitor
+            - name: foo
               manifest: |-
                 {
                   "certificate_expiration": "10",
@@ -3988,8 +4131,10 @@ resources:
                   "locations_public": [
                     "AP_SOUTH_1"
                   ],
-                  "name": "cert-check-monitor",
+                  "name": "Sample Cert Check Monitor",
                   "period": "EVERY_6_HOURS",
+                  "runtime_type": "NODE_API",
+                  "runtime_type_version": "16.10",
                   "status": "ENABLED",
                   "tag": [
                     {
@@ -4000,14 +4145,15 @@ resources:
                     }
                   ]
                 }
-            - name: monitor
+            - name: foo
               manifest: |-
                 {
-                  "domain": "https://www.one.example.com",
+                  "certificate_expiration": "10",
+                  "domain": "www.one.example.com",
                   "locations_private": [
-                    "${newrelic_synthetics_private_location.location.id}"
+                    "${newrelic_synthetics_private_location.foo.id}"
                   ],
-                  "name": "cert_check_monitor",
+                  "name": "Sample Cert Check Monitor",
                   "period": "EVERY_6_HOURS",
                   "status": "ENABLED",
                   "tag": [
@@ -4020,10 +4166,10 @@ resources:
                   ]
                 }
               dependencies:
-                newrelic_synthetics_private_location.location: |-
+                newrelic_synthetics_private_location.foo: |-
                     {
-                      "description": "Test Description",
-                      "name": "private_location",
+                      "description": "Sample Private Location Description",
+                      "name": "Sample Private Location",
                       "verified_script_execution": false
                     }
         argumentDocs:
@@ -4036,7 +4182,9 @@ resources:
             name: '- (Required) The name for the monitor.'
             period: '- (Required) The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.'
             period_in_minutes: '- The interval in minutes at which Synthetic monitor should run.'
-            status: '- (Required) The run state of the monitor. (i.e. ENABLED, DISABLED, MUTED).'
+            runtime_type: '- (Optional) The runtime that the monitor will use to run jobs.'
+            runtime_type_version: '- (Optional) The specific version of the runtime type selected.'
+            status: '- (Required) The run state of the monitor. (ENABLED or DISABLED).'
             tag: '- (Optional) The tags that will be associated with the monitor. See Nested tag blocks below for details'
             tag.key: '- (Required) Name of the tag key.'
             tag.values: '- (Required) Values associated with the tag key.'
@@ -4221,7 +4369,7 @@ resources:
             runtime_type: '- (Optional) The runtime type that the monitor will run.'
             runtime_type_version: '- (Optional) The runtime type that the monitor will run.'
             script_language: '- (Optional) The programing language that should execute the script.'
-            status: '- (Required) The run state of the monitor. (i.e. ENABLED, DISABLED, MUTED).'
+            status: '- (Required) The run state of the monitor. (ENABLED or DISABLED).'
             tag: '- (Optional) The tags that will be associated with the monitor. See Nested tag blocks below for details.'
             tag.key: '- (Required) Name of the tag key.'
             tag.values: '- (Required) Values associated with the tag key.'
@@ -4531,7 +4679,7 @@ resources:
             runtime_type_version: '- (Optional) The specific version of the runtime type selected.'
             script: '- (Required) The script that the monitor runs.'
             script_language: '- (Optional) The programing language that should execute the script.'
-            status: '- (Required) The run state of the monitor. (i.e. ENABLED, DISABLED, MUTED).'
+            status: '- (Required) The run state of the monitor. (ENABLED or DISABLED).'
             tag: '- (Optional) The tags that will be associated with the monitor. See Nested tag blocks below for details.'
             tag.key: '- (Required) Name of the tag key.'
             tag.values: '- (Required) Values associated with the tag key.'
@@ -4563,7 +4711,7 @@ resources:
         name: newrelic_synthetics_step_monitor
         title: newrelic_synthetics_step_monitor
         examples:
-            - name: monitor
+            - name: foo
               manifest: |-
                 {
                   "enable_screenshot_on_failure_and_script": true,
@@ -4571,8 +4719,10 @@ resources:
                     "US_EAST_1",
                     "US_EAST_2"
                   ],
-                  "name": "step_monitor",
+                  "name": "Sample Step Monitor",
                   "period": "EVERY_6_HOURS",
+                  "runtime_type": "CHROME_BROWSER",
+                  "runtime_type_version": "100",
                   "status": "ENABLED",
                   "steps": [
                     {
@@ -4592,16 +4742,16 @@ resources:
                     }
                   ]
                 }
-            - name: bar
+            - name: foo
               manifest: |-
                 {
                   "location_private": [
                     {
-                      "guid": "${newrelic_synthetics_private_location.location.id}",
+                      "guid": "${newrelic_synthetics_private_location.foo.id}",
                       "vse_password": "secret"
                     }
                   ],
-                  "name": "step_monitor",
+                  "name": "Sample Step Monitor",
                   "period": "EVERY_6_HOURS",
                   "status": "ENABLED",
                   "steps": [
@@ -4620,16 +4770,15 @@ resources:
                         "some_value"
                       ]
                     }
-                  ],
-                  "uri": "https://www.one.example.com"
+                  ]
                 }
               references:
-                location_private.guid: newrelic_synthetics_private_location.location.id
+                location_private.guid: newrelic_synthetics_private_location.foo.id
               dependencies:
-                newrelic_synthetics_private_location.location: |-
+                newrelic_synthetics_private_location.foo: |-
                     {
-                      "description": "Test Description",
-                      "name": "private-location",
+                      "description": "Sample Private Location Description",
+                      "name": "Sample Private Location",
                       "verified_script_execution": true
                     }
         argumentDocs:
@@ -4642,7 +4791,9 @@ resources:
             name: '- (Required) The name for the monitor.'
             period: '- (Required) The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.'
             period_in_minutes: '- The interval in minutes at which Synthetic monitor should run.'
-            status: '- (Required) The run state of the monitor. (i.e. ENABLED, DISABLED, MUTED).'
+            runtime_type: '- (Optional) The runtime that the monitor will use to run jobs.'
+            runtime_type_version: '- (Optional) The specific version of the runtime type selected.'
+            status: '- (Required) The run state of the monitor. (ENABLED or DISABLED).'
             steps: '- (Required) The steps that make up the script the monitor will run. See Nested steps blocks below for details.'
             steps.ordinal: '- (Required) The position of the step within the script ranging from 0-100.'
             steps.type: '- (Required) Name of the tag key. Valid values are ASSERT_ELEMENT, ASSERT_MODAL, ASSERT_TEXT, ASSERT_TITLE, CLICK_ELEMENT, DISMISS_MODAL, DOUBLE_CLICK_ELEMENT, HOVER_ELEMENT, NAVIGATE, SECURE_TEXT_ENTRY, SELECT_ELEMENT, TEXT_ENTRY.'
@@ -4650,8 +4801,31 @@ resources:
             tag: '- (Optional) The tags that will be associated with the monitor. See Nested tag blocks below for details.'
             tag.key: '- (Required) Name of the tag key.'
             tag.values: '- (Required) Values associated with the tag key.'
-            uri: '- (Required) The uri the monitor runs against.'
         importStatements: []
+    newrelic_user:
+        subCategory: ""
+        description: Create and manage users in New Relic.
+        name: newrelic_user
+        title: newrelic_user'
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "authentication_domain_id": "${data.newrelic_authentication_domain.foo.id}",
+                  "email_id": "test_user@test.com",
+                  "name": "Test New User",
+                  "user_type": "CORE_USER_TIER"
+                }
+              references:
+                authentication_domain_id: data.newrelic_authentication_domain.foo.id
+        argumentDocs:
+            authentication_domain_id: '- (Required) The ID of the authentication domain to which the user to be created would belong.'
+            email_id: '- (Required) The email ID of the user to be created.'
+            id: '- The ID of the created user.'
+            name: '- (Required) The name of the user to be created.'
+            user_type: '- (Optional) The tier to which the user to be created would belong. Accepted values for this argument are BASIC_USER_TIER, CORE_USER_TIER, or FULL_USER_TIER. If not specified in the configuration, the argument would default to BASIC_USER_TIER.'
+        importStatements:
+            - $ terraform import newrelic_user.foo 1999999999
     newrelic_workflow:
         subCategory: ""
         description: Create and manage a workflow in New Relic.
@@ -5020,7 +5194,7 @@ resources:
             description: '- (Optional) Relevant information about the workload.'
             entity_guids: '- (Optional) A list of entity GUIDs manually assigned to this workload. At least one of either entity_guids or entity_search_query is required.'
             entity_search_query: '- (Optional) A list of search queries that define a dynamic workload. At least one of either entity_guids or entity_search_query is required. See Nested entity_search_query blocks below for details.'
-            entity_search_query.query: '- (Required) The query.'
+            entity_search_query.query: '- (Required) A valid entity search query; empty, and null values are considered invalid.'
             guid: '- The unique entity identifier of the workload in New Relic.'
             name: '- (Required) The workload''s name.'
             nrql_query.query: '- The entity search query that is used to perform the search of a group of entities.'

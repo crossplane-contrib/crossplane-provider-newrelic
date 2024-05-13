@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2024 Upbound Inc.
 */
@@ -307,6 +303,28 @@ type NullValuesSeriesOverridesParameters struct {
 	// Series name
 	// +kubebuilder:validation:Optional
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
+}
+
+type OptionsInitParameters struct {
+
+	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
+	// Only applies to variables of type NRQL. With this turned on, the time range for the NRQL query will override the time picker on dashboards and other pages. Turn this off to use the time picker as normal.
+	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
+}
+
+type OptionsObservation struct {
+
+	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
+	// Only applies to variables of type NRQL. With this turned on, the time range for the NRQL query will override the time picker on dashboards and other pages. Turn this off to use the time picker as normal.
+	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
+}
+
+type OptionsParameters struct {
+
+	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
+	// Only applies to variables of type NRQL. With this turned on, the time range for the NRQL query will override the time picker on dashboards and other pages. Turn this off to use the time picker as normal.
+	// +kubebuilder:validation:Optional
+	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 }
 
 type PageInitParameters struct {
@@ -651,6 +669,10 @@ type VariableInitParameters struct {
 	// Configuration for variables of type NRQL.
 	NrqlQuery []VariableNrqlQueryInitParameters `json:"nrqlQuery,omitempty" tf:"nrql_query,omitempty"`
 
+	// Specifies additional options to be added to dashboard variables. Supports the following nested attribute(s) -
+	// Options applied to the variable.
+	Options []OptionsInitParameters `json:"options,omitempty" tf:"options,omitempty"`
+
 	// Indicates the strategy to apply when replacing a variable in a NRQL query. One of default, identifier, number or string.
 	// Indicates the strategy to apply when replacing a variable in a NRQL query.
 	ReplacementStrategy *string `json:"replacementStrategy,omitempty" tf:"replacement_strategy,omitempty"`
@@ -718,6 +740,10 @@ type VariableObservation struct {
 	// Configuration for variables of type NRQL.
 	NrqlQuery []VariableNrqlQueryObservation `json:"nrqlQuery,omitempty" tf:"nrql_query,omitempty"`
 
+	// Specifies additional options to be added to dashboard variables. Supports the following nested attribute(s) -
+	// Options applied to the variable.
+	Options []OptionsObservation `json:"options,omitempty" tf:"options,omitempty"`
+
 	// Indicates the strategy to apply when replacing a variable in a NRQL query. One of default, identifier, number or string.
 	// Indicates the strategy to apply when replacing a variable in a NRQL query.
 	ReplacementStrategy *string `json:"replacementStrategy,omitempty" tf:"replacement_strategy,omitempty"`
@@ -757,6 +783,11 @@ type VariableParameters struct {
 	// Configuration for variables of type NRQL.
 	// +kubebuilder:validation:Optional
 	NrqlQuery []VariableNrqlQueryParameters `json:"nrqlQuery,omitempty" tf:"nrql_query,omitempty"`
+
+	// Specifies additional options to be added to dashboard variables. Supports the following nested attribute(s) -
+	// Options applied to the variable.
+	// +kubebuilder:validation:Optional
+	Options []OptionsParameters `json:"options,omitempty" tf:"options,omitempty"`
 
 	// Indicates the strategy to apply when replacing a variable in a NRQL query. One of default, identifier, number or string.
 	// Indicates the strategy to apply when replacing a variable in a NRQL query.
@@ -5963,13 +5994,14 @@ type DashboardStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Dashboard is the Schema for the Dashboards API. Create and manage dashboards in New Relic One.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,newrelic}
 type Dashboard struct {
 	metav1.TypeMeta   `json:",inline"`

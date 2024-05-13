@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2024 Upbound Inc.
 */
@@ -40,6 +36,29 @@ type AuthBasicParameters struct {
 	User *string `json:"user" tf:"user,omitempty"`
 }
 
+type AuthCustomHeaderInitParameters struct {
+
+	// The key of the header.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+}
+
+type AuthCustomHeaderObservation struct {
+
+	// The key of the header.
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+}
+
+type AuthCustomHeaderParameters struct {
+
+	// The key of the header.
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key" tf:"key,omitempty"`
+
+	// The secret value of the header.
+	// +kubebuilder:validation:Required
+	ValueSecretRef v1.SecretKeySelector `json:"valueSecretRef" tf:"-"`
+}
+
 type AuthTokenInitParameters struct {
 
 	// The prefix of the token auth.
@@ -76,6 +95,10 @@ type DestinationInitParameters struct {
 	// Basic username and password authentication credentials.
 	AuthBasic []AuthBasicInitParameters `json:"authBasic,omitempty" tf:"auth_basic,omitempty"`
 
+	// A nested block that describes a custom header authentication credentials. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
+	// Custom header based authentication
+	AuthCustomHeader []AuthCustomHeaderInitParameters `json:"authCustomHeader,omitempty" tf:"auth_custom_header,omitempty"`
+
 	// A nested block that describes a token authentication credentials. Only one auth_token block is permitted per notification destination definition.  See Nested auth_token blocks below for details.
 	// Token authentication credentials.
 	AuthToken []AuthTokenInitParameters `json:"authToken,omitempty" tf:"auth_token,omitempty"`
@@ -87,6 +110,10 @@ type DestinationInitParameters struct {
 	// A nested block that describes a notification destination property. See Nested property blocks below for details.
 	// Notification destination property type.
 	Property []DestinationPropertyInitParameters `json:"property,omitempty" tf:"property,omitempty"`
+
+	// A nested block that describes a URL that contains sensitive data at the path or parameters. Only one secure_url block is permitted per notification destination definition. See Nested secure_url blocks below for details.
+	// URL in secure format
+	SecureURL []SecureURLInitParameters `json:"secureUrl,omitempty" tf:"secure_url,omitempty"`
 
 	// The type of destination.  One of: EMAIL, SERVICE_NOW, WEBHOOK, JIRA, MOBILE_PUSH, EVENT_BRIDGE, PAGERDUTY_ACCOUNT_INTEGRATION or PAGERDUTY_SERVICE_INTEGRATION.
 	// (Required) The type of the destination. One of: (WEBHOOK, EMAIL, SERVICE_NOW, PAGERDUTY_ACCOUNT_INTEGRATION, PAGERDUTY_SERVICE_INTEGRATION, JIRA, SLACK, SLACK_COLLABORATION, SLACK_LEGACY, MOBILE_PUSH, EVENT_BRIDGE).
@@ -106,9 +133,17 @@ type DestinationObservation struct {
 	// Basic username and password authentication credentials.
 	AuthBasic []AuthBasicObservation `json:"authBasic,omitempty" tf:"auth_basic,omitempty"`
 
+	// A nested block that describes a custom header authentication credentials. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
+	// Custom header based authentication
+	AuthCustomHeader []AuthCustomHeaderObservation `json:"authCustomHeader,omitempty" tf:"auth_custom_header,omitempty"`
+
 	// A nested block that describes a token authentication credentials. Only one auth_token block is permitted per notification destination definition.  See Nested auth_token blocks below for details.
 	// Token authentication credentials.
 	AuthToken []AuthTokenObservation `json:"authToken,omitempty" tf:"auth_token,omitempty"`
+
+	// The unique entity identifier of the destination in New Relic.
+	// Destination entity GUID
+	GUID *string `json:"guid,omitempty" tf:"guid,omitempty"`
 
 	// The ID of the destination.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -123,6 +158,10 @@ type DestinationObservation struct {
 	// A nested block that describes a notification destination property. See Nested property blocks below for details.
 	// Notification destination property type.
 	Property []DestinationPropertyObservation `json:"property,omitempty" tf:"property,omitempty"`
+
+	// A nested block that describes a URL that contains sensitive data at the path or parameters. Only one secure_url block is permitted per notification destination definition. See Nested secure_url blocks below for details.
+	// URL in secure format
+	SecureURL []SecureURLObservation `json:"secureUrl,omitempty" tf:"secure_url,omitempty"`
 
 	// The status of the destination.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
@@ -148,6 +187,11 @@ type DestinationParameters struct {
 	// +kubebuilder:validation:Optional
 	AuthBasic []AuthBasicParameters `json:"authBasic,omitempty" tf:"auth_basic,omitempty"`
 
+	// A nested block that describes a custom header authentication credentials. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
+	// Custom header based authentication
+	// +kubebuilder:validation:Optional
+	AuthCustomHeader []AuthCustomHeaderParameters `json:"authCustomHeader,omitempty" tf:"auth_custom_header,omitempty"`
+
 	// A nested block that describes a token authentication credentials. Only one auth_token block is permitted per notification destination definition.  See Nested auth_token blocks below for details.
 	// Token authentication credentials.
 	// +kubebuilder:validation:Optional
@@ -162,6 +206,11 @@ type DestinationParameters struct {
 	// Notification destination property type.
 	// +kubebuilder:validation:Optional
 	Property []DestinationPropertyParameters `json:"property,omitempty" tf:"property,omitempty"`
+
+	// A nested block that describes a URL that contains sensitive data at the path or parameters. Only one secure_url block is permitted per notification destination definition. See Nested secure_url blocks below for details.
+	// URL in secure format
+	// +kubebuilder:validation:Optional
+	SecureURL []SecureURLParameters `json:"secureUrl,omitempty" tf:"secure_url,omitempty"`
 
 	// The type of destination.  One of: EMAIL, SERVICE_NOW, WEBHOOK, JIRA, MOBILE_PUSH, EVENT_BRIDGE, PAGERDUTY_ACCOUNT_INTEGRATION or PAGERDUTY_SERVICE_INTEGRATION.
 	// (Required) The type of the destination. One of: (WEBHOOK, EMAIL, SERVICE_NOW, PAGERDUTY_ACCOUNT_INTEGRATION, PAGERDUTY_SERVICE_INTEGRATION, JIRA, SLACK, SLACK_COLLABORATION, SLACK_LEGACY, MOBILE_PUSH, EVENT_BRIDGE).
@@ -230,6 +279,29 @@ type DestinationPropertyParameters struct {
 	Value *string `json:"value" tf:"value,omitempty"`
 }
 
+type SecureURLInitParameters struct {
+
+	// The prefix of the URL.
+	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
+}
+
+type SecureURLObservation struct {
+
+	// The prefix of the URL.
+	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
+}
+
+type SecureURLParameters struct {
+
+	// The prefix of the URL.
+	// +kubebuilder:validation:Optional
+	Prefix *string `json:"prefix" tf:"prefix,omitempty"`
+
+	// The suffix of the URL, which contains sensitive data.
+	// +kubebuilder:validation:Required
+	SecureSuffixSecretRef v1.SecretKeySelector `json:"secureSuffixSecretRef" tf:"-"`
+}
+
 // DestinationSpec defines the desired state of Destination
 type DestinationSpec struct {
 	v1.ResourceSpec `json:",inline"`
@@ -254,13 +326,14 @@ type DestinationStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Destination is the Schema for the Destinations API. Create and manage a notification destination for notifications in New Relic.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,newrelic}
 type Destination struct {
 	metav1.TypeMeta   `json:",inline"`
