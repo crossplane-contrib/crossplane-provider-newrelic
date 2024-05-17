@@ -53,6 +53,7 @@ KIND_VERSION = v0.22.0
 UP_VERSION = v0.28.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.11.1
+CROSSPLANE_VERSION = 1.14.6
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -241,3 +242,7 @@ crossplane.help:
 help-special: crossplane.help
 
 .PHONY: crossplane.help help-special
+
+# TODO(negz): Update CI to use these targets.
+# vendor: modules.download
+# vendor.check: modules.check
