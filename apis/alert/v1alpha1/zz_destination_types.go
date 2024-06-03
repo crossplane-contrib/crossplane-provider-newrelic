@@ -15,6 +15,9 @@ import (
 
 type AuthBasicInitParameters struct {
 
+	// Specifies an authentication password for use with a destination.
+	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
+
 	// The username of the basic auth.
 	User *string `json:"user,omitempty" tf:"user,omitempty"`
 }
@@ -28,7 +31,7 @@ type AuthBasicObservation struct {
 type AuthBasicParameters struct {
 
 	// Specifies an authentication password for use with a destination.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// The username of the basic auth.
@@ -40,6 +43,9 @@ type AuthCustomHeaderInitParameters struct {
 
 	// The key of the header.
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// The secret value of the header.
+	ValueSecretRef v1.SecretKeySelector `json:"valueSecretRef" tf:"-"`
 }
 
 type AuthCustomHeaderObservation struct {
@@ -55,7 +61,7 @@ type AuthCustomHeaderParameters struct {
 	Key *string `json:"key" tf:"key,omitempty"`
 
 	// The secret value of the header.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	ValueSecretRef v1.SecretKeySelector `json:"valueSecretRef" tf:"-"`
 }
 
@@ -63,6 +69,9 @@ type AuthTokenInitParameters struct {
 
 	// The prefix of the token auth.
 	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
+
+	// Specifies the token for integrating.
+	TokenSecretRef v1.SecretKeySelector `json:"tokenSecretRef" tf:"-"`
 }
 
 type AuthTokenObservation struct {
@@ -78,7 +87,7 @@ type AuthTokenParameters struct {
 	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
 
 	// Specifies the token for integrating.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	TokenSecretRef v1.SecretKeySelector `json:"tokenSecretRef" tf:"-"`
 }
 
@@ -283,6 +292,9 @@ type SecureURLInitParameters struct {
 
 	// The prefix of the URL.
 	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
+
+	// The suffix of the URL, which contains sensitive data.
+	SecureSuffixSecretRef v1.SecretKeySelector `json:"secureSuffixSecretRef" tf:"-"`
 }
 
 type SecureURLObservation struct {
@@ -298,7 +310,7 @@ type SecureURLParameters struct {
 	Prefix *string `json:"prefix" tf:"prefix,omitempty"`
 
 	// The suffix of the URL, which contains sensitive data.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	SecureSuffixSecretRef v1.SecretKeySelector `json:"secureSuffixSecretRef" tf:"-"`
 }
 

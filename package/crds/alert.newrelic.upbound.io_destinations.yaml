@@ -108,6 +108,180 @@ spec:
                         user:
                           description: The username of the basic auth.
                           type: string
+                      type: object
+                    type: array
+                  authCustomHeader:
+                    description: |-
+                      A nested block that describes a custom header authentication credentials. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
+                      Custom header based authentication
+                    items:
+                      properties:
+                        key:
+                          description: The key of the header.
+                          type: string
+                        valueSecretRef:
+                          description: The secret value of the header.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                      type: object
+                    type: array
+                  authToken:
+                    description: |-
+                      A nested block that describes a token authentication credentials. Only one auth_token block is permitted per notification destination definition.  See Nested auth_token blocks below for details.
+                      Token authentication credentials.
+                    items:
+                      properties:
+                        prefix:
+                          description: The prefix of the token auth.
+                          type: string
+                        tokenSecretRef:
+                          description: Specifies the token for integrating.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                      type: object
+                    type: array
+                  name:
+                    description: |-
+                      The name of the destination.
+                      (Required) The name of the destination.
+                    type: string
+                  property:
+                    description: |-
+                      A nested block that describes a notification destination property. See Nested property blocks below for details.
+                      Notification destination property type.
+                    items:
+                      properties:
+                        displayValue:
+                          description: |-
+                            The notification property display value.
+                            Notification property display key.
+                          type: string
+                        key:
+                          description: |-
+                            The notification property key.
+                            Notification property key.
+                          type: string
+                        label:
+                          description: |-
+                            The notification property label.
+                            Notification property label.
+                          type: string
+                        value:
+                          description: |-
+                            The notification property value.
+                            Notification property value.
+                          type: string
+                      type: object
+                    type: array
+                  secureUrl:
+                    description: |-
+                      A nested block that describes a URL that contains sensitive data at the path or parameters. Only one secure_url block is permitted per notification destination definition. See Nested secure_url blocks below for details.
+                      URL in secure format
+                    items:
+                      properties:
+                        prefix:
+                          description: The prefix of the URL.
+                          type: string
+                        secureSuffixSecretRef:
+                          description: The suffix of the URL, which contains sensitive
+                            data.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                      type: object
+                    type: array
+                  type:
+                    description: |-
+                      The type of destination.  One of: EMAIL, SERVICE_NOW, WEBHOOK, JIRA, MOBILE_PUSH, EVENT_BRIDGE, PAGERDUTY_ACCOUNT_INTEGRATION or PAGERDUTY_SERVICE_INTEGRATION.
+                      (Required) The type of the destination. One of: (WEBHOOK, EMAIL, SERVICE_NOW, PAGERDUTY_ACCOUNT_INTEGRATION, PAGERDUTY_SERVICE_INTEGRATION, JIRA, SLACK, SLACK_COLLABORATION, SLACK_LEGACY, MOBILE_PUSH, EVENT_BRIDGE).
+                    type: string
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  accountId:
+                    description: |-
+                      Determines the New Relic account where the notification destination will be created. Defaults to the account associated with the API key used.
+                      The account ID under which to put the destination.
+                    type: number
+                  active:
+                    description: Indicates whether the destination is active.
+                    type: boolean
+                  authBasic:
+                    description: |-
+                      A nested block that describes a basic username and password authentication credentials. Only one auth_basic block is permitted per notification destination definition.  See Nested auth_basic blocks below for details.
+                      Basic username and password authentication credentials.
+                    items:
+                      properties:
+                        passwordSecretRef:
+                          description: Specifies an authentication password for use
+                            with a destination.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                        user:
+                          description: The username of the basic auth.
+                          type: string
                       required:
                       - passwordSecretRef
                       type: object
@@ -234,110 +408,6 @@ spec:
                           type: object
                       required:
                       - secureSuffixSecretRef
-                      type: object
-                    type: array
-                  type:
-                    description: |-
-                      The type of destination.  One of: EMAIL, SERVICE_NOW, WEBHOOK, JIRA, MOBILE_PUSH, EVENT_BRIDGE, PAGERDUTY_ACCOUNT_INTEGRATION or PAGERDUTY_SERVICE_INTEGRATION.
-                      (Required) The type of the destination. One of: (WEBHOOK, EMAIL, SERVICE_NOW, PAGERDUTY_ACCOUNT_INTEGRATION, PAGERDUTY_SERVICE_INTEGRATION, JIRA, SLACK, SLACK_COLLABORATION, SLACK_LEGACY, MOBILE_PUSH, EVENT_BRIDGE).
-                    type: string
-                type: object
-              initProvider:
-                description: |-
-                  THIS IS A BETA FIELD. It will be honored
-                  unless the Management Policies feature flag is disabled.
-                  InitProvider holds the same fields as ForProvider, with the exception
-                  of Identifier and other resource reference fields. The fields that are
-                  in InitProvider are merged into ForProvider when the resource is created.
-                  The same fields are also added to the terraform ignore_changes hook, to
-                  avoid updating them after creation. This is useful for fields that are
-                  required on creation, but we do not desire to update them after creation,
-                  for example because of an external controller is managing them, like an
-                  autoscaler.
-                properties:
-                  accountId:
-                    description: |-
-                      Determines the New Relic account where the notification destination will be created. Defaults to the account associated with the API key used.
-                      The account ID under which to put the destination.
-                    type: number
-                  active:
-                    description: Indicates whether the destination is active.
-                    type: boolean
-                  authBasic:
-                    description: |-
-                      A nested block that describes a basic username and password authentication credentials. Only one auth_basic block is permitted per notification destination definition.  See Nested auth_basic blocks below for details.
-                      Basic username and password authentication credentials.
-                    items:
-                      properties:
-                        user:
-                          description: The username of the basic auth.
-                          type: string
-                      type: object
-                    type: array
-                  authCustomHeader:
-                    description: |-
-                      A nested block that describes a custom header authentication credentials. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
-                      Custom header based authentication
-                    items:
-                      properties:
-                        key:
-                          description: The key of the header.
-                          type: string
-                      type: object
-                    type: array
-                  authToken:
-                    description: |-
-                      A nested block that describes a token authentication credentials. Only one auth_token block is permitted per notification destination definition.  See Nested auth_token blocks below for details.
-                      Token authentication credentials.
-                    items:
-                      properties:
-                        prefix:
-                          description: The prefix of the token auth.
-                          type: string
-                      type: object
-                    type: array
-                  name:
-                    description: |-
-                      The name of the destination.
-                      (Required) The name of the destination.
-                    type: string
-                  property:
-                    description: |-
-                      A nested block that describes a notification destination property. See Nested property blocks below for details.
-                      Notification destination property type.
-                    items:
-                      properties:
-                        displayValue:
-                          description: |-
-                            The notification property display value.
-                            Notification property display key.
-                          type: string
-                        key:
-                          description: |-
-                            The notification property key.
-                            Notification property key.
-                          type: string
-                        label:
-                          description: |-
-                            The notification property label.
-                            Notification property label.
-                          type: string
-                        value:
-                          description: |-
-                            The notification property value.
-                            Notification property value.
-                          type: string
-                      type: object
-                    type: array
-                  secureUrl:
-                    description: |-
-                      A nested block that describes a URL that contains sensitive data at the path or parameters. Only one secure_url block is permitted per notification destination definition. See Nested secure_url blocks below for details.
-                      URL in secure format
-                    items:
-                      properties:
-                        prefix:
-                          description: The prefix of the URL.
-                          type: string
                       type: object
                     type: array
                   type:

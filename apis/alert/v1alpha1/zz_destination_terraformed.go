@@ -21,7 +21,7 @@ func (mg *Destination) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this Destination
 func (tr *Destination) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"auth_basic[*].password": "spec.forProvider.authBasic[*].passwordSecretRef", "auth_custom_header[*].value": "spec.forProvider.authCustomHeader[*].valueSecretRef", "auth_token[*].token": "spec.forProvider.authToken[*].tokenSecretRef", "secure_url[*].secure_suffix": "spec.forProvider.secureUrl[*].secureSuffixSecretRef"}
+	return map[string]string{"auth_basic[*].password": "authBasic[*].passwordSecretRef", "auth_custom_header[*].value": "authCustomHeader[*].valueSecretRef", "auth_token[*].token": "authToken[*].tokenSecretRef", "secure_url[*].secure_suffix": "secureUrl[*].secureSuffixSecretRef"}
 }
 
 // GetObservation of this Destination
