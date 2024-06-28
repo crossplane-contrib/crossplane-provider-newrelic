@@ -96,7 +96,7 @@ func configAlertPolicy() config.ExternalName {
 }
 
 // See - https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/nrql_alert_condition#import
-// NRQL alert conditions can be imported using a composite ID of <policy_id>:<condition_id>:<conditionType>, e.g.
+// NRQL alert conditions can be imported using a composite ID of <policy_id>:<condition_id>, e.g.
 func configNrqAlertCondition() config.ExternalName {
 	e := config.IdentifierFromProvider
 
@@ -110,13 +110,13 @@ func configNrqAlertCondition() config.ExternalName {
 		if !ok {
 			return "", errors.New("Can't format id from tfstate as string")
 		}
-		// <policy_id>:<condition_id>:<conditionType>
+		// <policy_id>:<condition_id>
 		words := strings.Split(idStr, ":")
 		return words[1], nil
 	}
 
 	// See - https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/nrql_alert_condition#import
-	// Formats the condition id as <policy_id>:<condition_id>:<conditionType>
+	// Formats the condition id as <policy_id>:<condition_id>
 	e.GetIDFn = func(_ context.Context, externalName string, parameters map[string]interface{}, _ map[string]interface{}) (string, error) {
 		// Using a stub value to pass validation.
 		if len(externalName) == 0 {
@@ -129,18 +129,8 @@ func configNrqAlertCondition() config.ExternalName {
 		}
 		policyIDStr := strconv.FormatFloat(policyID.(float64), 'f', 0, 64)
 
-		conditionType, ok := parameters["type"]
-		if !ok {
-			return "", errors.New("Can't get type from nrql alert condition")
-		}
-
-		conditionTypeStr, ok := conditionType.(string)
-		if !ok {
-			return "", errors.New("Can't format type as string for nrql alert condition")
-		}
-
-		// <policy_id>:<condition_id>:<conditionType>
-		return fmt.Sprintf("%s:%s:%s", policyIDStr, externalName, conditionTypeStr), nil
+		// <policy_id>:<condition_id>
+		return fmt.Sprintf("%s:%s", policyIDStr, externalName), nil
 	}
 	return e
 }
