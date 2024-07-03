@@ -1537,6 +1537,11 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              isLabelVisible:
+                                description: |-
+                                  A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
+                                  Specified if the label should be visible in the graph created when specified with thresholds.
+                                type: boolean
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -1594,6 +1599,38 @@ spec:
                                 description: Row position of widget from top left,
                                   starting at 1.
                                 type: number
+                              threshold:
+                                description: An attribute that helps specify multiple
+                                  thresholds, each inclusive of a range of values
+                                  between which the threshold would need to function,
+                                  the name of the threshold and its severity. Multiple
+                                  thresholds can be defined in a line widget. The
+                                  threshold attribute requires specifying the following
+                                  attributes in a nested block -
+                                items:
+                                  properties:
+                                    from:
+                                      description: |-
+                                        The value 'from' which the threshold would need to be applied.
+                                        The number from which the range starts in thresholds.
+                                      type: number
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        Name of the threshold created.
+                                      type: string
+                                    severity:
+                                      description: |-
+                                        The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+                                        Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+                                      type: string
+                                    to:
+                                      description: |-
+                                        The value until which the threshold would need to be applied.
+                                        The number at which the range ends in thresholds.
+                                      type: number
+                                  type: object
+                                type: array
                               title:
                                 description: |-
                                   A title for the widget.
@@ -1648,6 +1685,38 @@ spec:
                                   An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_left_min (or 0 if it is not defined) to y_axis_left_max. Use y_axis_left_zero = true with a combination of y_axis_left_min and y_axis_left_max to render values from 0 or the specified minimum to the maximum, and y_axis_left_zero = false to fit the graph to scale.
                                   Specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range.
                                 type: boolean
+                              yAxisRight:
+                                description: 'An attribute which helps specify the
+                                  configuration of the Y-Axis displayed on the right
+                                  side of the line widget. This is a nested block,
+                                  which includes the following attributes:'
+                                items:
+                                  properties:
+                                    yAxisRightMax:
+                                      description: Minimum value of the range to be
+                                        specified with the Y-Axis on the right of
+                                        the line widget.
+                                      type: number
+                                    yAxisRightMin:
+                                      description: |-
+                                        Attributes which help specify a range of minimum and maximum values, which adjust the right Y axis to display the data within the specified minimum and maximum value for the axis.
+                                        Minimum value of the range to be specified with the Y-Axis on the right of the line widget.
+                                      type: number
+                                    yAxisRightSeries:
+                                      description: |-
+                                        An attribute which takes a list of strings, specifying a selection of series' displayed in the line chart to be adjusted against the values of the right Y-axis.
+                                        A set of series that helps specify the Y-Axis on the right of the line widget.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    yAxisRightZero:
+                                      description: |-
+                                        An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_right_min (or 0 if it is not defined) to y_axis_right_max. Use y_axis_right_zero = true with a combination of y_axis_right_min and y_axis_right_max to render values from 0 or the specified minimum to the maximum, and y_axis_right_zero = false to fit the graph to scale.
+                                        An attribute that helps specify the Y-Axis on the right of the line widget.
+                                      type: boolean
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         widgetLogTable:
@@ -2445,6 +2514,38 @@ spec:
                                 description: Row position of widget from top left,
                                   starting at 1.
                                 type: number
+                              threshold:
+                                description: An attribute that helps specify multiple
+                                  thresholds, each inclusive of a range of values
+                                  between which the threshold would need to function,
+                                  the name of the threshold and its severity. Multiple
+                                  thresholds can be defined in a line widget. The
+                                  threshold attribute requires specifying the following
+                                  attributes in a nested block -
+                                items:
+                                  properties:
+                                    columnName:
+                                      description: |-
+                                        The name of the column in the table, to which the threshold would need to be applied.
+                                        Name of the column in the table, to which the threshold would be applied.
+                                      type: string
+                                    from:
+                                      description: |-
+                                        The value 'from' which the threshold would need to be applied.
+                                        The number from which the range starts in thresholds.
+                                      type: number
+                                    severity:
+                                      description: |-
+                                        The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+                                        Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+                                      type: string
+                                    to:
+                                      description: |-
+                                        The value until which the threshold would need to be applied.
+                                        The number at which the range ends in thresholds.
+                                      type: number
+                                  type: object
+                                type: array
                               title:
                                 description: |-
                                   A title for the widget.
@@ -4071,6 +4172,11 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              isLabelVisible:
+                                description: |-
+                                  A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
+                                  Specified if the label should be visible in the graph created when specified with thresholds.
+                                type: boolean
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -4128,6 +4234,38 @@ spec:
                                 description: Row position of widget from top left,
                                   starting at 1.
                                 type: number
+                              threshold:
+                                description: An attribute that helps specify multiple
+                                  thresholds, each inclusive of a range of values
+                                  between which the threshold would need to function,
+                                  the name of the threshold and its severity. Multiple
+                                  thresholds can be defined in a line widget. The
+                                  threshold attribute requires specifying the following
+                                  attributes in a nested block -
+                                items:
+                                  properties:
+                                    from:
+                                      description: |-
+                                        The value 'from' which the threshold would need to be applied.
+                                        The number from which the range starts in thresholds.
+                                      type: number
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        Name of the threshold created.
+                                      type: string
+                                    severity:
+                                      description: |-
+                                        The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+                                        Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+                                      type: string
+                                    to:
+                                      description: |-
+                                        The value until which the threshold would need to be applied.
+                                        The number at which the range ends in thresholds.
+                                      type: number
+                                  type: object
+                                type: array
                               title:
                                 description: |-
                                   A title for the widget.
@@ -4182,6 +4320,38 @@ spec:
                                   An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_left_min (or 0 if it is not defined) to y_axis_left_max. Use y_axis_left_zero = true with a combination of y_axis_left_min and y_axis_left_max to render values from 0 or the specified minimum to the maximum, and y_axis_left_zero = false to fit the graph to scale.
                                   Specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range.
                                 type: boolean
+                              yAxisRight:
+                                description: 'An attribute which helps specify the
+                                  configuration of the Y-Axis displayed on the right
+                                  side of the line widget. This is a nested block,
+                                  which includes the following attributes:'
+                                items:
+                                  properties:
+                                    yAxisRightMax:
+                                      description: Minimum value of the range to be
+                                        specified with the Y-Axis on the right of
+                                        the line widget.
+                                      type: number
+                                    yAxisRightMin:
+                                      description: |-
+                                        Attributes which help specify a range of minimum and maximum values, which adjust the right Y axis to display the data within the specified minimum and maximum value for the axis.
+                                        Minimum value of the range to be specified with the Y-Axis on the right of the line widget.
+                                      type: number
+                                    yAxisRightSeries:
+                                      description: |-
+                                        An attribute which takes a list of strings, specifying a selection of series' displayed in the line chart to be adjusted against the values of the right Y-axis.
+                                        A set of series that helps specify the Y-Axis on the right of the line widget.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    yAxisRightZero:
+                                      description: |-
+                                        An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_right_min (or 0 if it is not defined) to y_axis_right_max. Use y_axis_right_zero = true with a combination of y_axis_right_min and y_axis_right_max to render values from 0 or the specified minimum to the maximum, and y_axis_right_zero = false to fit the graph to scale.
+                                        An attribute that helps specify the Y-Axis on the right of the line widget.
+                                      type: boolean
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         widgetLogTable:
@@ -4979,6 +5149,38 @@ spec:
                                 description: Row position of widget from top left,
                                   starting at 1.
                                 type: number
+                              threshold:
+                                description: An attribute that helps specify multiple
+                                  thresholds, each inclusive of a range of values
+                                  between which the threshold would need to function,
+                                  the name of the threshold and its severity. Multiple
+                                  thresholds can be defined in a line widget. The
+                                  threshold attribute requires specifying the following
+                                  attributes in a nested block -
+                                items:
+                                  properties:
+                                    columnName:
+                                      description: |-
+                                        The name of the column in the table, to which the threshold would need to be applied.
+                                        Name of the column in the table, to which the threshold would be applied.
+                                      type: string
+                                    from:
+                                      description: |-
+                                        The value 'from' which the threshold would need to be applied.
+                                        The number from which the range starts in thresholds.
+                                      type: number
+                                    severity:
+                                      description: |-
+                                        The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+                                        Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+                                      type: string
+                                    to:
+                                      description: |-
+                                        The value until which the threshold would need to be applied.
+                                        The number at which the range ends in thresholds.
+                                      type: number
+                                  type: object
+                                type: array
                               title:
                                 description: |-
                                   A title for the widget.
@@ -6812,6 +7014,11 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              isLabelVisible:
+                                description: |-
+                                  A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
+                                  Specified if the label should be visible in the graph created when specified with thresholds.
+                                type: boolean
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -6869,6 +7076,38 @@ spec:
                                 description: Row position of widget from top left,
                                   starting at 1.
                                 type: number
+                              threshold:
+                                description: An attribute that helps specify multiple
+                                  thresholds, each inclusive of a range of values
+                                  between which the threshold would need to function,
+                                  the name of the threshold and its severity. Multiple
+                                  thresholds can be defined in a line widget. The
+                                  threshold attribute requires specifying the following
+                                  attributes in a nested block -
+                                items:
+                                  properties:
+                                    from:
+                                      description: |-
+                                        The value 'from' which the threshold would need to be applied.
+                                        The number from which the range starts in thresholds.
+                                      type: number
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        Name of the threshold created.
+                                      type: string
+                                    severity:
+                                      description: |-
+                                        The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+                                        Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+                                      type: string
+                                    to:
+                                      description: |-
+                                        The value until which the threshold would need to be applied.
+                                        The number at which the range ends in thresholds.
+                                      type: number
+                                  type: object
+                                type: array
                               title:
                                 description: |-
                                   A title for the widget.
@@ -6923,6 +7162,38 @@ spec:
                                   An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_left_min (or 0 if it is not defined) to y_axis_left_max. Use y_axis_left_zero = true with a combination of y_axis_left_min and y_axis_left_max to render values from 0 or the specified minimum to the maximum, and y_axis_left_zero = false to fit the graph to scale.
                                   Specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range.
                                 type: boolean
+                              yAxisRight:
+                                description: 'An attribute which helps specify the
+                                  configuration of the Y-Axis displayed on the right
+                                  side of the line widget. This is a nested block,
+                                  which includes the following attributes:'
+                                items:
+                                  properties:
+                                    yAxisRightMax:
+                                      description: Minimum value of the range to be
+                                        specified with the Y-Axis on the right of
+                                        the line widget.
+                                      type: number
+                                    yAxisRightMin:
+                                      description: |-
+                                        Attributes which help specify a range of minimum and maximum values, which adjust the right Y axis to display the data within the specified minimum and maximum value for the axis.
+                                        Minimum value of the range to be specified with the Y-Axis on the right of the line widget.
+                                      type: number
+                                    yAxisRightSeries:
+                                      description: |-
+                                        An attribute which takes a list of strings, specifying a selection of series' displayed in the line chart to be adjusted against the values of the right Y-axis.
+                                        A set of series that helps specify the Y-Axis on the right of the line widget.
+                                      items:
+                                        type: string
+                                      type: array
+                                      x-kubernetes-list-type: set
+                                    yAxisRightZero:
+                                      description: |-
+                                        An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_right_min (or 0 if it is not defined) to y_axis_right_max. Use y_axis_right_zero = true with a combination of y_axis_right_min and y_axis_right_max to render values from 0 or the specified minimum to the maximum, and y_axis_right_zero = false to fit the graph to scale.
+                                        An attribute that helps specify the Y-Axis on the right of the line widget.
+                                      type: boolean
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         widgetLogTable:
@@ -7735,6 +8006,38 @@ spec:
                                 description: Row position of widget from top left,
                                   starting at 1.
                                 type: number
+                              threshold:
+                                description: An attribute that helps specify multiple
+                                  thresholds, each inclusive of a range of values
+                                  between which the threshold would need to function,
+                                  the name of the threshold and its severity. Multiple
+                                  thresholds can be defined in a line widget. The
+                                  threshold attribute requires specifying the following
+                                  attributes in a nested block -
+                                items:
+                                  properties:
+                                    columnName:
+                                      description: |-
+                                        The name of the column in the table, to which the threshold would need to be applied.
+                                        Name of the column in the table, to which the threshold would be applied.
+                                      type: string
+                                    from:
+                                      description: |-
+                                        The value 'from' which the threshold would need to be applied.
+                                        The number from which the range starts in thresholds.
+                                      type: number
+                                    severity:
+                                      description: |-
+                                        The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+                                        Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+                                      type: string
+                                    to:
+                                      description: |-
+                                        The value until which the threshold would need to be applied.
+                                        The number at which the range ends in thresholds.
+                                      type: number
+                                  type: object
+                                type: array
                               title:
                                 description: |-
                                   A title for the widget.

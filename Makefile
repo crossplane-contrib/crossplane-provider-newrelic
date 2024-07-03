@@ -12,10 +12,10 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 
 export TERRAFORM_PROVIDER_SOURCE ?= newrelic/newrelic
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/newrelic/terraform-provider-newrelic
-export TERRAFORM_PROVIDER_VERSION ?= 3.36.0
+export TERRAFORM_PROVIDER_VERSION ?= 3.38.1
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-newrelic
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/newrelic/terraform-provider-newrelic/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-newrelic_v3.36.0
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-newrelic_v3.38.1
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 
 PLATFORMS ?= linux_amd64 linux_arm64
@@ -53,8 +53,8 @@ GO_SUBDIRS += cmd internal apis
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.22.0
-UP_VERSION = v0.28.0
+KIND_VERSION = v0.23.0
+UP_VERSION = v0.31.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.11.1
 CROSSPLANE_VERSION = 1.14.6
