@@ -50,6 +50,7 @@ spec:
       - column: 7
         height: 3
         ignoreTimeRange: false
+        isLabelVisible: true
         legendEnabled: true
         nrqlQuery:
         - accountId: 12345
@@ -57,6 +58,15 @@ spec:
             = '504' timeseries since 5 minutes ago
         - query: FROM Transaction SELECT rate(count(*), 1 minute)
         row: 4
+        threshold:
+        - from: 1
+          name: Duration Threshold
+          severity: critical
+          to: 2
+        - from: 0.5
+          name: Duration Threshold Two
+          severity: warning
+          to: 0.75
         title: Average transaction duration and the request per minute, by application
         units:
         - seriesOverrides:
@@ -67,6 +77,13 @@ spec:
         yAxisLeftMax: 1
         yAxisLeftMin: 0
         yAxisLeftZero: true
+        yAxisRight:
+        - yAxisRightMax: 300
+          yAxisRightMin: 0
+          yAxisRightSeries:
+          - A
+          - B
+          yAxisRightZero: true
       - column: 5
         facetShowOtherSeries: false
         height: 3

@@ -583,6 +583,67 @@ type SeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type ThresholdInitParameters struct {
+
+	// The value 'from' which the threshold would need to be applied.
+	// The number from which the range starts in thresholds.
+	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+
+	// The variable identifier.
+	// Name of the threshold created.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+	// Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// The value until which the threshold would need to be applied.
+	// The number at which the range ends in thresholds.
+	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+}
+
+type ThresholdObservation struct {
+
+	// The value 'from' which the threshold would need to be applied.
+	// The number from which the range starts in thresholds.
+	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+
+	// The variable identifier.
+	// Name of the threshold created.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+	// Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// The value until which the threshold would need to be applied.
+	// The number at which the range ends in thresholds.
+	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+}
+
+type ThresholdParameters struct {
+
+	// The value 'from' which the threshold would need to be applied.
+	// The number from which the range starts in thresholds.
+	// +kubebuilder:validation:Optional
+	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+
+	// The variable identifier.
+	// Name of the threshold created.
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+	// Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+	// +kubebuilder:validation:Optional
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// The value until which the threshold would need to be applied.
+	// The number at which the range ends in thresholds.
+	// +kubebuilder:validation:Optional
+	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+}
+
 type UnitsInitParameters struct {
 
 	// A Nested block which will take two string attributes null_value and series_name. This nested block is used to customize null values of individual.
@@ -3747,6 +3808,10 @@ type WidgetLineInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
+	// Specified if the label should be visible in the graph created when specified with thresholds.
+	IsLabelVisible *bool `json:"isLabelVisible,omitempty" tf:"is_label_visible,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -3758,6 +3823,9 @@ type WidgetLineInitParameters struct {
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
+
+	// An attribute that helps specify multiple thresholds, each inclusive of a range of values between which the threshold would need to function, the name of the threshold and its severity. Multiple thresholds can be defined in a line widget. The threshold attribute requires specifying the following attributes in a nested block -
+	Threshold []ThresholdInitParameters `json:"threshold,omitempty" tf:"threshold,omitempty"`
 
 	// A title for the widget.
 	// A title for the widget.
@@ -3777,6 +3845,9 @@ type WidgetLineInitParameters struct {
 	// An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_left_min (or 0 if it is not defined) to y_axis_left_max. Use y_axis_left_zero = true with a combination of y_axis_left_min and y_axis_left_max to render values from 0 or the specified minimum to the maximum, and y_axis_left_zero = false to fit the graph to scale.
 	// Specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range.
 	YAxisLeftZero *bool `json:"yAxisLeftZero,omitempty" tf:"y_axis_left_zero,omitempty"`
+
+	// An attribute which helps specify the configuration of the Y-Axis displayed on the right side of the line widget. This is a nested block, which includes the following attributes:
+	YAxisRight []YAxisRightInitParameters `json:"yAxisRight,omitempty" tf:"y_axis_right,omitempty"`
 }
 
 type WidgetLineNrqlQueryInitParameters struct {
@@ -3898,6 +3969,10 @@ type WidgetLineObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
+	// Specified if the label should be visible in the graph created when specified with thresholds.
+	IsLabelVisible *bool `json:"isLabelVisible,omitempty" tf:"is_label_visible,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -3909,6 +3984,9 @@ type WidgetLineObservation struct {
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
+
+	// An attribute that helps specify multiple thresholds, each inclusive of a range of values between which the threshold would need to function, the name of the threshold and its severity. Multiple thresholds can be defined in a line widget. The threshold attribute requires specifying the following attributes in a nested block -
+	Threshold []ThresholdObservation `json:"threshold,omitempty" tf:"threshold,omitempty"`
 
 	// A title for the widget.
 	// A title for the widget.
@@ -3928,6 +4006,9 @@ type WidgetLineObservation struct {
 	// An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_left_min (or 0 if it is not defined) to y_axis_left_max. Use y_axis_left_zero = true with a combination of y_axis_left_min and y_axis_left_max to render values from 0 or the specified minimum to the maximum, and y_axis_left_zero = false to fit the graph to scale.
 	// Specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range.
 	YAxisLeftZero *bool `json:"yAxisLeftZero,omitempty" tf:"y_axis_left_zero,omitempty"`
+
+	// An attribute which helps specify the configuration of the Y-Axis displayed on the right side of the line widget. This is a nested block, which includes the following attributes:
+	YAxisRight []YAxisRightObservation `json:"yAxisRight,omitempty" tf:"y_axis_right,omitempty"`
 }
 
 type WidgetLineParameters struct {
@@ -3952,6 +4033,11 @@ type WidgetLineParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
+	// Specified if the label should be visible in the graph created when specified with thresholds.
+	// +kubebuilder:validation:Optional
+	IsLabelVisible *bool `json:"isLabelVisible,omitempty" tf:"is_label_visible,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -3967,6 +4053,10 @@ type WidgetLineParameters struct {
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Row *float64 `json:"row" tf:"row,omitempty"`
+
+	// An attribute that helps specify multiple thresholds, each inclusive of a range of values between which the threshold would need to function, the name of the threshold and its severity. Multiple thresholds can be defined in a line widget. The threshold attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	Threshold []ThresholdParameters `json:"threshold,omitempty" tf:"threshold,omitempty"`
 
 	// A title for the widget.
 	// A title for the widget.
@@ -3992,6 +4082,10 @@ type WidgetLineParameters struct {
 	// Specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range.
 	// +kubebuilder:validation:Optional
 	YAxisLeftZero *bool `json:"yAxisLeftZero,omitempty" tf:"y_axis_left_zero,omitempty"`
+
+	// An attribute which helps specify the configuration of the Y-Axis displayed on the right side of the line widget. This is a nested block, which includes the following attributes:
+	// +kubebuilder:validation:Optional
+	YAxisRight []YAxisRightParameters `json:"yAxisRight,omitempty" tf:"y_axis_right,omitempty"`
 }
 
 type WidgetLineUnitsInitParameters struct {
@@ -5666,6 +5760,9 @@ type WidgetTableInitParameters struct {
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
 
+	// An attribute that helps specify multiple thresholds, each inclusive of a range of values between which the threshold would need to function, the name of the threshold and its severity. Multiple thresholds can be defined in a line widget. The threshold attribute requires specifying the following attributes in a nested block -
+	Threshold []WidgetTableThresholdInitParameters `json:"threshold,omitempty" tf:"threshold,omitempty"`
+
 	// A title for the widget.
 	// A title for the widget.
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
@@ -5821,6 +5918,9 @@ type WidgetTableObservation struct {
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
 
+	// An attribute that helps specify multiple thresholds, each inclusive of a range of values between which the threshold would need to function, the name of the threshold and its severity. Multiple thresholds can be defined in a line widget. The threshold attribute requires specifying the following attributes in a nested block -
+	Threshold []WidgetTableThresholdObservation `json:"threshold,omitempty" tf:"threshold,omitempty"`
+
 	// A title for the widget.
 	// A title for the widget.
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
@@ -5885,6 +5985,10 @@ type WidgetTableParameters struct {
 	// +kubebuilder:validation:Optional
 	Row *float64 `json:"row" tf:"row,omitempty"`
 
+	// An attribute that helps specify multiple thresholds, each inclusive of a range of values between which the threshold would need to function, the name of the threshold and its severity. Multiple thresholds can be defined in a line widget. The threshold attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	Threshold []WidgetTableThresholdParameters `json:"threshold,omitempty" tf:"threshold,omitempty"`
+
 	// A title for the widget.
 	// A title for the widget.
 	// +kubebuilder:validation:Optional
@@ -5904,6 +6008,67 @@ type WidgetTableParameters struct {
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	// +kubebuilder:validation:Optional
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetTableThresholdInitParameters struct {
+
+	// The name of the column in the table, to which the threshold would need to be applied.
+	// Name of the column in the table, to which the threshold would be applied.
+	ColumnName *string `json:"columnName,omitempty" tf:"column_name,omitempty"`
+
+	// The value 'from' which the threshold would need to be applied.
+	// The number from which the range starts in thresholds.
+	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+
+	// The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+	// Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// The value until which the threshold would need to be applied.
+	// The number at which the range ends in thresholds.
+	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+}
+
+type WidgetTableThresholdObservation struct {
+
+	// The name of the column in the table, to which the threshold would need to be applied.
+	// Name of the column in the table, to which the threshold would be applied.
+	ColumnName *string `json:"columnName,omitempty" tf:"column_name,omitempty"`
+
+	// The value 'from' which the threshold would need to be applied.
+	// The number from which the range starts in thresholds.
+	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+
+	// The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+	// Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// The value until which the threshold would need to be applied.
+	// The number at which the range ends in thresholds.
+	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+}
+
+type WidgetTableThresholdParameters struct {
+
+	// The name of the column in the table, to which the threshold would need to be applied.
+	// Name of the column in the table, to which the threshold would be applied.
+	// +kubebuilder:validation:Optional
+	ColumnName *string `json:"columnName,omitempty" tf:"column_name,omitempty"`
+
+	// The value 'from' which the threshold would need to be applied.
+	// The number from which the range starts in thresholds.
+	// +kubebuilder:validation:Optional
+	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+
+	// The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
+	// Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
+	// +kubebuilder:validation:Optional
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// The value until which the threshold would need to be applied.
+	// The number at which the range ends in thresholds.
+	// +kubebuilder:validation:Optional
+	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
 }
 
 type WidgetTableUnitsInitParameters struct {
@@ -5968,6 +6133,67 @@ type WidgetTableUnitsSeriesOverridesParameters struct {
 	// Unit name
 	// +kubebuilder:validation:Optional
 	Unit *string `json:"unit,omitempty" tf:"unit,omitempty"`
+}
+
+type YAxisRightInitParameters struct {
+
+	// Minimum value of the range to be specified with the Y-Axis on the right of the line widget.
+	YAxisRightMax *float64 `json:"yAxisRightMax,omitempty" tf:"y_axis_right_max,omitempty"`
+
+	// Attributes which help specify a range of minimum and maximum values, which adjust the right Y axis to display the data within the specified minimum and maximum value for the axis.
+	// Minimum value of the range to be specified with the Y-Axis on the right of the line widget.
+	YAxisRightMin *float64 `json:"yAxisRightMin,omitempty" tf:"y_axis_right_min,omitempty"`
+
+	// An attribute which takes a list of strings, specifying a selection of series' displayed in the line chart to be adjusted against the values of the right Y-axis.
+	// A set of series that helps specify the Y-Axis on the right of the line widget.
+	// +listType=set
+	YAxisRightSeries []*string `json:"yAxisRightSeries,omitempty" tf:"y_axis_right_series,omitempty"`
+
+	// An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_right_min (or 0 if it is not defined) to y_axis_right_max. Use y_axis_right_zero = true with a combination of y_axis_right_min and y_axis_right_max to render values from 0 or the specified minimum to the maximum, and y_axis_right_zero = false to fit the graph to scale.
+	// An attribute that helps specify the Y-Axis on the right of the line widget.
+	YAxisRightZero *bool `json:"yAxisRightZero,omitempty" tf:"y_axis_right_zero,omitempty"`
+}
+
+type YAxisRightObservation struct {
+
+	// Minimum value of the range to be specified with the Y-Axis on the right of the line widget.
+	YAxisRightMax *float64 `json:"yAxisRightMax,omitempty" tf:"y_axis_right_max,omitempty"`
+
+	// Attributes which help specify a range of minimum and maximum values, which adjust the right Y axis to display the data within the specified minimum and maximum value for the axis.
+	// Minimum value of the range to be specified with the Y-Axis on the right of the line widget.
+	YAxisRightMin *float64 `json:"yAxisRightMin,omitempty" tf:"y_axis_right_min,omitempty"`
+
+	// An attribute which takes a list of strings, specifying a selection of series' displayed in the line chart to be adjusted against the values of the right Y-axis.
+	// A set of series that helps specify the Y-Axis on the right of the line widget.
+	// +listType=set
+	YAxisRightSeries []*string `json:"yAxisRightSeries,omitempty" tf:"y_axis_right_series,omitempty"`
+
+	// An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_right_min (or 0 if it is not defined) to y_axis_right_max. Use y_axis_right_zero = true with a combination of y_axis_right_min and y_axis_right_max to render values from 0 or the specified minimum to the maximum, and y_axis_right_zero = false to fit the graph to scale.
+	// An attribute that helps specify the Y-Axis on the right of the line widget.
+	YAxisRightZero *bool `json:"yAxisRightZero,omitempty" tf:"y_axis_right_zero,omitempty"`
+}
+
+type YAxisRightParameters struct {
+
+	// Minimum value of the range to be specified with the Y-Axis on the right of the line widget.
+	// +kubebuilder:validation:Optional
+	YAxisRightMax *float64 `json:"yAxisRightMax,omitempty" tf:"y_axis_right_max,omitempty"`
+
+	// Attributes which help specify a range of minimum and maximum values, which adjust the right Y axis to display the data within the specified minimum and maximum value for the axis.
+	// Minimum value of the range to be specified with the Y-Axis on the right of the line widget.
+	// +kubebuilder:validation:Optional
+	YAxisRightMin *float64 `json:"yAxisRightMin,omitempty" tf:"y_axis_right_min,omitempty"`
+
+	// An attribute which takes a list of strings, specifying a selection of series' displayed in the line chart to be adjusted against the values of the right Y-axis.
+	// A set of series that helps specify the Y-Axis on the right of the line widget.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	YAxisRightSeries []*string `json:"yAxisRightSeries,omitempty" tf:"y_axis_right_series,omitempty"`
+
+	// An attribute that specifies if the values on the graph to be rendered need to be fit to scale, or printed within the specified range from y_axis_right_min (or 0 if it is not defined) to y_axis_right_max. Use y_axis_right_zero = true with a combination of y_axis_right_min and y_axis_right_max to render values from 0 or the specified minimum to the maximum, and y_axis_right_zero = false to fit the graph to scale.
+	// An attribute that helps specify the Y-Axis on the right of the line widget.
+	// +kubebuilder:validation:Optional
+	YAxisRightZero *bool `json:"yAxisRightZero,omitempty" tf:"y_axis_right_zero,omitempty"`
 }
 
 // DashboardSpec defines the desired state of Dashboard
