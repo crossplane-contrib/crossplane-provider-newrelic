@@ -162,6 +162,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -215,6 +234,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -334,6 +363,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -394,6 +442,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -513,6 +571,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -566,6 +643,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -685,6 +772,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -743,6 +849,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -857,6 +973,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -910,6 +1045,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -1029,6 +1174,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -1089,6 +1253,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -1203,6 +1377,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -1256,6 +1449,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -1370,6 +1573,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -1423,6 +1645,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -1537,6 +1769,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               isLabelVisible:
                                 description: |-
                                   A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
@@ -1595,6 +1846,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -1613,7 +1874,7 @@ spec:
                                       description: |-
                                         The value 'from' which the threshold would need to be applied.
                                         The number from which the range starts in thresholds.
-                                      type: number
+                                      type: string
                                     name:
                                       description: |-
                                         The variable identifier.
@@ -1628,7 +1889,7 @@ spec:
                                       description: |-
                                         The value until which the threshold would need to be applied.
                                         The number at which the range ends in thresholds.
-                                      type: number
+                                      type: string
                                   type: object
                                 type: array
                               title:
@@ -1778,6 +2039,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -1831,6 +2111,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -1945,6 +2235,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -1981,6 +2290,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -2104,6 +2423,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -2164,6 +2502,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -2278,6 +2626,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -2331,6 +2698,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -2450,6 +2827,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -2510,6 +2906,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -2533,7 +2939,7 @@ spec:
                                       description: |-
                                         The value 'from' which the threshold would need to be applied.
                                         The number from which the range starts in thresholds.
-                                      type: number
+                                      type: string
                                     severity:
                                       description: |-
                                         The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
@@ -2543,7 +2949,7 @@ spec:
                                       description: |-
                                         The value until which the threshold would need to be applied.
                                         The number at which the range ends in thresholds.
-                                      type: number
+                                      type: string
                                   type: object
                                 type: array
                               title:
@@ -2797,6 +3203,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -2850,6 +3275,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -2969,6 +3404,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -3029,6 +3483,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -3148,6 +3612,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -3201,6 +3684,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -3320,6 +3813,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -3378,6 +3890,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -3492,6 +4014,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -3545,6 +4086,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -3664,6 +4215,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -3724,6 +4294,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -3838,6 +4418,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -3891,6 +4490,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -4005,6 +4614,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -4058,6 +4686,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -4172,6 +4810,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               isLabelVisible:
                                 description: |-
                                   A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
@@ -4230,6 +4887,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -4248,7 +4915,7 @@ spec:
                                       description: |-
                                         The value 'from' which the threshold would need to be applied.
                                         The number from which the range starts in thresholds.
-                                      type: number
+                                      type: string
                                     name:
                                       description: |-
                                         The variable identifier.
@@ -4263,7 +4930,7 @@ spec:
                                       description: |-
                                         The value until which the threshold would need to be applied.
                                         The number at which the range ends in thresholds.
-                                      type: number
+                                      type: string
                                   type: object
                                 type: array
                               title:
@@ -4413,6 +5080,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -4466,6 +5152,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -4580,6 +5276,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -4616,6 +5331,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -4739,6 +5464,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -4799,6 +5543,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -4913,6 +5667,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -4966,6 +5739,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -5085,6 +5868,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -5145,6 +5947,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -5168,7 +5980,7 @@ spec:
                                       description: |-
                                         The value 'from' which the threshold would need to be applied.
                                         The number from which the range starts in thresholds.
-                                      type: number
+                                      type: string
                                     severity:
                                       description: |-
                                         The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
@@ -5178,7 +5990,7 @@ spec:
                                       description: |-
                                         The value until which the threshold would need to be applied.
                                         The number at which the range ends in thresholds.
-                                      type: number
+                                      type: string
                                   type: object
                                 type: array
                               title:
@@ -5615,6 +6427,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -5668,6 +6499,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -5790,6 +6631,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -5850,6 +6710,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -5972,6 +6842,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -6025,6 +6914,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -6147,6 +7046,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -6205,6 +7123,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -6322,6 +7250,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -6375,6 +7322,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -6497,6 +7454,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -6557,6 +7533,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -6674,6 +7660,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -6727,6 +7732,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -6844,6 +7859,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -6897,6 +7931,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -7014,6 +8058,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               isLabelVisible:
                                 description: |-
                                   A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
@@ -7072,6 +8135,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -7090,7 +8163,7 @@ spec:
                                       description: |-
                                         The value 'from' which the threshold would need to be applied.
                                         The number from which the range starts in thresholds.
-                                      type: number
+                                      type: string
                                     name:
                                       description: |-
                                         The variable identifier.
@@ -7105,7 +8178,7 @@ spec:
                                       description: |-
                                         The value until which the threshold would need to be applied.
                                         The number at which the range ends in thresholds.
-                                      type: number
+                                      type: string
                                   type: object
                                 type: array
                               title:
@@ -7258,6 +8331,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -7311,6 +8403,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -7428,6 +8530,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -7464,6 +8585,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -7590,6 +8721,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -7650,6 +8800,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -7767,6 +8927,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -7820,6 +8999,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -7942,6 +9131,25 @@ spec:
                                   this query will override the time picker on dashboards
                                   and other pages. Defaults to false.
                                 type: boolean
+                              initialSorting:
+                                description: An attribute that describes the sorting
+                                  mechanism for the table. This attribute requires
+                                  specifying the following attributes in a nested
+                                  block -
+                                items:
+                                  properties:
+                                    direction:
+                                      description: |-
+                                        Defines the sort order. Accepted values are asc for ascending or desc for descending.
+                                        Defines the sort order. Either ascending or descending.
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                  type: object
+                                type: array
                               legendEnabled:
                                 description: With this turned on, the legend will
                                   be displayed. Defaults to true.
@@ -8002,6 +9210,16 @@ spec:
                                       type: array
                                   type: object
                                 type: array
+                              refreshRate:
+                                description: This attribute determines the frequency
+                                  for data refresh specified in milliseconds. Accepted
+                                  values are auto for default value, 0 for no refresh,
+                                  5000 for 5 seconds, 30000 for 30 seconds, 60000
+                                  for 60 seconds, 300000 for 5 minutes, 1800000 for
+                                  30 minutes, 3600000 for 60 minute, 10800000 for
+                                  3 hours, 43200000 for 12 hours and 86400000 for
+                                  24 hours.
+                                type: string
                               row:
                                 description: Row position of widget from top left,
                                   starting at 1.
@@ -8025,7 +9243,7 @@ spec:
                                       description: |-
                                         The value 'from' which the threshold would need to be applied.
                                         The number from which the range starts in thresholds.
-                                      type: number
+                                      type: string
                                     severity:
                                       description: |-
                                         The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
@@ -8035,7 +9253,7 @@ spec:
                                       description: |-
                                         The value until which the threshold would need to be applied.
                                         The number at which the range ends in thresholds.
-                                      type: number
+                                      type: string
                                   type: object
                                 type: array
                               title:

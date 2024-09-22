@@ -71,6 +71,10 @@ type AlertConditionInitParameters struct {
 	// If using the 'static' fill option, this value will be used for filling gaps in the signal.
 	FillValue *float64 `json:"fillValue,omitempty" tf:"fill_value,omitempty"`
 
+	// Whether an alert condition should ignore expected termination of a signal when considering whether to create a loss of signal incident. Defaults to false.
+	// Whether to ignore expected termination of a signal when considering whether to create a loss of signal incident
+	IgnoreOnExpectedTermination *bool `json:"ignoreOnExpectedTermination,omitempty" tf:"ignore_on_expected_termination,omitempty"`
+
 	// The title of the condition.
 	// The title of the condition.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -103,6 +107,10 @@ type AlertConditionInitParameters struct {
 	// Gathers data in overlapping time windows to smooth the chart line, making it easier to spot trends. The slide_by value is specified in seconds and must be smaller than and a factor of the aggregation_window.
 	// The duration of overlapping time windows used to smooth the chart line, in seconds. Must be a factor of `aggregation_window` and less than the aggregation window. If `aggregation_window` is less than or equal to 3600 seconds, it should be greater or equal to 30 seconds. If `aggregation_window` is greater than 3600 seconds but less than 7200 seconds, it should be greater or equal to `aggregation_window / 120`.  If `aggregation_window` is greater than 7200 seconds, it should be greater or equal to `aggregation_window / 24
 	SlideBy *float64 `json:"slideBy,omitempty" tf:"slide_by,omitempty"`
+
+	// The custom title to be used when incidents are opened by the condition. Setting this field will override the default title. Must be Handlebars format.
+	// This field allows you to create a custom title to be used when incidents are opened by the condition. Setting this field will override the default title. Must be Handlebars format.
+	TitleTemplate *string `json:"titleTemplate,omitempty" tf:"title_template,omitempty"`
 
 	// The type of the condition. Valid values are static or baseline. Defaults to static.
 	// The type of NRQL alert condition to create. Valid values are: 'static', 'baseline'.
@@ -183,6 +191,10 @@ type AlertConditionObservation struct {
 	// The ID of the NRQL alert condition. This is a composite ID with the format <policy_id>:<condition_id> - e.g. 538291:6789035.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Whether an alert condition should ignore expected termination of a signal when considering whether to create a loss of signal incident. Defaults to false.
+	// Whether to ignore expected termination of a signal when considering whether to create a loss of signal incident
+	IgnoreOnExpectedTermination *bool `json:"ignoreOnExpectedTermination,omitempty" tf:"ignore_on_expected_termination,omitempty"`
+
 	// The title of the condition.
 	// The title of the condition.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -206,6 +218,10 @@ type AlertConditionObservation struct {
 	// Gathers data in overlapping time windows to smooth the chart line, making it easier to spot trends. The slide_by value is specified in seconds and must be smaller than and a factor of the aggregation_window.
 	// The duration of overlapping time windows used to smooth the chart line, in seconds. Must be a factor of `aggregation_window` and less than the aggregation window. If `aggregation_window` is less than or equal to 3600 seconds, it should be greater or equal to 30 seconds. If `aggregation_window` is greater than 3600 seconds but less than 7200 seconds, it should be greater or equal to `aggregation_window / 120`.  If `aggregation_window` is greater than 7200 seconds, it should be greater or equal to `aggregation_window / 24
 	SlideBy *float64 `json:"slideBy,omitempty" tf:"slide_by,omitempty"`
+
+	// The custom title to be used when incidents are opened by the condition. Setting this field will override the default title. Must be Handlebars format.
+	// This field allows you to create a custom title to be used when incidents are opened by the condition. Setting this field will override the default title. Must be Handlebars format.
+	TitleTemplate *string `json:"titleTemplate,omitempty" tf:"title_template,omitempty"`
 
 	// The type of the condition. Valid values are static or baseline. Defaults to static.
 	// The type of NRQL alert condition to create. Valid values are: 'static', 'baseline'.
@@ -298,6 +314,11 @@ type AlertConditionParameters struct {
 	// +kubebuilder:validation:Optional
 	FillValue *float64 `json:"fillValue,omitempty" tf:"fill_value,omitempty"`
 
+	// Whether an alert condition should ignore expected termination of a signal when considering whether to create a loss of signal incident. Defaults to false.
+	// Whether to ignore expected termination of a signal when considering whether to create a loss of signal incident
+	// +kubebuilder:validation:Optional
+	IgnoreOnExpectedTermination *bool `json:"ignoreOnExpectedTermination,omitempty" tf:"ignore_on_expected_termination,omitempty"`
+
 	// The title of the condition.
 	// The title of the condition.
 	// +kubebuilder:validation:Optional
@@ -336,6 +357,11 @@ type AlertConditionParameters struct {
 	// The duration of overlapping time windows used to smooth the chart line, in seconds. Must be a factor of `aggregation_window` and less than the aggregation window. If `aggregation_window` is less than or equal to 3600 seconds, it should be greater or equal to 30 seconds. If `aggregation_window` is greater than 3600 seconds but less than 7200 seconds, it should be greater or equal to `aggregation_window / 120`.  If `aggregation_window` is greater than 7200 seconds, it should be greater or equal to `aggregation_window / 24
 	// +kubebuilder:validation:Optional
 	SlideBy *float64 `json:"slideBy,omitempty" tf:"slide_by,omitempty"`
+
+	// The custom title to be used when incidents are opened by the condition. Setting this field will override the default title. Must be Handlebars format.
+	// This field allows you to create a custom title to be used when incidents are opened by the condition. Setting this field will override the default title. Must be Handlebars format.
+	// +kubebuilder:validation:Optional
+	TitleTemplate *string `json:"titleTemplate,omitempty" tf:"title_template,omitempty"`
 
 	// The type of the condition. Valid values are static or baseline. Defaults to static.
 	// The type of NRQL alert condition to create. Valid values are: 'static', 'baseline'.
@@ -452,6 +478,10 @@ type CriticalParameters struct {
 
 type NrqlInitParameters struct {
 
+	// BETA PREVIEW: the  The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
+	// BETA PREVIEW: the `data_account_id` field is in limited release and only enabled for preview on a per-account basis. - The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
+	DataAccountID *float64 `json:"dataAccountId,omitempty" tf:"data_account_id,omitempty"`
+
 	// DEPRECATED: Use aggregation_method instead. Represented in minutes and must be within 1-20 minutes (inclusive). NRQL queries are evaluated based on their aggregation_window size. The start time depends on this value. It's recommended to set this to 3 windows. An offset of less than 3 windows will trigger incidents sooner, but you may see more false positives and negatives due to data latency. With evaluation_offset set to 3 windows and an aggregation_window of 60 seconds, the NRQL time window applied to your query will be: SINCE 3 minutes ago UNTIL 2 minutes ago. evaluation_offset cannot be set with aggregation_method, aggregation_delay, or aggregation_timer.
 	// NRQL queries are evaluated in one-minute time windows. The start time depends on the value you provide in the NRQL condition's `evaluation_offset`.
 	EvaluationOffset *float64 `json:"evaluationOffset,omitempty" tf:"evaluation_offset,omitempty"`
@@ -466,6 +496,10 @@ type NrqlInitParameters struct {
 
 type NrqlObservation struct {
 
+	// BETA PREVIEW: the  The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
+	// BETA PREVIEW: the `data_account_id` field is in limited release and only enabled for preview on a per-account basis. - The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
+	DataAccountID *float64 `json:"dataAccountId,omitempty" tf:"data_account_id,omitempty"`
+
 	// DEPRECATED: Use aggregation_method instead. Represented in minutes and must be within 1-20 minutes (inclusive). NRQL queries are evaluated based on their aggregation_window size. The start time depends on this value. It's recommended to set this to 3 windows. An offset of less than 3 windows will trigger incidents sooner, but you may see more false positives and negatives due to data latency. With evaluation_offset set to 3 windows and an aggregation_window of 60 seconds, the NRQL time window applied to your query will be: SINCE 3 minutes ago UNTIL 2 minutes ago. evaluation_offset cannot be set with aggregation_method, aggregation_delay, or aggregation_timer.
 	// NRQL queries are evaluated in one-minute time windows. The start time depends on the value you provide in the NRQL condition's `evaluation_offset`.
 	EvaluationOffset *float64 `json:"evaluationOffset,omitempty" tf:"evaluation_offset,omitempty"`
@@ -479,6 +513,11 @@ type NrqlObservation struct {
 }
 
 type NrqlParameters struct {
+
+	// BETA PREVIEW: the  The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
+	// BETA PREVIEW: the `data_account_id` field is in limited release and only enabled for preview on a per-account basis. - The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
+	// +kubebuilder:validation:Optional
+	DataAccountID *float64 `json:"dataAccountId,omitempty" tf:"data_account_id,omitempty"`
 
 	// DEPRECATED: Use aggregation_method instead. Represented in minutes and must be within 1-20 minutes (inclusive). NRQL queries are evaluated based on their aggregation_window size. The start time depends on this value. It's recommended to set this to 3 windows. An offset of less than 3 windows will trigger incidents sooner, but you may see more false positives and negatives due to data latency. With evaluation_offset set to 3 windows and an aggregation_window of 60 seconds, the NRQL time window applied to your query will be: SINCE 3 minutes ago UNTIL 2 minutes ago. evaluation_offset cannot be set with aggregation_method, aggregation_delay, or aggregation_timer.
 	// NRQL queries are evaluated in one-minute time windows. The start time depends on the value you provide in the NRQL condition's `evaluation_offset`.

@@ -171,6 +171,41 @@ type DashboardParameters struct {
 	Variable []VariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
+type InitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type InitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type InitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+}
+
 type ItemInitParameters struct {
 
 	// A title for the widget.
@@ -587,7 +622,7 @@ type ThresholdInitParameters struct {
 
 	// The value 'from' which the threshold would need to be applied.
 	// The number from which the range starts in thresholds.
-	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+	From *string `json:"from,omitempty" tf:"from,omitempty"`
 
 	// The variable identifier.
 	// Name of the threshold created.
@@ -599,14 +634,14 @@ type ThresholdInitParameters struct {
 
 	// The value until which the threshold would need to be applied.
 	// The number at which the range ends in thresholds.
-	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+	To *string `json:"to,omitempty" tf:"to,omitempty"`
 }
 
 type ThresholdObservation struct {
 
 	// The value 'from' which the threshold would need to be applied.
 	// The number from which the range starts in thresholds.
-	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+	From *string `json:"from,omitempty" tf:"from,omitempty"`
 
 	// The variable identifier.
 	// Name of the threshold created.
@@ -618,7 +653,7 @@ type ThresholdObservation struct {
 
 	// The value until which the threshold would need to be applied.
 	// The number at which the range ends in thresholds.
-	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+	To *string `json:"to,omitempty" tf:"to,omitempty"`
 }
 
 type ThresholdParameters struct {
@@ -626,7 +661,7 @@ type ThresholdParameters struct {
 	// The value 'from' which the threshold would need to be applied.
 	// The number from which the range starts in thresholds.
 	// +kubebuilder:validation:Optional
-	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+	From *string `json:"from,omitempty" tf:"from,omitempty"`
 
 	// The variable identifier.
 	// Name of the threshold created.
@@ -641,7 +676,7 @@ type ThresholdParameters struct {
 	// The value until which the threshold would need to be applied.
 	// The number at which the range ends in thresholds.
 	// +kubebuilder:validation:Optional
-	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+	To *string `json:"to,omitempty" tf:"to,omitempty"`
 }
 
 type UnitsInitParameters struct {
@@ -883,6 +918,9 @@ type WidgetAreaInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []InitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -891,6 +929,9 @@ type WidgetAreaInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []NullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -931,6 +972,9 @@ type WidgetAreaObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []InitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -939,6 +983,9 @@ type WidgetAreaObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []NullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -981,6 +1028,10 @@ type WidgetAreaParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []InitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -992,6 +1043,10 @@ type WidgetAreaParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []NullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -1068,6 +1123,9 @@ type WidgetBarInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetBarInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -1080,6 +1138,9 @@ type WidgetBarInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetBarNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -1098,6 +1159,41 @@ type WidgetBarInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetBarInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetBarInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetBarInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetBarNrqlQueryInitParameters struct {
@@ -1223,6 +1319,9 @@ type WidgetBarObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetBarInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -1235,6 +1334,9 @@ type WidgetBarObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetBarNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -1282,6 +1384,10 @@ type WidgetBarParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetBarInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -1298,6 +1404,10 @@ type WidgetBarParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetBarNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -1473,6 +1583,9 @@ type WidgetBillboardInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetBillboardInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -1481,6 +1594,9 @@ type WidgetBillboardInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetBillboardNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -1503,6 +1619,41 @@ type WidgetBillboardInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetBillboardInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetBillboardInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetBillboardInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetBillboardNrqlQueryInitParameters struct {
@@ -1628,6 +1779,9 @@ type WidgetBillboardObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetBillboardInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -1636,6 +1790,9 @@ type WidgetBillboardObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetBillboardNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -1687,6 +1844,10 @@ type WidgetBillboardParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetBillboardInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -1698,6 +1859,10 @@ type WidgetBillboardParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetBillboardNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -1874,6 +2039,9 @@ type WidgetBulletInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetBulletInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -1886,6 +2054,9 @@ type WidgetBulletInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetBulletNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -1904,6 +2075,41 @@ type WidgetBulletInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetBulletInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetBulletInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetBulletInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetBulletNrqlQueryInitParameters struct {
@@ -2025,6 +2231,9 @@ type WidgetBulletObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetBulletInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -2037,6 +2246,9 @@ type WidgetBulletObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetBulletNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -2079,6 +2291,10 @@ type WidgetBulletParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetBulletInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -2095,6 +2311,10 @@ type WidgetBulletParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetBulletNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -2266,6 +2486,9 @@ type WidgetFunnelInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetFunnelInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -2274,6 +2497,9 @@ type WidgetFunnelInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetFunnelNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -2292,6 +2518,41 @@ type WidgetFunnelInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetFunnelInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetFunnelInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetFunnelInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetFunnelNrqlQueryInitParameters struct {
@@ -2413,6 +2674,9 @@ type WidgetFunnelObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetFunnelInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -2421,6 +2685,9 @@ type WidgetFunnelObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetFunnelNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -2463,6 +2730,10 @@ type WidgetFunnelParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetFunnelInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -2474,6 +2745,10 @@ type WidgetFunnelParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetFunnelNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -2649,6 +2924,9 @@ type WidgetHeatmapInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetHeatmapInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -2661,6 +2939,9 @@ type WidgetHeatmapInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetHeatmapNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -2679,6 +2960,41 @@ type WidgetHeatmapInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetHeatmapInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetHeatmapInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetHeatmapInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetHeatmapNrqlQueryInitParameters struct {
@@ -2804,6 +3120,9 @@ type WidgetHeatmapObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetHeatmapInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -2816,6 +3135,9 @@ type WidgetHeatmapObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetHeatmapNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -2863,6 +3185,10 @@ type WidgetHeatmapParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetHeatmapInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -2879,6 +3205,10 @@ type WidgetHeatmapParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetHeatmapNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -3050,6 +3380,9 @@ type WidgetHistogramInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetHistogramInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -3058,6 +3391,9 @@ type WidgetHistogramInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetHistogramNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -3076,6 +3412,41 @@ type WidgetHistogramInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetHistogramInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetHistogramInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetHistogramInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetHistogramNrqlQueryInitParameters struct {
@@ -3197,6 +3568,9 @@ type WidgetHistogramObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetHistogramInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -3205,6 +3579,9 @@ type WidgetHistogramObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetHistogramNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -3247,6 +3624,10 @@ type WidgetHistogramParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetHistogramInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -3258,6 +3639,10 @@ type WidgetHistogramParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetHistogramNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -3429,6 +3814,9 @@ type WidgetJSONInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetJSONInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -3437,6 +3825,9 @@ type WidgetJSONInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetJSONNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -3455,6 +3846,41 @@ type WidgetJSONInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetJSONInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetJSONInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetJSONInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetJSONNrqlQueryInitParameters struct {
@@ -3576,6 +4002,9 @@ type WidgetJSONObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetJSONInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -3584,6 +4013,9 @@ type WidgetJSONObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetJSONNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -3626,6 +4058,10 @@ type WidgetJSONParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetJSONInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -3637,6 +4073,10 @@ type WidgetJSONParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetJSONNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -3808,6 +4248,9 @@ type WidgetLineInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetLineInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
 	// Specified if the label should be visible in the graph created when specified with thresholds.
 	IsLabelVisible *bool `json:"isLabelVisible,omitempty" tf:"is_label_visible,omitempty"`
@@ -3820,6 +4263,9 @@ type WidgetLineInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetLineNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -3848,6 +4294,41 @@ type WidgetLineInitParameters struct {
 
 	// An attribute which helps specify the configuration of the Y-Axis displayed on the right side of the line widget. This is a nested block, which includes the following attributes:
 	YAxisRight []YAxisRightInitParameters `json:"yAxisRight,omitempty" tf:"y_axis_right,omitempty"`
+}
+
+type WidgetLineInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetLineInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetLineInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetLineNrqlQueryInitParameters struct {
@@ -3969,6 +4450,9 @@ type WidgetLineObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetLineInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
 	// Specified if the label should be visible in the graph created when specified with thresholds.
 	IsLabelVisible *bool `json:"isLabelVisible,omitempty" tf:"is_label_visible,omitempty"`
@@ -3981,6 +4465,9 @@ type WidgetLineObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetLineNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -4033,6 +4520,10 @@ type WidgetLineParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetLineInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.
 	// Specified if the label should be visible in the graph created when specified with thresholds.
 	// +kubebuilder:validation:Optional
@@ -4049,6 +4540,10 @@ type WidgetLineParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetLineNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -4233,6 +4728,9 @@ type WidgetLogTableInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetLogTableInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -4241,6 +4739,9 @@ type WidgetLogTableInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetLogTableNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -4259,6 +4760,41 @@ type WidgetLogTableInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetLogTableInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetLogTableInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetLogTableInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetLogTableNrqlQueryInitParameters struct {
@@ -4380,6 +4916,9 @@ type WidgetLogTableObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetLogTableInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -4388,6 +4927,9 @@ type WidgetLogTableObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetLogTableNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -4430,6 +4972,10 @@ type WidgetLogTableParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetLogTableInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -4441,6 +4987,10 @@ type WidgetLogTableParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetLogTableNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -4612,11 +5162,17 @@ type WidgetMarkdownInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetMarkdownInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetMarkdownNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -4638,6 +5194,41 @@ type WidgetMarkdownInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetMarkdownInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetMarkdownInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetMarkdownInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetMarkdownNullValuesInitParameters struct {
@@ -4724,11 +5315,17 @@ type WidgetMarkdownObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetMarkdownInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetMarkdownNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -4774,6 +5371,10 @@ type WidgetMarkdownParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetMarkdownInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -4781,6 +5382,10 @@ type WidgetMarkdownParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetMarkdownNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -4960,6 +5565,9 @@ type WidgetPieInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetPieInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -4972,6 +5580,9 @@ type WidgetPieInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetPieNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -4990,6 +5601,41 @@ type WidgetPieInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetPieInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetPieInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetPieInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetPieNrqlQueryInitParameters struct {
@@ -5115,6 +5761,9 @@ type WidgetPieObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetPieInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -5127,6 +5776,9 @@ type WidgetPieObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetPieNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -5174,6 +5826,10 @@ type WidgetPieParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetPieInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -5190,6 +5846,10 @@ type WidgetPieParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetPieNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -5361,6 +6021,9 @@ type WidgetStackedBarInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetStackedBarInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -5369,6 +6032,9 @@ type WidgetStackedBarInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetStackedBarNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -5387,6 +6053,41 @@ type WidgetStackedBarInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetStackedBarInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetStackedBarInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetStackedBarInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetStackedBarNrqlQueryInitParameters struct {
@@ -5508,6 +6209,9 @@ type WidgetStackedBarObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetStackedBarInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -5516,6 +6220,9 @@ type WidgetStackedBarObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetStackedBarNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -5558,6 +6265,10 @@ type WidgetStackedBarParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetStackedBarInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -5569,6 +6280,10 @@ type WidgetStackedBarParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetStackedBarNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -5744,6 +6459,9 @@ type WidgetTableInitParameters struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetTableInitialSortingInitParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -5756,6 +6474,9 @@ type WidgetTableInitParameters struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetTableNullValuesInitParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -5777,6 +6498,41 @@ type WidgetTableInitParameters struct {
 
 	// Adjust the Y axis to display the data within certain values by setting a minimum and maximum value for the axis for line charts and area charts. If no customization option is selected, dashboards automatically displays the full Y axis from 0 to the top value plus a margin.
 	YAxisLeftMin *float64 `json:"yAxisLeftMin,omitempty" tf:"y_axis_left_min,omitempty"`
+}
+
+type WidgetTableInitialSortingInitParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetTableInitialSortingObservation struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	Direction *string `json:"direction,omitempty" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type WidgetTableInitialSortingParameters struct {
+
+	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
+	// Defines the sort order. Either ascending or descending.
+	// +kubebuilder:validation:Optional
+	Direction *string `json:"direction" tf:"direction,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
 }
 
 type WidgetTableNrqlQueryInitParameters struct {
@@ -5902,6 +6658,9 @@ type WidgetTableObservation struct {
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	InitialSorting []WidgetTableInitialSortingObservation `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
 
@@ -5914,6 +6673,9 @@ type WidgetTableObservation struct {
 
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	NullValues []WidgetTableNullValuesObservation `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	Row *float64 `json:"row,omitempty" tf:"row,omitempty"`
@@ -5964,6 +6726,10 @@ type WidgetTableParameters struct {
 	// +kubebuilder:validation:Optional
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 
+	// An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -
+	// +kubebuilder:validation:Optional
+	InitialSorting []WidgetTableInitialSortingParameters `json:"initialSorting,omitempty" tf:"initial_sorting,omitempty"`
+
 	// With this turned on, the legend will be displayed. Defaults to true.
 	// +kubebuilder:validation:Optional
 	LegendEnabled *bool `json:"legendEnabled,omitempty" tf:"legend_enabled,omitempty"`
@@ -5980,6 +6746,10 @@ type WidgetTableParameters struct {
 	// A nested block that describes a Null Values. See Nested Null Values blocks below for details.
 	// +kubebuilder:validation:Optional
 	NullValues []WidgetTableNullValuesParameters `json:"nullValues,omitempty" tf:"null_values,omitempty"`
+
+	// This attribute determines the frequency for data refresh specified in milliseconds. Accepted values are auto for default value, 0 for no refresh, 5000 for 5 seconds, 30000 for 30 seconds, 60000 for 60 seconds, 300000 for 5 minutes, 1800000 for 30 minutes, 3600000 for 60 minute, 10800000 for 3 hours, 43200000 for 12 hours and 86400000 for 24 hours.
+	// +kubebuilder:validation:Optional
+	RefreshRate *string `json:"refreshRate,omitempty" tf:"refresh_rate,omitempty"`
 
 	// Row position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
@@ -6018,7 +6788,7 @@ type WidgetTableThresholdInitParameters struct {
 
 	// The value 'from' which the threshold would need to be applied.
 	// The number from which the range starts in thresholds.
-	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+	From *string `json:"from,omitempty" tf:"from,omitempty"`
 
 	// The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
 	// Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
@@ -6026,7 +6796,7 @@ type WidgetTableThresholdInitParameters struct {
 
 	// The value until which the threshold would need to be applied.
 	// The number at which the range ends in thresholds.
-	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+	To *string `json:"to,omitempty" tf:"to,omitempty"`
 }
 
 type WidgetTableThresholdObservation struct {
@@ -6037,7 +6807,7 @@ type WidgetTableThresholdObservation struct {
 
 	// The value 'from' which the threshold would need to be applied.
 	// The number from which the range starts in thresholds.
-	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+	From *string `json:"from,omitempty" tf:"from,omitempty"`
 
 	// The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
 	// Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
@@ -6045,7 +6815,7 @@ type WidgetTableThresholdObservation struct {
 
 	// The value until which the threshold would need to be applied.
 	// The number at which the range ends in thresholds.
-	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+	To *string `json:"to,omitempty" tf:"to,omitempty"`
 }
 
 type WidgetTableThresholdParameters struct {
@@ -6058,7 +6828,7 @@ type WidgetTableThresholdParameters struct {
 	// The value 'from' which the threshold would need to be applied.
 	// The number from which the range starts in thresholds.
 	// +kubebuilder:validation:Optional
-	From *float64 `json:"from,omitempty" tf:"from,omitempty"`
+	From *string `json:"from,omitempty" tf:"from,omitempty"`
 
 	// The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.
 	// Severity of the threshold, which would reflect in the widget, in the range of the threshold specified.
@@ -6068,7 +6838,7 @@ type WidgetTableThresholdParameters struct {
 	// The value until which the threshold would need to be applied.
 	// The number at which the range ends in thresholds.
 	// +kubebuilder:validation:Optional
-	To *float64 `json:"to,omitempty" tf:"to,omitempty"`
+	To *string `json:"to,omitempty" tf:"to,omitempty"`
 }
 
 type WidgetTableUnitsInitParameters struct {

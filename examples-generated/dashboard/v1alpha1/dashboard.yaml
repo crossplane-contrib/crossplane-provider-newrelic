@@ -35,6 +35,7 @@ spec:
         nrqlQuery:
         - accountId: 12345
           query: FROM Transaction SELECT average(duration) FACET appName
+        refreshRate: 300000
         row: 4
         title: Average transaction duration, by application
         width: 6
@@ -43,6 +44,7 @@ spec:
         height: 3
         nrqlQuery:
         - query: FROM Transaction SELECT rate(count(*), 1 minute)
+        refreshRate: 60000
         row: 1
         title: Requests per minute
         width: 6
@@ -57,16 +59,17 @@ spec:
           query: FROM Transaction select max(duration) as 'max duration' where httpResponseCode
             = '504' timeseries since 5 minutes ago
         - query: FROM Transaction SELECT rate(count(*), 1 minute)
+        refreshRate: 30000
         row: 4
         threshold:
         - from: 1
           name: Duration Threshold
           severity: critical
           to: 2
-        - from: 0.5
+        - from: 2.1
           name: Duration Threshold Two
           severity: warning
-          to: 0.75
+          to: 3.3
         title: Average transaction duration and the request per minute, by application
         units:
         - seriesOverrides:
@@ -120,6 +123,18 @@ spec:
           * [Developer Portal](https://developer.newrelic.com)
         title: Dashboard Note
         width: 12
+      widgetTable:
+      - column: 4
+        height: 3
+        initialSorting:
+        - direction: desc
+          name: timestamp
+        nrqlQuery:
+        - query: FROM Transaction SELECT *
+        refreshRate: 60000
+        row: 1
+        title: List of Transactions
+        width: 6
     permissions: public_read_only
     variable:
     - defaultValues:
