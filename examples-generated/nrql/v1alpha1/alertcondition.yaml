@@ -23,6 +23,7 @@ spec:
     expirationDuration: 120
     fillOption: static
     fillValue: 1
+    ignoreOnExpectedTermination: true
     name: foo
     nrql:
     - query: SELECT average(duration) FROM Transaction where appName = 'Your App'
@@ -32,6 +33,7 @@ spec:
         testing.upbound.io/example-name: foo
     runbookUrl: https://www.example.com
     slideBy: 30
+    titleTemplate: 'Issue in environment: {{ json accumulations.tag.environment }}'
     type: static
     violationTimeLimitSeconds: 3600
     warning:

@@ -54,6 +54,10 @@ type DestinationInitParameters struct {
 	// Issue events to notify on. The value is a list of possible issue events. See Notification Triggers below for details.
 	// List of triggers to notify about in this destination configuration.
 	NotificationTriggers []*string `json:"notificationTriggers,omitempty" tf:"notification_triggers,omitempty"`
+
+	// Update original notification message (Slack channels only).
+	// Update original notification message (Slack channels only)
+	UpdateOriginalMessage *bool `json:"updateOriginalMessage,omitempty" tf:"update_original_message,omitempty"`
 }
 
 type DestinationObservation struct {
@@ -72,8 +76,12 @@ type DestinationObservation struct {
 	NotificationTriggers []*string `json:"notificationTriggers,omitempty" tf:"notification_triggers,omitempty"`
 
 	// Type of the filter. Please just set this field to FILTER. The field is likely to be deprecated/removed in the near future.
-	// (Required) The type of the destination. One of: (EMAIL, EVENT_BRIDGE, PAGERDUTY_ACCOUNT_INTEGRATION, PAGERDUTY_SERVICE_INTEGRATION, SERVICE_NOW, WEBHOOK, MOBILE_PUSH, SLACK, JIRA).
+	// (Required) The type of the destination. One of: (EMAIL, EVENT_BRIDGE, PAGERDUTY_ACCOUNT_INTEGRATION, PAGERDUTY_SERVICE_INTEGRATION, SERVICE_NOW, SERVICE_NOW_APP, WEBHOOK, MOBILE_PUSH, SLACK, JIRA).
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Update original notification message (Slack channels only).
+	// Update original notification message (Slack channels only)
+	UpdateOriginalMessage *bool `json:"updateOriginalMessage,omitempty" tf:"update_original_message,omitempty"`
 }
 
 type DestinationParameters struct {
@@ -97,6 +105,11 @@ type DestinationParameters struct {
 	// List of triggers to notify about in this destination configuration.
 	// +kubebuilder:validation:Optional
 	NotificationTriggers []*string `json:"notificationTriggers,omitempty" tf:"notification_triggers,omitempty"`
+
+	// Update original notification message (Slack channels only).
+	// Update original notification message (Slack channels only)
+	// +kubebuilder:validation:Optional
+	UpdateOriginalMessage *bool `json:"updateOriginalMessage,omitempty" tf:"update_original_message,omitempty"`
 }
 
 type EnrichmentsInitParameters struct {
