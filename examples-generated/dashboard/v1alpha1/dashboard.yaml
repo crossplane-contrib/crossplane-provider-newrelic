@@ -41,6 +41,9 @@ spec:
         width: 6
       widgetBillboard:
       - column: 1
+        dataFormat:
+        - name: rate
+          type: recent-relative
         height: 3
         nrqlQuery:
         - query: FROM Transaction SELECT rate(count(*), 1 minute)
@@ -125,6 +128,9 @@ spec:
         width: 12
       widgetTable:
       - column: 4
+        dataFormat:
+        - name: duration
+          type: decimal
         height: 3
         initialSorting:
         - direction: desc

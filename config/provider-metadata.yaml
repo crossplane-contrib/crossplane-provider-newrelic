@@ -2123,6 +2123,15 @@ resources:
                 }
               references:
                 authentication_domain_id: data.newrelic_authentication_domain.foo.id
+            - name: viewer
+              manifest: |-
+                {
+                  "lifecycle": [
+                    {
+                      "create_before_destroy": true
+                    }
+                  ]
+                }
             - name: foo
               manifest: |-
                 {
@@ -2395,6 +2404,31 @@ resources:
             timestamp: '- (Optional) Must be a Unix epoch timestamp. You can define timestamps either in seconds or in milliseconds.'
             type: '- (Required) The event''s name. Can be a combination of alphanumeric characters, underscores, and colons.'
             value: '- (Required) The value of the attribute.'
+        importStatements: []
+    newrelic_key_transaction:
+        subCategory: ""
+        description: Create a new New Relic Key Transaction.
+        name: newrelic_key_transaction
+        title: newrelic_key_transaction
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "apdex_index": 0.5,
+                  "application_guid": "MzgfNjUyNnxBUE19QVBQTElDQVHJT068NTUfNDT4MjUy",
+                  "browser_apdex_target": 0.5,
+                  "metric_name": "WebTransaction/Function/__main__:foo_bar",
+                  "name": "Sample Key Transaction"
+                }
+        argumentDocs:
+            apdex_index: '- (Required) A decimal value, measuring user satisfaction with response times, ranging from 0 (frustrated) to 1 (satisfied).'
+            application_guid: '- (Required) The GUID of the APM Application comprising transactions, of which one would be made a key transaction.'
+            browser_apdex_target: '- (Required) A decimal value representing the response time threshold for satisfactory experience (e.g., 0.5 seconds).'
+            domain: '- The domain of the entity monitored by the key transaction.'
+            id: '- The GUID of the created key transaction.'
+            metric_name: '- (Required) - The name of the underlying metric monitored by the key transaction to be created.'
+            name: '- (Required) - The name of the key transaction.'
+            type: '- The type of the entity monitored by the key transaction.'
         importStatements: []
     newrelic_log_parsing_rule:
         subCategory: ""
@@ -3486,6 +3520,12 @@ resources:
                       "widget_billboard": [
                         {
                           "column": 1,
+                          "data_format": [
+                            {
+                              "name": "rate",
+                              "type": "recent-relative"
+                            }
+                          ],
                           "height": 3,
                           "nrql_query": [
                             {
@@ -3613,6 +3653,12 @@ resources:
                       "widget_table": [
                         {
                           "column": 4,
+                          "data_format": [
+                            {
+                              "name": "duration",
+                              "type": "decimal"
+                            }
+                          ],
                           "height": 3,
                           "initial_sorting": [
                             {
@@ -3716,11 +3762,34 @@ resources:
             color: '- (Optional) Choose a color to customize the color of your charts per series in area, bar, line, pie, and stacked bar charts. Accepted values are RGB, HEX, or HSL code.'
             column_name: '- The name of the column in the table, to which the threshold would need to be applied.'
             critical: '- (Optional) Threshold above which the displayed value will be styled with a red color.'
+            custom: to be used with date/time values, in order to select a specific format the date/time value would need to be rendered as
+            data_format: '- (Optional) A nested block that describes data format. See Nested data_format blocks below for details.'
+            data_format.%b %d, %Y: |-
+                | MMM DD,YYYY           |
+                | %d/%m/%Y          | DD/MM/YYYY(EU)        |
+                | %x                | DD/MM/YYYY(USA)       |
+                | %I:%M%p           | 12-hour format        |
+                | %H:%Mh            | 24-hour format        |
+                | %H:%Mh UTC (%Z)   | 24-hour with timezone |
+                | %Y-%m-%dT%X.%L%Z  | ISO with timezone     |
+                | %b %d, %Y, %X     | MMM DD, YYYY,hh:mm:ss |
+                | %X                | hh:mm:ss              |
+            data_format.data_format: block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+            data_format.data_format{}: with values of type duration, recent-relative and timestamp with no additional arguments specified.
+            data_format.format: '- (Optional) This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.'
+            data_format.name: '- (Required) This attribute mandates the specification of the column name to be formatted. It identifies which column the data format should be applied to.'
+            data_format.precision: '- (Optional) This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.'
+            data_format.type: '- (Required) This attribute sets the format category for your data. Accepted values include -'
+            date: for date/time values
+            decimal: for numeric values
             description: '- (Optional) Brief text describing the dashboard.'
             direction: '- (Required) Defines the sort order. Accepted values are asc for ascending or desc for descending.'
+            duration: for length of time
+            excluded: '- (Optional) An argument with a boolean value. With this turned on, the query condition defined with the variable will not be included in the query. Defaults to false.'
             filter_current_dashboard: ': (Optional) Use this item to filter the current dashboard.'
             from: '- The value ''from'' which the threshold would need to be applied.'
             guid: '- The unique entity identifier of the dashboard in New Relic.'
+            humanized: to be used with numeric values, in order to enable Autoformat
             ignore_time_range: '- (Optional) An argument with a boolean value that is supported only by variables of type nrql - when true, the time range specified in the query will override the time picker on dashboards and other pages.'
             initial_sorting: '- (Optional) An attribute that describes the sorting mechanism for the table. This attribute requires specifying the following attributes in a nested block -'
             is_label_visible: '- (Optional) A boolean value, which when true, sets the label to be visibly displayed within thresholds. In other words, if this attribute is set to true, the label always visible toggle in the Thresholds section in the settings of the widget is enabled.'
@@ -3751,6 +3820,7 @@ resources:
             page.widget_table: '- (Optional) A nested block that describes a Table widget.  See Nested widget blocks below for details.'
             permalink: '- The URL for viewing the dashboard.'
             permissions: '- (Optional) Determines who can see the dashboard in an account. Valid values are private, public_read_only, or public_read_write.  Defaults to public_read_only.'
+            recent-relative: for values referencing a relative point in time
             series_overrides: '- (Optional) A Nested block which will take two string attributes null_value and series_name. This nested block is used to customize null values of individual.'
             severity: '- The severity of the threshold, which would affect the visual appearance of the threshold (such as its color) accordingly. The value of this attribute would need to be one of the following - warning, severe, critical, success, unavailable which correspond to the severity labels Warning, Approaching critical, Critical, Good, Neutral in the dropdown that helps specify the severity of thresholds in line widgets in the UI, respectively.'
             text: '- (Required) The markdown source to be rendered in the widget.'
@@ -4253,8 +4323,8 @@ resources:
             name: '- (Required) The name for the monitor.'
             period: '- (Required) The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.'
             period_in_minutes: '- The interval in minutes at which Synthetic monitor should run.'
-            runtime_type: '- (Optional) The runtime that the monitor will use to run jobs.'
-            runtime_type_version: '- (Optional) The specific version of the runtime type selected.'
+            runtime_type: '- (Optional) The runtime that the monitor will use to run jobs (NODE_API).'
+            runtime_type_version: '- (Optional) The specific version of the runtime type selected (16.10).'
             status: '- (Required) The run state of the monitor. (ENABLED or DISABLED).'
             tag: '- (Optional) The tags that will be associated with the monitor. See Nested tag blocks below for details'
             tag.key: '- (Required) Name of the tag key.'
@@ -4326,8 +4396,8 @@ resources:
             name: '- (Required) The name for the monitor.'
             period: '- (Required) The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.'
             period_in_minutes: '- The interval in minutes at which Synthetic monitor should run.'
-            runtime_type: '- (Optional) The runtime that the monitor will use to run jobs.'
-            runtime_type_version: '- (Optional) The specific version of the runtime type selected.'
+            runtime_type: '- (Optional) The runtime that the monitor will use to run jobs (NODE_API).'
+            runtime_type_version: '- (Optional) The specific version of the runtime type selected (16.10).'
             status: '- (Required) The run state of the monitor. (ENABLED or DISABLED).'
             tag: '- (Optional) The tags that will be associated with the monitor. See Nested tag blocks below for details'
             tag.key: '- (Required) Name of the tag key.'
@@ -4521,8 +4591,8 @@ resources:
             custom_header: '- (Optional) Custom headers to use in monitor job. See Nested custom_header blocks below for details.'
             custom_header.name: '- (Required) Header name.'
             custom_header.value: '- (Required) Header Value.'
-            device_orientation: '- (Optional) Device emulation orientation field. Valid values are LANDSCAPE and PORTRAIT. We recommend you to use devices field instead of device_type,device_orientation fields, as it allows you to select multiple combinations of device types and orientations.'
-            device_type: '- (Optional) Device emulation type field. Valid values are MOBILE and TABLET. We recommend you to use devices field instead of device_type,device_orientation fields, as it allows you to select multiple combinations of device types and orientations.'
+            device_orientation: '- (Optional) Device emulation orientation field. Valid values are LANDSCAPE and PORTRAIT.'
+            device_type: '- (Optional) Device emulation type field. Valid values are MOBILE and TABLET.'
             devices: '- (Optional) The multiple devices list on which synthetic monitors will run. Valid values are DESKTOP, MOBILE_LANDSCAPE, MOBILE_PORTRAIT, TABLET_LANDSCAPE and TABLET_PORTRAIT.'
             enable_screenshot_on_failure_and_script: '- (Optional) Capture a screenshot during job execution.'
             id: '- The ID (GUID) of the Synthetics monitor that the script is attached to.'
@@ -4531,8 +4601,8 @@ resources:
             name: '- (Required) The human-readable identifier for the monitor.'
             period: '- (Required) The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.'
             period_in_minutes: '- The interval in minutes at which Synthetic monitor should run.'
-            runtime_type: '- (Optional) The runtime type that the monitor will run. Valid value is CHROME_BROWSER'
-            runtime_type_version: '- (Optional) The runtime type that the monitor will run. Valid value is 100.'
+            runtime_type: '- (Optional) The runtime that the monitor will use to run jobs (CHROME_BROWSER).'
+            runtime_type_version: '- (Optional) The specific version of the runtime type selected (100).'
             script_language: '- (Optional) The programing language that should execute the script.'
             status: '- (Required) The run state of the monitor. (ENABLED or DISABLED).'
             tag: '- (Optional) The tags that will be associated with the monitor. See Nested tag blocks below for details.'
@@ -4994,8 +5064,8 @@ resources:
             name: '- (Required) The name for the monitor.'
             period: '- (Required) The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.'
             period_in_minutes: '- The interval in minutes at which Synthetic monitor should run.'
-            runtime_type: '- (Optional) The runtime that the monitor will use to run jobs.'
-            runtime_type_version: '- (Optional) The specific version of the runtime type selected.'
+            runtime_type: '- (Optional) The runtime that the monitor will use to run jobs (CHROME_BROWSER).'
+            runtime_type_version: '- (Optional) The specific version of the runtime type selected (100).'
             status: '- (Required) The run state of the monitor. (ENABLED or DISABLED).'
             steps: '- (Required) The steps that make up the script the monitor will run. See Nested steps blocks below for details.'
             steps.ordinal: '- (Required) The position of the step within the script ranging from 0-100.'
