@@ -146,6 +146,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -342,6 +372,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -555,6 +615,36 @@ spec:
                                   Threshold above which the displayed value will be styled with a red color.
                                   The critical threshold value.
                                 type: string
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -756,6 +846,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -957,6 +1077,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -1153,6 +1303,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -1361,6 +1541,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -1557,6 +1767,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -1753,6 +1993,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -2023,6 +2293,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -2219,6 +2519,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -2402,6 +2732,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -2610,6 +2970,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -2806,6 +3196,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -3076,6 +3496,11 @@ spec:
                             Options applied to the variable.
                           items:
                             properties:
+                              excluded:
+                                description: |-
+                                  An argument with a boolean value. With this turned on, the query condition defined with the variable will not be included in the query. Defaults to false.
+                                  Only applies to variables of type NRQL. With this turned on, query condition defined with the variable will not be included in the query.
+                                type: boolean
                               ignoreTimeRange:
                                 description: |-
                                   With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
@@ -3187,6 +3612,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -3383,6 +3838,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -3596,6 +4081,36 @@ spec:
                                   Threshold above which the displayed value will be styled with a red color.
                                   The critical threshold value.
                                 type: string
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -3797,6 +4312,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -3998,6 +4543,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -4194,6 +4769,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -4402,6 +5007,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -4598,6 +5233,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -4794,6 +5459,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -5064,6 +5759,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -5260,6 +5985,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -5443,6 +6198,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -5651,6 +6436,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -5847,6 +6662,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -6117,6 +6962,11 @@ spec:
                             Options applied to the variable.
                           items:
                             properties:
+                              excluded:
+                                description: |-
+                                  An argument with a boolean value. With this turned on, the query condition defined with the variable will not be included in the query. Defaults to false.
+                                  Only applies to variables of type NRQL. With this turned on, query condition defined with the variable will not be included in the query.
+                                type: boolean
                               ignoreTimeRange:
                                 description: |-
                                   With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
@@ -6408,6 +7258,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -6607,6 +7487,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -6823,6 +7733,36 @@ spec:
                                   Threshold above which the displayed value will be styled with a red color.
                                   The critical threshold value.
                                 type: string
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -7027,6 +7967,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -7231,6 +8201,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -7430,6 +8430,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -7641,6 +8671,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -7840,6 +8900,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -8039,6 +9129,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -8312,6 +9432,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -8511,6 +9661,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -8697,6 +9877,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -8908,6 +10118,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -9107,6 +10347,36 @@ spec:
                                 description: Column position of widget from top left,
                                   starting at 1.
                                 type: number
+                              dataFormat:
+                                description: block for date/time values, the type
+                                  would need to be set to date. However, if you would
+                                  also like to specify a format of the date/time value
+                                  (with the format argument), the type would need
+                                  to be set to custom.
+                                items:
+                                  properties:
+                                    format:
+                                      description: |-
+                                        This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+                                        Defines the format of the mentioned type
+                                      type: string
+                                    name:
+                                      description: |-
+                                        The variable identifier.
+                                        The column name to be sorted
+                                      type: string
+                                    precision:
+                                      description: |-
+                                        This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+                                        The precision of the type
+                                      type: number
+                                    type:
+                                      description: |-
+                                        Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+                                        Defines the type of the mentioned column
+                                      type: string
+                                  type: object
+                                type: array
                               facetShowOtherSeries:
                                 description: Enable or disable the Other group in
                                   visualisations. The other group is used if a facet
@@ -9385,6 +10655,11 @@ spec:
                             Options applied to the variable.
                           items:
                             properties:
+                              excluded:
+                                description: |-
+                                  An argument with a boolean value. With this turned on, the query condition defined with the variable will not be included in the query. Defaults to false.
+                                  Only applies to variables of type NRQL. With this turned on, query condition defined with the variable will not be included in the query.
+                                type: boolean
                               ignoreTimeRange:
                                 description: |-
                                   With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.

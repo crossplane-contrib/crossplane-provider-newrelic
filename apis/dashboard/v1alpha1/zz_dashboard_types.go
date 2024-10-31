@@ -171,6 +171,67 @@ type DashboardParameters struct {
 	Variable []VariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
+type DataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type DataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type DataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type InitialSortingInitParameters struct {
 
 	// Defines the sort order. Accepted values are asc for ascending or desc for descending.
@@ -342,6 +403,10 @@ type NullValuesSeriesOverridesParameters struct {
 
 type OptionsInitParameters struct {
 
+	// An argument with a boolean value. With this turned on, the query condition defined with the variable will not be included in the query. Defaults to false.
+	// Only applies to variables of type NRQL. With this turned on, query condition defined with the variable will not be included in the query.
+	Excluded *bool `json:"excluded,omitempty" tf:"excluded,omitempty"`
+
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	// Only applies to variables of type NRQL. With this turned on, the time range for the NRQL query will override the time picker on dashboards and other pages. Turn this off to use the time picker as normal.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
@@ -349,12 +414,21 @@ type OptionsInitParameters struct {
 
 type OptionsObservation struct {
 
+	// An argument with a boolean value. With this turned on, the query condition defined with the variable will not be included in the query. Defaults to false.
+	// Only applies to variables of type NRQL. With this turned on, query condition defined with the variable will not be included in the query.
+	Excluded *bool `json:"excluded,omitempty" tf:"excluded,omitempty"`
+
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	// Only applies to variables of type NRQL. With this turned on, the time range for the NRQL query will override the time picker on dashboards and other pages. Turn this off to use the time picker as normal.
 	IgnoreTimeRange *bool `json:"ignoreTimeRange,omitempty" tf:"ignore_time_range,omitempty"`
 }
 
 type OptionsParameters struct {
+
+	// An argument with a boolean value. With this turned on, the query condition defined with the variable will not be included in the query. Defaults to false.
+	// Only applies to variables of type NRQL. With this turned on, query condition defined with the variable will not be included in the query.
+	// +kubebuilder:validation:Optional
+	Excluded *bool `json:"excluded,omitempty" tf:"excluded,omitempty"`
 
 	// With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
 	// Only applies to variables of type NRQL. With this turned on, the time range for the NRQL query will override the time picker on dashboards and other pages. Turn this off to use the time picker as normal.
@@ -909,6 +983,9 @@ type WidgetAreaInitParameters struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []DataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -959,6 +1036,9 @@ type WidgetAreaObservation struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []DataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -1015,6 +1095,10 @@ type WidgetAreaParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []DataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -1102,6 +1186,67 @@ type WidgetBarColorsParameters struct {
 	SeriesOverrides []ColorsSeriesOverridesParameters `json:"seriesOverrides,omitempty" tf:"series_overrides,omitempty"`
 }
 
+type WidgetBarDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetBarDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetBarDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetBarInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -1109,6 +1254,9 @@ type WidgetBarInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetBarDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -1303,6 +1451,9 @@ type WidgetBarObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetBarDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -1366,6 +1517,10 @@ type WidgetBarParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetBarDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -1562,6 +1717,67 @@ type WidgetBillboardColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetBillboardDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetBillboardDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetBillboardDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetBillboardInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -1573,6 +1789,9 @@ type WidgetBillboardInitParameters struct {
 	// Threshold above which the displayed value will be styled with a red color.
 	// The critical threshold value.
 	Critical *string `json:"critical,omitempty" tf:"critical,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetBillboardDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -1767,6 +1986,9 @@ type WidgetBillboardObservation struct {
 	// The critical threshold value.
 	Critical *string `json:"critical,omitempty" tf:"critical,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetBillboardDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -1831,6 +2053,10 @@ type WidgetBillboardParameters struct {
 	// The critical threshold value.
 	// +kubebuilder:validation:Optional
 	Critical *string `json:"critical,omitempty" tf:"critical,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetBillboardDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -2022,6 +2248,67 @@ type WidgetBulletColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetBulletDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetBulletDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetBulletDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetBulletInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -2029,6 +2316,9 @@ type WidgetBulletInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetBulletDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -2219,6 +2509,9 @@ type WidgetBulletObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetBulletDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -2278,6 +2571,10 @@ type WidgetBulletParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetBulletDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -2469,6 +2766,67 @@ type WidgetFunnelColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetFunnelDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetFunnelDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetFunnelDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetFunnelInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -2476,6 +2834,9 @@ type WidgetFunnelInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetFunnelDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -2662,6 +3023,9 @@ type WidgetFunnelObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetFunnelDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -2717,6 +3081,10 @@ type WidgetFunnelParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetFunnelDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -2903,6 +3271,67 @@ type WidgetHeatmapColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetHeatmapDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetHeatmapDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetHeatmapDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetHeatmapInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -2910,6 +3339,9 @@ type WidgetHeatmapInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetHeatmapDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -3104,6 +3536,9 @@ type WidgetHeatmapObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetHeatmapDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -3167,6 +3602,10 @@ type WidgetHeatmapParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetHeatmapDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -3363,6 +3802,67 @@ type WidgetHistogramColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetHistogramDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetHistogramDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetHistogramDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetHistogramInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -3370,6 +3870,9 @@ type WidgetHistogramInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetHistogramDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -3556,6 +4059,9 @@ type WidgetHistogramObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetHistogramDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -3611,6 +4117,10 @@ type WidgetHistogramParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetHistogramDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -3797,6 +4307,67 @@ type WidgetJSONColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetJSONDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetJSONDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetJSONDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetJSONInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -3804,6 +4375,9 @@ type WidgetJSONInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetJSONDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -3990,6 +4564,9 @@ type WidgetJSONObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetJSONDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -4045,6 +4622,10 @@ type WidgetJSONParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetJSONDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -4231,6 +4812,67 @@ type WidgetLineColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetLineDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetLineDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetLineDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetLineInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -4238,6 +4880,9 @@ type WidgetLineInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetLineDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -4438,6 +5083,9 @@ type WidgetLineObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetLineDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -4507,6 +5155,10 @@ type WidgetLineParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetLineDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -4711,6 +5363,67 @@ type WidgetLogTableColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetLogTableDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetLogTableDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetLogTableDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetLogTableInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -4718,6 +5431,9 @@ type WidgetLogTableInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetLogTableDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -4904,6 +5620,9 @@ type WidgetLogTableObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetLogTableDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -4959,6 +5678,10 @@ type WidgetLogTableParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetLogTableDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -5145,6 +5868,67 @@ type WidgetMarkdownColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetMarkdownDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetMarkdownDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetMarkdownDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetMarkdownInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -5152,6 +5936,9 @@ type WidgetMarkdownInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetMarkdownDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -5303,6 +6090,9 @@ type WidgetMarkdownObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetMarkdownDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -5358,6 +6148,10 @@ type WidgetMarkdownParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetMarkdownDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -5544,6 +6338,67 @@ type WidgetPieColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetPieDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetPieDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetPieDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetPieInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -5551,6 +6406,9 @@ type WidgetPieInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetPieDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -5745,6 +6603,9 @@ type WidgetPieObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetPieDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -5808,6 +6669,10 @@ type WidgetPieParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetPieDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -6004,6 +6869,67 @@ type WidgetStackedBarColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetStackedBarDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetStackedBarDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetStackedBarDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetStackedBarInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -6011,6 +6937,9 @@ type WidgetStackedBarInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetStackedBarDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -6197,6 +7126,9 @@ type WidgetStackedBarObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetStackedBarDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -6252,6 +7184,10 @@ type WidgetStackedBarParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetStackedBarDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
@@ -6438,6 +7374,67 @@ type WidgetTableColorsSeriesOverridesParameters struct {
 	SeriesName *string `json:"seriesName,omitempty" tf:"series_name,omitempty"`
 }
 
+type WidgetTableDataFormatInitParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetTableDataFormatObservation struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type WidgetTableDataFormatParameters struct {
+
+	// This attribute is provided when the name is that of a column comprising date/time values and the type attribute is set to custom defining the specific date format to be applied to your data.
+	// Defines the format of the mentioned type
+	// +kubebuilder:validation:Optional
+	Format *string `json:"format,omitempty" tf:"format,omitempty"`
+
+	// The variable identifier.
+	// The column name to be sorted
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name" tf:"name,omitempty"`
+
+	// This attribute is utilized when the type attribute is set to decimal, stipulating the precise number of digits after the decimal point for your data.
+	// The precision of the type
+	// +kubebuilder:validation:Optional
+	Precision *float64 `json:"precision,omitempty" tf:"precision,omitempty"`
+
+	// Specifies the data type of the variable and where its possible values may come from. One of enum, nrql or string
+	// Defines the type of the mentioned column
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type WidgetTableInitParameters struct {
 
 	// A nested block that describes colors of your charts per series. See Nested Colors blocks below for details.
@@ -6445,6 +7442,9 @@ type WidgetTableInitParameters struct {
 
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetTableDataFormatInitParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
@@ -6642,6 +7642,9 @@ type WidgetTableObservation struct {
 	// Column position of widget from top left, starting at 1.
 	Column *float64 `json:"column,omitempty" tf:"column,omitempty"`
 
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	DataFormat []WidgetTableDataFormatObservation `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
+
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	FacetShowOtherSeries *bool `json:"facetShowOtherSeries,omitempty" tf:"facet_show_other_series,omitempty"`
 
@@ -6708,6 +7711,10 @@ type WidgetTableParameters struct {
 	// Column position of widget from top left, starting at 1.
 	// +kubebuilder:validation:Optional
 	Column *float64 `json:"column" tf:"column,omitempty"`
+
+	// block for date/time values, the type would need to be set to date. However, if you would also like to specify a format of the date/time value (with the format argument), the type would need to be set to custom.
+	// +kubebuilder:validation:Optional
+	DataFormat []WidgetTableDataFormatParameters `json:"dataFormat,omitempty" tf:"data_format,omitempty"`
 
 	// Enable or disable the Other group in visualisations. The other group is used if a facet on a query returns more than 2000 items for bar charts, pie charts, and tables. The other group aggregates the rest of the facets. Defaults to false
 	// +kubebuilder:validation:Optional
