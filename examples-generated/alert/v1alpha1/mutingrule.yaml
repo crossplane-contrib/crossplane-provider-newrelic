@@ -1,0 +1,34 @@
+apiVersion: alert.newrelic.upbound.io/v1alpha1
+kind: MutingRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alert/v1alpha1/mutingrule
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    condition:
+    - conditions:
+      - attribute: product
+        operator: EQUALS
+        values:
+        - APM
+      - attribute: targetId
+        operator: EQUALS
+        values:
+        - Muted
+      operator: AND
+    description: muting rule test.
+    enabled: true
+    name: Example Muting Rule
+    schedule:
+    - endTime: 2021-01-28T16:30:00
+      repeat: WEEKLY
+      repeatCount: 42
+      startTime: 2021-01-28T15:30:00
+      timeZone: America/Los_Angeles
+      weeklyRepeatDays:
+      - MONDAY
+      - WEDNESDAY
+      - FRIDAY

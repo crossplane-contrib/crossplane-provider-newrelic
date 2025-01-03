@@ -22,6 +22,7 @@ import (
 var ExternalNameConfigs = map[string]config.ExternalName{
 	// Import requires using a randomly generated ID from provider: nl-2e21sda
 	"newrelic_alert_policy":             configAlertPolicy(),
+	"newrelic_alert_muting_rule":        config.IdentifierFromProvider,
 	"newrelic_notification_channel":     config.IdentifierFromProvider,
 	"newrelic_notification_destination": config.IdentifierFromProvider,
 	"newrelic_one_dashboard":            configDashboard(),

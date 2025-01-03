@@ -13,4 +13,7 @@ func (tr *Channel) Hub() {}
 func (tr *Destination) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *MutingRule) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Policy) Hub() {}

@@ -11,6 +11,7 @@ import (
 
 	channel "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/alert/channel"
 	destination "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/alert/destination"
+	mutingrule "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/alert/mutingrule"
 	policy "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/alert/policy"
 	dashboard "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/dashboard/dashboard"
 	dashboardjson "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/dashboard/dashboardjson"
@@ -27,6 +28,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		channel.Setup,
 		destination.Setup,
+		mutingrule.Setup,
 		policy.Setup,
 		dashboard.Setup,
 		dashboardjson.Setup,
