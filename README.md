@@ -37,6 +37,7 @@ This is documented in [AUTHENTICATION.md](AUTHENTICATION.md).
 # Currently Supported Resources
 * `alert_channel` - [examples-generated/alert/channel.yaml](examples-generated/alert/channel.yaml).
 * `alert_destination` - [examples/alert/destination.yaml](examples/alert/destination.yaml).
+* `alert_muting_rule` - [examples-generated/alert/mutingrule.yaml](examples-generated/alert/channel.yaml).
 * `alert_policy` - [examples/alert/policy.yaml](examples/alert/policy.yaml).
 * `dashboardjson` - [examples/dashboard/dashboardjson.yaml](examples/dashboard/dashboardjson.yaml).
 * `nrql_alert_condition` - [examples-generated/nrql/alertcondition.yaml](examples-generated/nrql/alertcondition.yaml).
