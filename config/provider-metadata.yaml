@@ -179,6 +179,7 @@ resources:
                   "type": "apm_app_metric"
                 }
               references:
+                entities: data.newrelic_entity.app.application_id
                 policy_id: newrelic_alert_policy.foo.id
               dependencies:
                 newrelic_alert_policy.foo: |-
@@ -208,6 +209,7 @@ resources:
                   "type": "apm_app_metric"
                 }
               references:
+                entities: data.newrelic_entity.foo.application_id
                 policy_id: newrelic_alert_policy.foo.id
               dependencies:
                 newrelic_alert_policy.foo: |-
@@ -350,6 +352,8 @@ resources:
                   "incident_preference": "PER_CONDITION",
                   "name": "example-with-channels"
                 }
+              references:
+                channel_ids: newrelic_alert_channel.slack_channel.id
               dependencies:
                 newrelic_alert_channel.email_channel: |-
                     {
@@ -383,6 +387,8 @@ resources:
                   "incident_preference": "PER_CONDITION",
                   "name": "example-with-channels"
                 }
+              references:
+                channel_ids: data.newrelic_alert_channel.slack_channel.id
         argumentDocs:
             PER_CONDITION: '- This sets the incident grouping preference of the policy to One issue per condition. Refer to this page for more details on this incident grouping preference.'
             PER_CONDITION_AND_TARGET: '- This sets the incident grouping preference of the policy to One issue per condition and signal. Refer to this page for more details on this incident grouping preference.'
@@ -409,6 +415,7 @@ resources:
                   "policy_id": "${data.newrelic_alert_policy.example_policy.id}"
                 }
               references:
+                channel_ids: newrelic_alert_channel.email_channel.id
                 policy_id: data.newrelic_alert_policy.example_policy.id
               dependencies:
                 newrelic_alert_channel.email_channel: |-
@@ -2075,6 +2082,7 @@ resources:
                 }
               references:
                 dynamic.content.key: tag.key
+                dynamic.content.values: tag.value
                 dynamic.for_each: local.custom_tags
                 for_each: local.apps
         argumentDocs:
@@ -2144,6 +2152,7 @@ resources:
                 }
               references:
                 authentication_domain_id: data.newrelic_authentication_domain.foo.id
+                user_ids: newrelic_user.foo.id
               dependencies:
                 newrelic_user.bar: |-
                     {
@@ -2171,6 +2180,7 @@ resources:
                 }
               references:
                 authentication_domain_id: data.newrelic_authentication_domain.foo.id
+                user_ids: data.newrelic_user.foo.id
         argumentDocs:
             authentication_domain_id: '- (Required) The ID of the authentication domain to which the group to be created would belong.'
             id: '- The ID of the created group.'
@@ -4308,6 +4318,8 @@ resources:
                   ],
                   "uri": "https://www.one.example.com"
                 }
+              references:
+                locations_private: newrelic_synthetics_private_location.foo.id
               dependencies:
                 newrelic_synthetics_private_location.foo: |-
                     {
@@ -4379,6 +4391,8 @@ resources:
                     }
                   ]
                 }
+              references:
+                locations_private: newrelic_synthetics_private_location.foo.id
               dependencies:
                 newrelic_synthetics_private_location.foo: |-
                     {
@@ -4500,6 +4514,8 @@ resources:
                   "type": "BROWSER",
                   "uri": "https://www.one.newrelic.com"
                 }
+              references:
+                lifecycle.ignore_changes: script_language
             - name: monitor
               manifest: |-
                 {
@@ -4530,6 +4546,8 @@ resources:
                   "validation_string": "success",
                   "verify_ssl": true
                 }
+              references:
+                locations_private: newrelic_synthetics_private_location.location.id
               dependencies:
                 newrelic_synthetics_private_location.location: |-
                     {
@@ -4577,6 +4595,8 @@ resources:
                   "validation_string": "success",
                   "verify_ssl": true
                 }
+              references:
+                locations_private: newrelic_synthetics_private_location.location.id
               dependencies:
                 newrelic_synthetics_private_location.location: |-
                     {
@@ -4643,6 +4663,7 @@ resources:
                   ]
                 }
               references:
+                entities: newrelic_synthetics_monitor.monitor.id
                 policy_id: newrelic_alert_policy.policy.id
               dependencies:
                 newrelic_alert_policy.policy: |-
@@ -4683,6 +4704,7 @@ resources:
                   ]
                 }
               references:
+                entities: newrelic_synthetics_monitor.foo.id
                 policy_id: newrelic_alert_policy.foo.id
               dependencies:
                 newrelic_alert_policy.foo: |-
@@ -5161,6 +5183,7 @@ resources:
                 }
               references:
                 destination.channel_id: newrelic_notification_channel.webhook-channel.id
+                issues_filter.predicate.values: newrelic_alert_policy.my-policy.id
               dependencies:
                 newrelic_alert_policy.my-policy: |-
                     {
