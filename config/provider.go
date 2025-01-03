@@ -8,6 +8,7 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/alertmutingrule"
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/alertpolicy"
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/dashboard"
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/dashboardjson"
@@ -44,6 +45,7 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
+		alertmutingrule.Configure,
 		alertpolicy.Configure,
 		notificationchannel.Configure,
 		notificationdestination.Configure,

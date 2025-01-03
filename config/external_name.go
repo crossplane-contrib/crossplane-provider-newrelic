@@ -22,6 +22,7 @@ import (
 var ExternalNameConfigs = map[string]config.ExternalName{
 	// Import requires using a randomly generated ID from provider: nl-2e21sda
 	"newrelic_alert_policy":             configAlertPolicy(),
+	"newrelic_alert_muting_rule":        configAlertMutingRule(),
 	"newrelic_notification_channel":     config.IdentifierFromProvider,
 	"newrelic_notification_destination": config.IdentifierFromProvider,
 	"newrelic_one_dashboard":            configDashboard(),
@@ -91,6 +92,44 @@ func configAlertPolicy() config.ExternalName {
 
 		// <id>:<account_id>
 		return fmt.Sprintf("%s:%s", externalName, accountIDStr), nil
+	}
+	return e
+}
+
+// See - https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/alert_muting_rule#import
+// Alert Muting Rules can be imported using a composite ID of <account_id>:<muting_rule_id>
+func configAlertMutingRule() config.ExternalName {
+	e := config.IdentifierFromProvider
+
+	// Gets the muting rule id as the external-name even though terraform internal uses <account_id>:<muting_rule_id>
+	e.GetExternalNameFn = func(tfstate map[string]interface{}) (string, error) {
+		id, ok := tfstate["id"]
+		if !ok {
+			return "", errors.New("unable to get id from tfstate")
+		}
+		idStr, ok := id.(string)
+		if !ok {
+			return "", errors.New("Can't format id from tfstate as string")
+		}
+		// <account_id>:<id>
+		words := strings.Split(idStr, ":")
+		return words[1], nil
+	}
+
+	e.GetIDFn = func(_ context.Context, externalName string, parameters map[string]interface{}, _ map[string]interface{}) (string, error) {
+		// Using a stub value to pass validation.
+		if len(externalName) == 0 {
+			return "", nil
+		}
+
+		accountID, ok := parameters["account_id"]
+		if !ok {
+			return "", errors.New("Can't get account_id from alert muting rule")
+		}
+		accountIDStr := strconv.FormatFloat(accountID.(float64), 'f', 0, 64)
+
+		// <id>:<account_id>
+		return fmt.Sprintf("%s:%s", accountIDStr, externalName), nil
 	}
 	return e
 }
