@@ -8,6 +8,7 @@ metadata:
   name: foo
 spec:
   forProvider:
+    actionOnMutingRuleWindowEnded: CLOSE_ISSUES_ON_INACTIVE
     condition:
     - conditions:
       - attribute: product

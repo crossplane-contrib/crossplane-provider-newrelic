@@ -1132,6 +1132,11 @@ func (in *MutingRuleInitParameters) DeepCopyInto(out *MutingRuleInitParameters) 
 		*out = new(float64)
 		**out = **in
 	}
+	if in.ActionOnMutingRuleWindowEnded != nil {
+		in, out := &in.ActionOnMutingRuleWindowEnded, &out.ActionOnMutingRuleWindowEnded
+		*out = new(string)
+		**out = **in
+	}
 	if in.Condition != nil {
 		in, out := &in.Condition, &out.Condition
 		*out = make([]ConditionInitParameters, len(*in))
@@ -1213,6 +1218,11 @@ func (in *MutingRuleObservation) DeepCopyInto(out *MutingRuleObservation) {
 		*out = new(float64)
 		**out = **in
 	}
+	if in.ActionOnMutingRuleWindowEnded != nil {
+		in, out := &in.ActionOnMutingRuleWindowEnded, &out.ActionOnMutingRuleWindowEnded
+		*out = new(string)
+		**out = **in
+	}
 	if in.Condition != nil {
 		in, out := &in.Condition, &out.Condition
 		*out = make([]ConditionObservation, len(*in))
@@ -1265,6 +1275,11 @@ func (in *MutingRuleParameters) DeepCopyInto(out *MutingRuleParameters) {
 	if in.AccountID != nil {
 		in, out := &in.AccountID, &out.AccountID
 		*out = new(float64)
+		**out = **in
+	}
+	if in.ActionOnMutingRuleWindowEnded != nil {
+		in, out := &in.ActionOnMutingRuleWindowEnded, &out.ActionOnMutingRuleWindowEnded
+		*out = new(string)
 		**out = **in
 	}
 	if in.Condition != nil {

@@ -76,7 +76,7 @@ type DestinationObservation struct {
 	NotificationTriggers []*string `json:"notificationTriggers,omitempty" tf:"notification_triggers,omitempty"`
 
 	// Type of the filter. Please just set this field to FILTER. The field is likely to be deprecated/removed in the near future.
-	// (Required) The type of the destination. One of: (EMAIL, EVENT_BRIDGE, PAGERDUTY_ACCOUNT_INTEGRATION, PAGERDUTY_SERVICE_INTEGRATION, SERVICE_NOW, SERVICE_NOW_APP, WEBHOOK, MOBILE_PUSH, SLACK, JIRA).
+	// (Required) The type of the destination. One of: (EMAIL, EVENT_BRIDGE, PAGERDUTY_ACCOUNT_INTEGRATION, PAGERDUTY_SERVICE_INTEGRATION, SERVICE_NOW, SERVICE_NOW_APP, WEBHOOK, MOBILE_PUSH, SLACK, JIRA, MICROSOFT_TEAMS).
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// Update original notification message (Slack channels only).

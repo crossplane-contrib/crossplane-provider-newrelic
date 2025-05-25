@@ -104,6 +104,10 @@ type AlertConditionInitParameters struct {
 	// Runbook URL to display in notifications.
 	RunbookURL *string `json:"runbookUrl,omitempty" tf:"runbook_url,omitempty"`
 
+	// Seasonality under which a condition's signal(s) are evaluated. Only available for baseline conditions. Valid values are: NEW_RELIC_CALCULATION, HOURLY, DAILY, WEEKLY, or NONE. To have New Relic calculate seasonality automatically, set to NEW_RELIC_CALCULATION. To turn off seasonality completely, set to NONE.
+	// Seasonality under which a condition's signal(s) are evaluated. Valid values are: 'NEW_RELIC_CALCULATION', 'HOURLY', 'DAILY', 'WEEKLY', or 'NONE'. To have New Relic calculate seasonality automatically, set to 'NEW_RELIC_CALCULATION' (default). To turn off seasonality completely, set to 'NONE'.
+	SignalSeasonality *string `json:"signalSeasonality,omitempty" tf:"signal_seasonality,omitempty"`
+
 	// Gathers data in overlapping time windows to smooth the chart line, making it easier to spot trends. The slide_by value is specified in seconds and must be smaller than and a factor of the aggregation_window.
 	// The duration of overlapping time windows used to smooth the chart line, in seconds. Must be a factor of `aggregation_window` and less than the aggregation window. If `aggregation_window` is less than or equal to 3600 seconds, it should be greater or equal to 30 seconds. If `aggregation_window` is greater than 3600 seconds but less than 7200 seconds, it should be greater or equal to `aggregation_window / 120`.  If `aggregation_window` is greater than 7200 seconds, it should be greater or equal to `aggregation_window / 24
 	SlideBy *float64 `json:"slideBy,omitempty" tf:"slide_by,omitempty"`
@@ -214,6 +218,10 @@ type AlertConditionObservation struct {
 	// Runbook URL to display in notifications.
 	// Runbook URL to display in notifications.
 	RunbookURL *string `json:"runbookUrl,omitempty" tf:"runbook_url,omitempty"`
+
+	// Seasonality under which a condition's signal(s) are evaluated. Only available for baseline conditions. Valid values are: NEW_RELIC_CALCULATION, HOURLY, DAILY, WEEKLY, or NONE. To have New Relic calculate seasonality automatically, set to NEW_RELIC_CALCULATION. To turn off seasonality completely, set to NONE.
+	// Seasonality under which a condition's signal(s) are evaluated. Valid values are: 'NEW_RELIC_CALCULATION', 'HOURLY', 'DAILY', 'WEEKLY', or 'NONE'. To have New Relic calculate seasonality automatically, set to 'NEW_RELIC_CALCULATION' (default). To turn off seasonality completely, set to 'NONE'.
+	SignalSeasonality *string `json:"signalSeasonality,omitempty" tf:"signal_seasonality,omitempty"`
 
 	// Gathers data in overlapping time windows to smooth the chart line, making it easier to spot trends. The slide_by value is specified in seconds and must be smaller than and a factor of the aggregation_window.
 	// The duration of overlapping time windows used to smooth the chart line, in seconds. Must be a factor of `aggregation_window` and less than the aggregation window. If `aggregation_window` is less than or equal to 3600 seconds, it should be greater or equal to 30 seconds. If `aggregation_window` is greater than 3600 seconds but less than 7200 seconds, it should be greater or equal to `aggregation_window / 120`.  If `aggregation_window` is greater than 7200 seconds, it should be greater or equal to `aggregation_window / 24
@@ -353,6 +361,11 @@ type AlertConditionParameters struct {
 	// +kubebuilder:validation:Optional
 	RunbookURL *string `json:"runbookUrl,omitempty" tf:"runbook_url,omitempty"`
 
+	// Seasonality under which a condition's signal(s) are evaluated. Only available for baseline conditions. Valid values are: NEW_RELIC_CALCULATION, HOURLY, DAILY, WEEKLY, or NONE. To have New Relic calculate seasonality automatically, set to NEW_RELIC_CALCULATION. To turn off seasonality completely, set to NONE.
+	// Seasonality under which a condition's signal(s) are evaluated. Valid values are: 'NEW_RELIC_CALCULATION', 'HOURLY', 'DAILY', 'WEEKLY', or 'NONE'. To have New Relic calculate seasonality automatically, set to 'NEW_RELIC_CALCULATION' (default). To turn off seasonality completely, set to 'NONE'.
+	// +kubebuilder:validation:Optional
+	SignalSeasonality *string `json:"signalSeasonality,omitempty" tf:"signal_seasonality,omitempty"`
+
 	// Gathers data in overlapping time windows to smooth the chart line, making it easier to spot trends. The slide_by value is specified in seconds and must be smaller than and a factor of the aggregation_window.
 	// The duration of overlapping time windows used to smooth the chart line, in seconds. Must be a factor of `aggregation_window` and less than the aggregation window. If `aggregation_window` is less than or equal to 3600 seconds, it should be greater or equal to 30 seconds. If `aggregation_window` is greater than 3600 seconds but less than 7200 seconds, it should be greater or equal to `aggregation_window / 120`.  If `aggregation_window` is greater than 7200 seconds, it should be greater or equal to `aggregation_window / 24
 	// +kubebuilder:validation:Optional
@@ -382,6 +395,10 @@ type AlertConditionParameters struct {
 
 type CriticalInitParameters struct {
 
+	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+	// Violations will not change system health status for this term.
+	DisableHealthStatusReporting *bool `json:"disableHealthStatusReporting,omitempty" tf:"disable_health_status_reporting,omitempty"`
+
 	// DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
 	// In minutes, must be in the range of 1 to 120 (inclusive).
 	Duration *float64 `json:"duration,omitempty" tf:"duration,omitempty"`
@@ -389,6 +406,10 @@ type CriticalInitParameters struct {
 	// Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.
 	// One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+	// BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+	Prediction []PredictionInitParameters `json:"prediction,omitempty" tf:"prediction,omitempty"`
 
 	// The value which will trigger an incident.
 	// For baseline NRQL alert conditions, the value must be in the range [1, 1000]. The value is the number of standard deviations from the baseline that the metric must exceed in order to create an incident.
@@ -412,6 +433,10 @@ type CriticalInitParameters struct {
 
 type CriticalObservation struct {
 
+	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+	// Violations will not change system health status for this term.
+	DisableHealthStatusReporting *bool `json:"disableHealthStatusReporting,omitempty" tf:"disable_health_status_reporting,omitempty"`
+
 	// DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
 	// In minutes, must be in the range of 1 to 120 (inclusive).
 	Duration *float64 `json:"duration,omitempty" tf:"duration,omitempty"`
@@ -419,6 +444,10 @@ type CriticalObservation struct {
 	// Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.
 	// One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+	// BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+	Prediction []PredictionObservation `json:"prediction,omitempty" tf:"prediction,omitempty"`
 
 	// The value which will trigger an incident.
 	// For baseline NRQL alert conditions, the value must be in the range [1, 1000]. The value is the number of standard deviations from the baseline that the metric must exceed in order to create an incident.
@@ -442,6 +471,11 @@ type CriticalObservation struct {
 
 type CriticalParameters struct {
 
+	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+	// Violations will not change system health status for this term.
+	// +kubebuilder:validation:Optional
+	DisableHealthStatusReporting *bool `json:"disableHealthStatusReporting,omitempty" tf:"disable_health_status_reporting,omitempty"`
+
 	// DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
 	// In minutes, must be in the range of 1 to 120 (inclusive).
 	// +kubebuilder:validation:Optional
@@ -451,6 +485,11 @@ type CriticalParameters struct {
 	// One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+	// BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+	// +kubebuilder:validation:Optional
+	Prediction []PredictionParameters `json:"prediction,omitempty" tf:"prediction,omitempty"`
 
 	// The value which will trigger an incident.
 	// For baseline NRQL alert conditions, the value must be in the range [1, 1000]. The value is the number of standard deviations from the baseline that the metric must exceed in order to create an incident.
@@ -478,8 +517,8 @@ type CriticalParameters struct {
 
 type NrqlInitParameters struct {
 
-	// BETA PREVIEW: the  The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
-	// BETA PREVIEW: the `data_account_id` field is in limited release and only enabled for preview on a per-account basis. - The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
+	// The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
+	// The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
 	DataAccountID *float64 `json:"dataAccountId,omitempty" tf:"data_account_id,omitempty"`
 
 	// DEPRECATED: Use aggregation_method instead. Represented in minutes and must be within 1-20 minutes (inclusive). NRQL queries are evaluated based on their aggregation_window size. The start time depends on this value. It's recommended to set this to 3 windows. An offset of less than 3 windows will trigger incidents sooner, but you may see more false positives and negatives due to data latency. With evaluation_offset set to 3 windows and an aggregation_window of 60 seconds, the NRQL time window applied to your query will be: SINCE 3 minutes ago UNTIL 2 minutes ago. evaluation_offset cannot be set with aggregation_method, aggregation_delay, or aggregation_timer.
@@ -496,8 +535,8 @@ type NrqlInitParameters struct {
 
 type NrqlObservation struct {
 
-	// BETA PREVIEW: the  The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
-	// BETA PREVIEW: the `data_account_id` field is in limited release and only enabled for preview on a per-account basis. - The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
+	// The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
+	// The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
 	DataAccountID *float64 `json:"dataAccountId,omitempty" tf:"data_account_id,omitempty"`
 
 	// DEPRECATED: Use aggregation_method instead. Represented in minutes and must be within 1-20 minutes (inclusive). NRQL queries are evaluated based on their aggregation_window size. The start time depends on this value. It's recommended to set this to 3 windows. An offset of less than 3 windows will trigger incidents sooner, but you may see more false positives and negatives due to data latency. With evaluation_offset set to 3 windows and an aggregation_window of 60 seconds, the NRQL time window applied to your query will be: SINCE 3 minutes ago UNTIL 2 minutes ago. evaluation_offset cannot be set with aggregation_method, aggregation_delay, or aggregation_timer.
@@ -514,8 +553,8 @@ type NrqlObservation struct {
 
 type NrqlParameters struct {
 
-	// BETA PREVIEW: the  The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
-	// BETA PREVIEW: the `data_account_id` field is in limited release and only enabled for preview on a per-account basis. - The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
+	// The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
+	// The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
 	// +kubebuilder:validation:Optional
 	DataAccountID *float64 `json:"dataAccountId,omitempty" tf:"data_account_id,omitempty"`
 
@@ -534,7 +573,46 @@ type NrqlParameters struct {
 	SinceValue *string `json:"sinceValue,omitempty" tf:"since_value,omitempty"`
 }
 
+type PredictionInitParameters struct {
+
+	// The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+	// BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+	PredictBy *float64 `json:"predictBy,omitempty" tf:"predict_by,omitempty"`
+
+	// If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+	// BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+	PreferPredictionViolation *bool `json:"preferPredictionViolation,omitempty" tf:"prefer_prediction_violation,omitempty"`
+}
+
+type PredictionObservation struct {
+
+	// The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+	// BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+	PredictBy *float64 `json:"predictBy,omitempty" tf:"predict_by,omitempty"`
+
+	// If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+	// BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+	PreferPredictionViolation *bool `json:"preferPredictionViolation,omitempty" tf:"prefer_prediction_violation,omitempty"`
+}
+
+type PredictionParameters struct {
+
+	// The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+	// BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+	// +kubebuilder:validation:Optional
+	PredictBy *float64 `json:"predictBy,omitempty" tf:"predict_by,omitempty"`
+
+	// If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+	// BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+	// +kubebuilder:validation:Optional
+	PreferPredictionViolation *bool `json:"preferPredictionViolation,omitempty" tf:"prefer_prediction_violation,omitempty"`
+}
+
 type WarningInitParameters struct {
+
+	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+	// Violations will not change system health status for this term.
+	DisableHealthStatusReporting *bool `json:"disableHealthStatusReporting,omitempty" tf:"disable_health_status_reporting,omitempty"`
 
 	// DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
 	// In minutes, must be in the range of 1 to 120 (inclusive).
@@ -543,6 +621,10 @@ type WarningInitParameters struct {
 	// Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.
 	// One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+	// BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+	Prediction []WarningPredictionInitParameters `json:"prediction,omitempty" tf:"prediction,omitempty"`
 
 	// The value which will trigger an incident.
 	// For baseline NRQL alert conditions, the value must be in the range [1, 1000]. The value is the number of standard deviations from the baseline that the metric must exceed in order to create an incident.
@@ -566,6 +648,10 @@ type WarningInitParameters struct {
 
 type WarningObservation struct {
 
+	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+	// Violations will not change system health status for this term.
+	DisableHealthStatusReporting *bool `json:"disableHealthStatusReporting,omitempty" tf:"disable_health_status_reporting,omitempty"`
+
 	// DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
 	// In minutes, must be in the range of 1 to 120 (inclusive).
 	Duration *float64 `json:"duration,omitempty" tf:"duration,omitempty"`
@@ -573,6 +659,10 @@ type WarningObservation struct {
 	// Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.
 	// One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+	// BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+	Prediction []WarningPredictionObservation `json:"prediction,omitempty" tf:"prediction,omitempty"`
 
 	// The value which will trigger an incident.
 	// For baseline NRQL alert conditions, the value must be in the range [1, 1000]. The value is the number of standard deviations from the baseline that the metric must exceed in order to create an incident.
@@ -596,6 +686,11 @@ type WarningObservation struct {
 
 type WarningParameters struct {
 
+	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+	// Violations will not change system health status for this term.
+	// +kubebuilder:validation:Optional
+	DisableHealthStatusReporting *bool `json:"disableHealthStatusReporting,omitempty" tf:"disable_health_status_reporting,omitempty"`
+
 	// DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
 	// In minutes, must be in the range of 1 to 120 (inclusive).
 	// +kubebuilder:validation:Optional
@@ -605,6 +700,11 @@ type WarningParameters struct {
 	// One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+	// BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+	// +kubebuilder:validation:Optional
+	Prediction []WarningPredictionParameters `json:"prediction,omitempty" tf:"prediction,omitempty"`
 
 	// The value which will trigger an incident.
 	// For baseline NRQL alert conditions, the value must be in the range [1, 1000]. The value is the number of standard deviations from the baseline that the metric must exceed in order to create an incident.
@@ -628,6 +728,41 @@ type WarningParameters struct {
 	// Valid values are: 'all' or 'any'
 	// +kubebuilder:validation:Optional
 	TimeFunction *string `json:"timeFunction,omitempty" tf:"time_function,omitempty"`
+}
+
+type WarningPredictionInitParameters struct {
+
+	// The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+	// BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+	PredictBy *float64 `json:"predictBy,omitempty" tf:"predict_by,omitempty"`
+
+	// If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+	// BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+	PreferPredictionViolation *bool `json:"preferPredictionViolation,omitempty" tf:"prefer_prediction_violation,omitempty"`
+}
+
+type WarningPredictionObservation struct {
+
+	// The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+	// BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+	PredictBy *float64 `json:"predictBy,omitempty" tf:"predict_by,omitempty"`
+
+	// If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+	// BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+	PreferPredictionViolation *bool `json:"preferPredictionViolation,omitempty" tf:"prefer_prediction_violation,omitempty"`
+}
+
+type WarningPredictionParameters struct {
+
+	// The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+	// BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+	// +kubebuilder:validation:Optional
+	PredictBy *float64 `json:"predictBy,omitempty" tf:"predict_by,omitempty"`
+
+	// If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+	// BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+	// +kubebuilder:validation:Optional
+	PreferPredictionViolation *bool `json:"preferPredictionViolation,omitempty" tf:"prefer_prediction_violation,omitempty"`
 }
 
 // AlertConditionSpec defines the desired state of AlertCondition

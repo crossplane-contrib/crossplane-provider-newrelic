@@ -102,6 +102,10 @@ type MutingRuleInitParameters struct {
 	// The account id of the MutingRule..
 	AccountID *float64 `json:"accountId,omitempty" tf:"account_id,omitempty"`
 
+	// The action when the muting rule window is ended or disabled. Valid values are CLOSE_ISSUES_ON_INACTIVE, DO_NOTHING.
+	// The action when the muting rule window is ended or disabled.
+	ActionOnMutingRuleWindowEnded *string `json:"actionOnMutingRuleWindowEnded,omitempty" tf:"action_on_muting_rule_window_ended,omitempty"`
+
 	// The condition that defines which incidents to target. See Nested condition blocks below for details.
 	// The condition that defines which incidents to target.
 	Condition []ConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
@@ -128,6 +132,10 @@ type MutingRuleObservation struct {
 	// The account id of the MutingRule.
 	// The account id of the MutingRule..
 	AccountID *float64 `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// The action when the muting rule window is ended or disabled. Valid values are CLOSE_ISSUES_ON_INACTIVE, DO_NOTHING.
+	// The action when the muting rule window is ended or disabled.
+	ActionOnMutingRuleWindowEnded *string `json:"actionOnMutingRuleWindowEnded,omitempty" tf:"action_on_muting_rule_window_ended,omitempty"`
 
 	// The condition that defines which incidents to target. See Nested condition blocks below for details.
 	// The condition that defines which incidents to target.
@@ -158,6 +166,11 @@ type MutingRuleParameters struct {
 	// The account id of the MutingRule..
 	// +kubebuilder:validation:Optional
 	AccountID *float64 `json:"accountId,omitempty" tf:"account_id,omitempty"`
+
+	// The action when the muting rule window is ended or disabled. Valid values are CLOSE_ISSUES_ON_INACTIVE, DO_NOTHING.
+	// The action when the muting rule window is ended or disabled.
+	// +kubebuilder:validation:Optional
+	ActionOnMutingRuleWindowEnded *string `json:"actionOnMutingRuleWindowEnded,omitempty" tf:"action_on_muting_rule_window_ended,omitempty"`
 
 	// The condition that defines which incidents to target. See Nested condition blocks below for details.
 	// The condition that defines which incidents to target.

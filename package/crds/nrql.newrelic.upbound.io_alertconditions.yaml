@@ -114,6 +114,11 @@ spec:
                       A condition term with priority set to critical.
                     items:
                       properties:
+                        disableHealthStatusReporting:
+                          description: |-
+                            true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+                            Violations will not change system health status for this term.
+                          type: boolean
                         duration:
                           description: |-
                             DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
@@ -124,6 +129,24 @@ spec:
                             Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.
                             One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
                           type: string
+                        prediction:
+                          description: |-
+                            BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+                            BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+                          items:
+                            properties:
+                              predictBy:
+                                description: |-
+                                  The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+                                  BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+                                type: number
+                              preferPredictionViolation:
+                                description: |-
+                                  If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+                                  BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+                                type: boolean
+                            type: object
+                          type: array
                         threshold:
                           description: |-
                             The value which will trigger an incident.
@@ -197,8 +220,8 @@ spec:
                       properties:
                         dataAccountId:
                           description: |-
-                            BETA PREVIEW: the  The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
-                            BETA PREVIEW: the `data_account_id` field is in limited release and only enabled for preview on a per-account basis. - The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
+                            The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
+                            The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
                           type: number
                         evaluationOffset:
                           description: |-
@@ -304,6 +327,11 @@ spec:
                       Runbook URL to display in notifications.
                       Runbook URL to display in notifications.
                     type: string
+                  signalSeasonality:
+                    description: |-
+                      Seasonality under which a condition's signal(s) are evaluated. Only available for baseline conditions. Valid values are: NEW_RELIC_CALCULATION, HOURLY, DAILY, WEEKLY, or NONE. To have New Relic calculate seasonality automatically, set to NEW_RELIC_CALCULATION. To turn off seasonality completely, set to NONE.
+                      Seasonality under which a condition's signal(s) are evaluated. Valid values are: 'NEW_RELIC_CALCULATION', 'HOURLY', 'DAILY', 'WEEKLY', or 'NONE'. To have New Relic calculate seasonality automatically, set to 'NEW_RELIC_CALCULATION' (default). To turn off seasonality completely, set to 'NONE'.
+                    type: string
                   slideBy:
                     description: |-
                       Gathers data in overlapping time windows to smooth the chart line, making it easier to spot trends. The slide_by value is specified in seconds and must be smaller than and a factor of the aggregation_window.
@@ -331,6 +359,11 @@ spec:
                       A condition term with priority set to warning.
                     items:
                       properties:
+                        disableHealthStatusReporting:
+                          description: |-
+                            true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+                            Violations will not change system health status for this term.
+                          type: boolean
                         duration:
                           description: |-
                             DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
@@ -341,6 +374,24 @@ spec:
                             Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.
                             One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
                           type: string
+                        prediction:
+                          description: |-
+                            BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+                            BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+                          items:
+                            properties:
+                              predictBy:
+                                description: |-
+                                  The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+                                  BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+                                type: number
+                              preferPredictionViolation:
+                                description: |-
+                                  If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+                                  BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+                                type: boolean
+                            type: object
+                          type: array
                         threshold:
                           description: |-
                             The value which will trigger an incident.
@@ -421,6 +472,11 @@ spec:
                       A condition term with priority set to critical.
                     items:
                       properties:
+                        disableHealthStatusReporting:
+                          description: |-
+                            true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+                            Violations will not change system health status for this term.
+                          type: boolean
                         duration:
                           description: |-
                             DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
@@ -431,6 +487,24 @@ spec:
                             Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.
                             One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
                           type: string
+                        prediction:
+                          description: |-
+                            BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+                            BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+                          items:
+                            properties:
+                              predictBy:
+                                description: |-
+                                  The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+                                  BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+                                type: number
+                              preferPredictionViolation:
+                                description: |-
+                                  If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+                                  BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+                                type: boolean
+                            type: object
+                          type: array
                         threshold:
                           description: |-
                             The value which will trigger an incident.
@@ -504,8 +578,8 @@ spec:
                       properties:
                         dataAccountId:
                           description: |-
-                            BETA PREVIEW: the  The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
-                            BETA PREVIEW: the `data_account_id` field is in limited release and only enabled for preview on a per-account basis. - The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
+                            The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
+                            The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
                           type: number
                         evaluationOffset:
                           description: |-
@@ -611,6 +685,11 @@ spec:
                       Runbook URL to display in notifications.
                       Runbook URL to display in notifications.
                     type: string
+                  signalSeasonality:
+                    description: |-
+                      Seasonality under which a condition's signal(s) are evaluated. Only available for baseline conditions. Valid values are: NEW_RELIC_CALCULATION, HOURLY, DAILY, WEEKLY, or NONE. To have New Relic calculate seasonality automatically, set to NEW_RELIC_CALCULATION. To turn off seasonality completely, set to NONE.
+                      Seasonality under which a condition's signal(s) are evaluated. Valid values are: 'NEW_RELIC_CALCULATION', 'HOURLY', 'DAILY', 'WEEKLY', or 'NONE'. To have New Relic calculate seasonality automatically, set to 'NEW_RELIC_CALCULATION' (default). To turn off seasonality completely, set to 'NONE'.
+                    type: string
                   slideBy:
                     description: |-
                       Gathers data in overlapping time windows to smooth the chart line, making it easier to spot trends. The slide_by value is specified in seconds and must be smaller than and a factor of the aggregation_window.
@@ -638,6 +717,11 @@ spec:
                       A condition term with priority set to warning.
                     items:
                       properties:
+                        disableHealthStatusReporting:
+                          description: |-
+                            true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+                            Violations will not change system health status for this term.
+                          type: boolean
                         duration:
                           description: |-
                             DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
@@ -648,6 +732,24 @@ spec:
                             Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.
                             One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
                           type: string
+                        prediction:
+                          description: |-
+                            BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+                            BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+                          items:
+                            properties:
+                              predictBy:
+                                description: |-
+                                  The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+                                  BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+                                type: number
+                              preferPredictionViolation:
+                                description: |-
+                                  If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+                                  BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+                                type: boolean
+                            type: object
+                          type: array
                         threshold:
                           description: |-
                             The value which will trigger an incident.
@@ -896,6 +998,11 @@ spec:
                       A condition term with priority set to critical.
                     items:
                       properties:
+                        disableHealthStatusReporting:
+                          description: |-
+                            true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+                            Violations will not change system health status for this term.
+                          type: boolean
                         duration:
                           description: |-
                             DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
@@ -906,6 +1013,24 @@ spec:
                             Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.
                             One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
                           type: string
+                        prediction:
+                          description: |-
+                            BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+                            BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+                          items:
+                            properties:
+                              predictBy:
+                                description: |-
+                                  The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+                                  BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+                                type: number
+                              preferPredictionViolation:
+                                description: |-
+                                  If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+                                  BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+                                type: boolean
+                            type: object
+                          type: array
                         threshold:
                           description: |-
                             The value which will trigger an incident.
@@ -988,8 +1113,8 @@ spec:
                       properties:
                         dataAccountId:
                           description: |-
-                            BETA PREVIEW: the  The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
-                            BETA PREVIEW: the `data_account_id` field is in limited release and only enabled for preview on a per-account basis. - The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
+                            The account ID to use for the alert condition's query as specified in the the query field. If data_account_id is not specified, then the condition's query will be evaluated against the account_id. Note that the account_id must have read privileges for the data_account_id or else the condition will be invalid.
+                            The New Relic account ID to use as the basis for the NRQL alert condition's `query`; will default to `account_id` if unspecified.
                           type: number
                         evaluationOffset:
                           description: |-
@@ -1020,6 +1145,11 @@ spec:
                     description: |-
                       Runbook URL to display in notifications.
                       Runbook URL to display in notifications.
+                    type: string
+                  signalSeasonality:
+                    description: |-
+                      Seasonality under which a condition's signal(s) are evaluated. Only available for baseline conditions. Valid values are: NEW_RELIC_CALCULATION, HOURLY, DAILY, WEEKLY, or NONE. To have New Relic calculate seasonality automatically, set to NEW_RELIC_CALCULATION. To turn off seasonality completely, set to NONE.
+                      Seasonality under which a condition's signal(s) are evaluated. Valid values are: 'NEW_RELIC_CALCULATION', 'HOURLY', 'DAILY', 'WEEKLY', or 'NONE'. To have New Relic calculate seasonality automatically, set to 'NEW_RELIC_CALCULATION' (default). To turn off seasonality completely, set to 'NONE'.
                     type: string
                   slideBy:
                     description: |-
@@ -1054,6 +1184,11 @@ spec:
                       A condition term with priority set to warning.
                     items:
                       properties:
+                        disableHealthStatusReporting:
+                          description: |-
+                            true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
+                            Violations will not change system health status for this term.
+                          type: boolean
                         duration:
                           description: |-
                             DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).
@@ -1064,6 +1199,24 @@ spec:
                             Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.
                             One of (above, above_or_equals, below, below_or_equals, equals, not_equals). Defaults to 'equals'.
                           type: string
+                        prediction:
+                          description: |-
+                            BETA PREVIEW: the  Use prediction to open alerts when your static threshold is predicted to be reached in the future. The prediction field is only available for static NRQL alert conditions. See Prediction below for details.
+                            BETA PREVIEW: the `prediction` field is in limited release and only enabled for preview on a per-account basis. - Use `prediction` to open alerts when your static threshold is predicted to be reached in the future. The `prediction` field is only available for static conditions.
+                          items:
+                            properties:
+                              predictBy:
+                                description: |-
+                                  The duration, in seconds, that the prediction should look into the future. Default is 3600 seconds (1 hour).
+                                  BETA PREVIEW: the `predict_by` field is in limited release and only enabled for preview on a per-account basis. - The duration, in seconds, that the prediction should look into the future.
+                                type: number
+                              preferPredictionViolation:
+                                description: |-
+                                  If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting prefer_prediction_violation to true overrides this behavior leaving the prediction incident open and preventing a static incident from opening. Default is false.
+                                  BETA PREVIEW: the `prefer_prediction_violation` field is in limited release and only enabled for preview on a per-account basis. - If a prediction incident is open when a term's static threshold is breached by the actual signal, default behavior is to close the prediction incident and open a static incident. Setting `prefer_prediction_violation` to `true` overrides this behavior leaving the prediction incident open and preventing a static incident from opening.
+                                type: boolean
+                            type: object
+                          type: array
                         threshold:
                           description: |-
                             The value which will trigger an incident.

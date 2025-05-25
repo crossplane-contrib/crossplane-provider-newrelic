@@ -78,6 +78,11 @@ spec:
                       The account id of the MutingRule.
                       The account id of the MutingRule..
                     type: number
+                  actionOnMutingRuleWindowEnded:
+                    description: |-
+                      The action when the muting rule window is ended or disabled. Valid values are CLOSE_ISSUES_ON_INACTIVE, DO_NOTHING.
+                      The action when the muting rule window is ended or disabled.
+                    type: string
                   condition:
                     description: |-
                       The condition that defines which incidents to target. See Nested condition blocks below for details.
@@ -195,6 +200,11 @@ spec:
                       The account id of the MutingRule.
                       The account id of the MutingRule..
                     type: number
+                  actionOnMutingRuleWindowEnded:
+                    description: |-
+                      The action when the muting rule window is ended or disabled. Valid values are CLOSE_ISSUES_ON_INACTIVE, DO_NOTHING.
+                      The action when the muting rule window is ended or disabled.
+                    type: string
                   condition:
                     description: |-
                       The condition that defines which incidents to target. See Nested condition blocks below for details.
@@ -484,6 +494,11 @@ spec:
                       The account id of the MutingRule.
                       The account id of the MutingRule..
                     type: number
+                  actionOnMutingRuleWindowEnded:
+                    description: |-
+                      The action when the muting rule window is ended or disabled. Valid values are CLOSE_ISSUES_ON_INACTIVE, DO_NOTHING.
+                      The action when the muting rule window is ended or disabled.
+                    type: string
                   condition:
                     description: |-
                       The condition that defines which incidents to target. See Nested condition blocks below for details.

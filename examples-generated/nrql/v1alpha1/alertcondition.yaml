@@ -33,7 +33,7 @@ spec:
         testing.upbound.io/example-name: foo
     runbookUrl: https://www.example.com
     slideBy: 30
-    titleTemplate: 'Issue in environment: {{ json accumulations.tag.environment }}'
+    titleTemplate: 'Issue in environment: {{ tags.environment }}'
     type: static
     violationTimeLimitSeconds: 3600
     warning:
