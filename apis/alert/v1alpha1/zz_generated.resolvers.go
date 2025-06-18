@@ -9,6 +9,7 @@ import (
 	"context"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
+	ptr "k8s.io/utils/ptr"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -20,7 +21,7 @@ func (mg *Channel) ResolveReferences(ctx context.Context, c client.Reader) error
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.DestinationID),
+		CurrentValue: ptr.Deref(mg.Spec.ForProvider.DestinationID, ""),
 		Extract:      reference.ExternalName(),
 		Reference:    mg.Spec.ForProvider.DestinationIDRef,
 		Selector:     mg.Spec.ForProvider.DestinationIDSelector,
@@ -32,11 +33,11 @@ func (mg *Channel) ResolveReferences(ctx context.Context, c client.Reader) error
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.DestinationID")
 	}
-	mg.Spec.ForProvider.DestinationID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.DestinationID = ptr.To(rsp.ResolvedValue)
 	mg.Spec.ForProvider.DestinationIDRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.DestinationID),
+		CurrentValue: ptr.Deref(mg.Spec.InitProvider.DestinationID, ""),
 		Extract:      reference.ExternalName(),
 		Reference:    mg.Spec.InitProvider.DestinationIDRef,
 		Selector:     mg.Spec.InitProvider.DestinationIDSelector,
@@ -48,7 +49,7 @@ func (mg *Channel) ResolveReferences(ctx context.Context, c client.Reader) error
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.DestinationID")
 	}
-	mg.Spec.InitProvider.DestinationID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.DestinationID = ptr.To(rsp.ResolvedValue)
 	mg.Spec.InitProvider.DestinationIDRef = rsp.ResolvedReference
 
 	return nil

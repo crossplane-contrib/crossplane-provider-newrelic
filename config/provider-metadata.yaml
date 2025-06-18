@@ -447,11 +447,21 @@ resources:
             channel_ids: '- (Required) Array of channel IDs to apply to the specified policy. We recommended sorting channel IDs in ascending order to avoid drift your Terraform state.'
             policy_id: '- (Required) The ID of the policy.'
         importStatements: []
-    newrelic_api_access_key':
+    newrelic_api_access_key:
         subCategory: ""
-        description: Create and Manage New Relic API access keys
-        name: newrelic_api_access_key'
+        description: Create and manage New Relic API access keys
+        name: newrelic_api_access_key
         title: newrelic_api_access_key'
+        examples:
+            - name: apm_license_key
+              manifest: |-
+                {
+                  "account_id": 1234567,
+                  "ingest_type": "LICENSE",
+                  "key_type": "INGEST",
+                  "name": "APM Ingest License Key for Service X",
+                  "notes": "Managed by Terraform, used for Service X APM agent."
+                }
         argumentDocs:
             account_id: '- (Required) The New Relic account ID of the account you wish to create the API access key.'
             id: '- The ID of the API key.'
@@ -460,6 +470,7 @@ resources:
             key_type: '- (Required) What type of API key to create. Valid options are INGEST or USER, case-sensitive.'
             name: '- (Optional) The name of the key.'
             notes: '- (Optional) Any notes about this ingest key.'
+            type: ': The type of API key.'
             user_id: '- (Optional) Required if key_type = USER. The New Relic user ID yous wish to create the API access key for in an account.'
         importStatements: []
     newrelic_application_settings:

@@ -10,6 +10,7 @@ import (
 	v1alpha1 "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/alert/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
+	ptr "k8s.io/utils/ptr"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -22,7 +23,7 @@ func (mg *Workflow) ResolveReferences(ctx context.Context, c client.Reader) erro
 
 	for i3 := 0; i3 < len(mg.Spec.ForProvider.Destination); i3++ {
 		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Destination[i3].ChannelID),
+			CurrentValue: ptr.Deref(mg.Spec.ForProvider.Destination[i3].ChannelID, ""),
 			Extract:      reference.ExternalName(),
 			Reference:    mg.Spec.ForProvider.Destination[i3].ChannelIDRef,
 			Selector:     mg.Spec.ForProvider.Destination[i3].ChannelIDSelector,
@@ -34,13 +35,13 @@ func (mg *Workflow) ResolveReferences(ctx context.Context, c client.Reader) erro
 		if err != nil {
 			return errors.Wrap(err, "mg.Spec.ForProvider.Destination[i3].ChannelID")
 		}
-		mg.Spec.ForProvider.Destination[i3].ChannelID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.Destination[i3].ChannelID = ptr.To(rsp.ResolvedValue)
 		mg.Spec.ForProvider.Destination[i3].ChannelIDRef = rsp.ResolvedReference
 
 	}
 	for i3 := 0; i3 < len(mg.Spec.InitProvider.Destination); i3++ {
 		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Destination[i3].ChannelID),
+			CurrentValue: ptr.Deref(mg.Spec.InitProvider.Destination[i3].ChannelID, ""),
 			Extract:      reference.ExternalName(),
 			Reference:    mg.Spec.InitProvider.Destination[i3].ChannelIDRef,
 			Selector:     mg.Spec.InitProvider.Destination[i3].ChannelIDSelector,
@@ -52,7 +53,7 @@ func (mg *Workflow) ResolveReferences(ctx context.Context, c client.Reader) erro
 		if err != nil {
 			return errors.Wrap(err, "mg.Spec.InitProvider.Destination[i3].ChannelID")
 		}
-		mg.Spec.InitProvider.Destination[i3].ChannelID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.Destination[i3].ChannelID = ptr.To(rsp.ResolvedValue)
 		mg.Spec.InitProvider.Destination[i3].ChannelIDRef = rsp.ResolvedReference
 
 	}

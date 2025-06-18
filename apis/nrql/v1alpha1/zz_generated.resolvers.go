@@ -10,6 +10,7 @@ import (
 	v1alpha1 "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/alert/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
+	ptr "k8s.io/utils/ptr"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -21,7 +22,7 @@ func (mg *AlertCondition) ResolveReferences(ctx context.Context, c client.Reader
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromFloatPtrValue(mg.Spec.ForProvider.PolicyID),
+		CurrentValue: ptr.FromFloatPtrValue(mg.Spec.ForProvider.PolicyID, ""),
 		Extract:      reference.ExternalName(),
 		Reference:    mg.Spec.ForProvider.PolicyIDRef,
 		Selector:     mg.Spec.ForProvider.PolicyIDSelector,
@@ -33,11 +34,11 @@ func (mg *AlertCondition) ResolveReferences(ctx context.Context, c client.Reader
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.ForProvider.PolicyID")
 	}
-	mg.Spec.ForProvider.PolicyID = reference.ToFloatPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.PolicyID = ptr.ToFloatPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.PolicyIDRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromFloatPtrValue(mg.Spec.InitProvider.PolicyID),
+		CurrentValue: ptr.FromFloatPtrValue(mg.Spec.InitProvider.PolicyID, ""),
 		Extract:      reference.ExternalName(),
 		Reference:    mg.Spec.InitProvider.PolicyIDRef,
 		Selector:     mg.Spec.InitProvider.PolicyIDSelector,
@@ -49,7 +50,7 @@ func (mg *AlertCondition) ResolveReferences(ctx context.Context, c client.Reader
 	if err != nil {
 		return errors.Wrap(err, "mg.Spec.InitProvider.PolicyID")
 	}
-	mg.Spec.InitProvider.PolicyID = reference.ToFloatPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.PolicyID = ptr.ToFloatPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.PolicyIDRef = rsp.ResolvedReference
 
 	return nil
