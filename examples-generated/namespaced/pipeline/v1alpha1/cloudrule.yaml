@@ -1,0 +1,15 @@
+apiVersion: pipeline.newrelic.m.upbound.io/v1alpha1
+kind: CloudRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: pipeline/v1alpha1/cloudrule
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: upbound-system
+spec:
+  forProvider:
+    accountId: 1000100
+    description: This rule deletes all DEBUG logs from the dev environment.
+    name: Test Pipeline Cloud Rule
+    nrql: DELETE FROM Log WHERE logLevel = 'DEBUG' AND environment = 'dev'

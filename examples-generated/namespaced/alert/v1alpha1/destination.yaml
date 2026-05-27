@@ -1,0 +1,27 @@
+apiVersion: alert.newrelic.m.upbound.io/v1alpha1
+kind: Destination
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alert/v1alpha1/destination
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: upbound-system
+spec:
+  forProvider:
+    accountId: 12345678
+    authCustomHeader:
+    - key: API_KEY
+      valueSecretRef:
+        key: example-key
+        name: example-secret
+    name: foo
+    property:
+    - key: source
+      value: terraform
+    secureUrl:
+    - prefix: https://webhook.mywebhook.com/
+      secureSuffixSecretRef:
+        key: example-key
+        name: example-secret
+    type: WEBHOOK

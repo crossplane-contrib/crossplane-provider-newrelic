@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.14.0
+    controller-gen.kubebuilder.io/version: v0.20.1
   name: dashboards.dashboard.newrelic.upbound.io
 spec:
   group: dashboard.newrelic.upbound.io
@@ -109,6 +109,32 @@ spec:
                             An area widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -217,14 +243,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -283,6 +309,19 @@ spec:
                                   A title for the widget.
                                   A title for the widget.
                                 type: string
+                              tooltip:
+                                description: |-
+                                  A nested block that describes tooltip configuration for area, line, and stacked bar widgets. See Nested tooltip blocks below for details.
+                                  Tooltip configuration for the widget.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: |-
+                                        The tooltip display mode. Valid values are:
+                                        Tooltip display mode.
+                                      type: string
+                                  type: object
+                                type: array
                               units:
                                 description: A nested block that describes units on
                                   your Y axis. See Nested Units blocks below for details.
@@ -335,6 +374,32 @@ spec:
                             A bar widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -455,14 +520,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -573,6 +638,104 @@ spec:
                             A billboard widget.
                           items:
                             properties:
+                              billboardSettings:
+                                description: |-
+                                  A nested block that describes billboard specific settings. See Nested billboard_settings blocks below for details.
+                                  Billboard settings configuration for the widget.
+                                items:
+                                  properties:
+                                    gridOptions:
+                                      description: |-
+                                        A nested block that configures grid layout options for the billboard widget. This block supports:
+                                        Grid options configuration for the billboard widget.
+                                      items:
+                                        properties:
+                                          columns:
+                                            description: |-
+                                              Number of columns to use for the grid layout.
+                                              Number of columns in the grid.
+                                            type: number
+                                          label:
+                                            description: |-
+                                              Grid configuration for label.
+                                              Grid label setting.
+                                            type: number
+                                          value:
+                                            description: |-
+                                              A possible variable value
+                                              Grid value setting.
+                                            type: number
+                                        type: object
+                                      type: array
+                                    link:
+                                      description: |-
+                                        A nested block that configures clickable links for the billboard widget. This block supports:
+                                        Link configuration for the billboard widget.
+                                      items:
+                                        properties:
+                                          newTab:
+                                            description: |-
+                                              Boolean value indicating whether the link should open in a new tab. Defaults to false.
+                                              Whether to open the link in a new tab.
+                                            type: boolean
+                                          title:
+                                            description: |-
+                                              A title for the widget.
+                                              The title for the link.
+                                            type: string
+                                          url:
+                                            description: |-
+                                              The URL to navigate to when the billboard is clicked.
+                                              The URL for the link.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    visual:
+                                      description: |-
+                                        A nested block that configures the visual settings of the billboard widget. This block supports:
+                                        Visual configuration for the billboard widget.
+                                      items:
+                                        properties:
+                                          alignment:
+                                            description: |-
+                                              Controls the alignment of the billboard content. Accepted values are inline or stacked.
+                                              Billboard alignment type.
+                                            type: string
+                                          display:
+                                            description: |-
+                                              Controls how the billboard content is displayed. Accepted values are auto, all, none, label or value.
+                                              Billboard display type.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -686,14 +849,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -809,6 +972,32 @@ spec:
                             A bullet widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -922,14 +1111,14 @@ spec:
                                 type: number
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -1040,6 +1229,32 @@ spec:
                             A funnel widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -1148,14 +1363,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -1266,6 +1481,32 @@ spec:
                             A heatmap widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -1386,14 +1627,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -1504,6 +1745,32 @@ spec:
                             A histogram widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -1612,14 +1879,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -1730,6 +1997,32 @@ spec:
                             A JSON widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -1838,14 +2131,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -1956,6 +2249,32 @@ spec:
                             A line widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -2069,14 +2388,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -2167,6 +2486,19 @@ spec:
                                   A title for the widget.
                                   A title for the widget.
                                 type: string
+                              tooltip:
+                                description: |-
+                                  A nested block that describes tooltip configuration for area, line, and stacked bar widgets. See Nested tooltip blocks below for details.
+                                  Tooltip configuration for the widget.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: |-
+                                        The tooltip display mode. Valid values are:
+                                        Tooltip display mode.
+                                      type: string
+                                  type: object
+                                type: array
                               units:
                                 description: A nested block that describes units on
                                   your Y axis. See Nested Units blocks below for details.
@@ -2256,6 +2588,32 @@ spec:
                             A log table widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -2364,14 +2722,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -2482,6 +2840,32 @@ spec:
                             A markdown widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -2695,6 +3079,32 @@ spec:
                             A pie widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -2815,14 +3225,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -2933,6 +3343,32 @@ spec:
                             A stacked bar widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -3041,14 +3477,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -3107,6 +3543,19 @@ spec:
                                   A title for the widget.
                                   A title for the widget.
                                 type: string
+                              tooltip:
+                                description: |-
+                                  A nested block that describes tooltip configuration for area, line, and stacked bar widgets. See Nested tooltip blocks below for details.
+                                  Tooltip configuration for the widget.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: |-
+                                        The tooltip display mode. Valid values are:
+                                        Tooltip display mode.
+                                      type: string
+                                  type: object
+                                type: array
                               units:
                                 description: A nested block that describes units on
                                   your Y axis. See Nested Units blocks below for details.
@@ -3159,6 +3608,32 @@ spec:
                             A table widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -3279,14 +3754,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -3473,13 +3948,14 @@ spec:
                           type: string
                         nrqlQuery:
                           description: |-
-                            Configuration for variables of type nrql. See Nested nrql_query blocks for details.
+                            Configuration for variables of type nrql. See Nested nrql_query blocks for Variables for details.
                             Configuration for variables of type NRQL.
                           items:
                             properties:
                               accountIds:
-                                description: New Relic account ID(s) to issue the
-                                  query against.
+                                description: |-
+                                  List of account IDs such as [12345, 67890].
+                                  New Relic account ID(s) to issue the query against.
                                 items:
                                   type: number
                                 type: array
@@ -3505,6 +3981,11 @@ spec:
                                 description: |-
                                   With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
                                   Only applies to variables of type NRQL. With this turned on, the time range for the NRQL query will override the time picker on dashboards and other pages. Turn this off to use the time picker as normal.
+                                type: boolean
+                              showApplyAction:
+                                description: |-
+                                  When multi-selection is enabled (is_multi_selection = true), displays an "Apply" button that allows users to confirm and apply their selected values to the dashboard.
+                                  Show apply button when multi-selecting
                                 type: boolean
                             type: object
                           type: array
@@ -3575,6 +4056,32 @@ spec:
                             An area widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -3683,14 +4190,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -3749,6 +4256,19 @@ spec:
                                   A title for the widget.
                                   A title for the widget.
                                 type: string
+                              tooltip:
+                                description: |-
+                                  A nested block that describes tooltip configuration for area, line, and stacked bar widgets. See Nested tooltip blocks below for details.
+                                  Tooltip configuration for the widget.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: |-
+                                        The tooltip display mode. Valid values are:
+                                        Tooltip display mode.
+                                      type: string
+                                  type: object
+                                type: array
                               units:
                                 description: A nested block that describes units on
                                   your Y axis. See Nested Units blocks below for details.
@@ -3801,6 +4321,32 @@ spec:
                             A bar widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -3921,14 +4467,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -4039,6 +4585,104 @@ spec:
                             A billboard widget.
                           items:
                             properties:
+                              billboardSettings:
+                                description: |-
+                                  A nested block that describes billboard specific settings. See Nested billboard_settings blocks below for details.
+                                  Billboard settings configuration for the widget.
+                                items:
+                                  properties:
+                                    gridOptions:
+                                      description: |-
+                                        A nested block that configures grid layout options for the billboard widget. This block supports:
+                                        Grid options configuration for the billboard widget.
+                                      items:
+                                        properties:
+                                          columns:
+                                            description: |-
+                                              Number of columns to use for the grid layout.
+                                              Number of columns in the grid.
+                                            type: number
+                                          label:
+                                            description: |-
+                                              Grid configuration for label.
+                                              Grid label setting.
+                                            type: number
+                                          value:
+                                            description: |-
+                                              A possible variable value
+                                              Grid value setting.
+                                            type: number
+                                        type: object
+                                      type: array
+                                    link:
+                                      description: |-
+                                        A nested block that configures clickable links for the billboard widget. This block supports:
+                                        Link configuration for the billboard widget.
+                                      items:
+                                        properties:
+                                          newTab:
+                                            description: |-
+                                              Boolean value indicating whether the link should open in a new tab. Defaults to false.
+                                              Whether to open the link in a new tab.
+                                            type: boolean
+                                          title:
+                                            description: |-
+                                              A title for the widget.
+                                              The title for the link.
+                                            type: string
+                                          url:
+                                            description: |-
+                                              The URL to navigate to when the billboard is clicked.
+                                              The URL for the link.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    visual:
+                                      description: |-
+                                        A nested block that configures the visual settings of the billboard widget. This block supports:
+                                        Visual configuration for the billboard widget.
+                                      items:
+                                        properties:
+                                          alignment:
+                                            description: |-
+                                              Controls the alignment of the billboard content. Accepted values are inline or stacked.
+                                              Billboard alignment type.
+                                            type: string
+                                          display:
+                                            description: |-
+                                              Controls how the billboard content is displayed. Accepted values are auto, all, none, label or value.
+                                              Billboard display type.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -4152,14 +4796,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -4275,6 +4919,32 @@ spec:
                             A bullet widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -4388,14 +5058,14 @@ spec:
                                 type: number
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -4506,6 +5176,32 @@ spec:
                             A funnel widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -4614,14 +5310,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -4732,6 +5428,32 @@ spec:
                             A heatmap widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -4852,14 +5574,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -4970,6 +5692,32 @@ spec:
                             A histogram widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -5078,14 +5826,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -5196,6 +5944,32 @@ spec:
                             A JSON widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -5304,14 +6078,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -5422,6 +6196,32 @@ spec:
                             A line widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -5535,14 +6335,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -5633,6 +6433,19 @@ spec:
                                   A title for the widget.
                                   A title for the widget.
                                 type: string
+                              tooltip:
+                                description: |-
+                                  A nested block that describes tooltip configuration for area, line, and stacked bar widgets. See Nested tooltip blocks below for details.
+                                  Tooltip configuration for the widget.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: |-
+                                        The tooltip display mode. Valid values are:
+                                        Tooltip display mode.
+                                      type: string
+                                  type: object
+                                type: array
                               units:
                                 description: A nested block that describes units on
                                   your Y axis. See Nested Units blocks below for details.
@@ -5722,6 +6535,32 @@ spec:
                             A log table widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -5830,14 +6669,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -5948,6 +6787,32 @@ spec:
                             A markdown widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -6161,6 +7026,32 @@ spec:
                             A pie widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -6281,14 +7172,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -6399,6 +7290,32 @@ spec:
                             A stacked bar widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -6507,14 +7424,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -6573,6 +7490,19 @@ spec:
                                   A title for the widget.
                                   A title for the widget.
                                 type: string
+                              tooltip:
+                                description: |-
+                                  A nested block that describes tooltip configuration for area, line, and stacked bar widgets. See Nested tooltip blocks below for details.
+                                  Tooltip configuration for the widget.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: |-
+                                        The tooltip display mode. Valid values are:
+                                        Tooltip display mode.
+                                      type: string
+                                  type: object
+                                type: array
                               units:
                                 description: A nested block that describes units on
                                   your Y axis. See Nested Units blocks below for details.
@@ -6625,6 +7555,32 @@ spec:
                             A table widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -6745,14 +7701,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -6939,13 +7895,14 @@ spec:
                           type: string
                         nrqlQuery:
                           description: |-
-                            Configuration for variables of type nrql. See Nested nrql_query blocks for details.
+                            Configuration for variables of type nrql. See Nested nrql_query blocks for Variables for details.
                             Configuration for variables of type NRQL.
                           items:
                             properties:
                               accountIds:
-                                description: New Relic account ID(s) to issue the
-                                  query against.
+                                description: |-
+                                  List of account IDs such as [12345, 67890].
+                                  New Relic account ID(s) to issue the query against.
                                 items:
                                   type: number
                                 type: array
@@ -6971,6 +7928,11 @@ spec:
                                 description: |-
                                   With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
                                   Only applies to variables of type NRQL. With this turned on, the time range for the NRQL query will override the time picker on dashboards and other pages. Turn this off to use the time picker as normal.
+                                type: boolean
+                              showApplyAction:
+                                description: |-
+                                  When multi-selection is enabled (is_multi_selection = true), displays an "Apply" button that allows users to confirm and apply their selected values to the dashboard.
+                                  Show apply button when multi-selecting
                                 type: boolean
                             type: object
                           type: array
@@ -7058,93 +8020,12 @@ spec:
                 required:
                 - name
                 type: object
-              publishConnectionDetailsTo:
-                description: |-
-                  PublishConnectionDetailsTo specifies the connection secret config which
-                  contains a name, metadata and a reference to secret store config to
-                  which any connection details for this managed resource should be written.
-                  Connection details frequently include the endpoint, username,
-                  and password required to connect to the managed resource.
-                properties:
-                  configRef:
-                    default:
-                      name: default
-                    description: |-
-                      SecretStoreConfigRef specifies which secret store config should be used
-                      for this ConnectionSecret.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: |-
-                              Resolution specifies whether resolution of this reference is required.
-                              The default is 'Required', which means the reconcile will fail if the
-                              reference cannot be resolved. 'Optional' means this reference will be
-                              a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: |-
-                              Resolve specifies when this reference should be resolved. The default
-                              is 'IfNotPresent', which will attempt to resolve the reference only when
-                              the corresponding field is not present. Use 'Always' to resolve the
-                              reference on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  metadata:
-                    description: Metadata is the metadata for connection secret.
-                    properties:
-                      annotations:
-                        additionalProperties:
-                          type: string
-                        description: |-
-                          Annotations are the annotations to be added to connection secret.
-                          - For Kubernetes secrets, this will be used as "metadata.annotations".
-                          - It is up to Secret Store implementation for others store types.
-                        type: object
-                      labels:
-                        additionalProperties:
-                          type: string
-                        description: |-
-                          Labels are the labels/tags to be added to connection secret.
-                          - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store types.
-                        type: object
-                      type:
-                        description: |-
-                          Type is the SecretType for the connection secret.
-                          - Only valid for Kubernetes Secret Stores.
-                        type: string
-                    type: object
-                  name:
-                    description: Name is the name of the connection secret.
-                    type: string
-                required:
-                - name
-                type: object
               writeConnectionSecretToRef:
                 description: |-
                   WriteConnectionSecretToReference specifies the namespace and name of a
                   Secret to which any connection details for this managed resource should
                   be written. Connection details frequently include the endpoint, username,
                   and password required to connect to the managed resource.
-                  This field is planned to be replaced in a future release in favor of
-                  PublishConnectionDetailsTo. Currently, both could be set independently
-                  and connection details would be published to both without affecting
-                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -7221,6 +8102,32 @@ spec:
                             An area widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -7332,14 +8239,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -7398,6 +8305,19 @@ spec:
                                   A title for the widget.
                                   A title for the widget.
                                 type: string
+                              tooltip:
+                                description: |-
+                                  A nested block that describes tooltip configuration for area, line, and stacked bar widgets. See Nested tooltip blocks below for details.
+                                  Tooltip configuration for the widget.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: |-
+                                        The tooltip display mode. Valid values are:
+                                        Tooltip display mode.
+                                      type: string
+                                  type: object
+                                type: array
                               units:
                                 description: A nested block that describes units on
                                   your Y axis. See Nested Units blocks below for details.
@@ -7450,6 +8370,32 @@ spec:
                             A bar widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -7573,14 +8519,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -7691,6 +8637,104 @@ spec:
                             A billboard widget.
                           items:
                             properties:
+                              billboardSettings:
+                                description: |-
+                                  A nested block that describes billboard specific settings. See Nested billboard_settings blocks below for details.
+                                  Billboard settings configuration for the widget.
+                                items:
+                                  properties:
+                                    gridOptions:
+                                      description: |-
+                                        A nested block that configures grid layout options for the billboard widget. This block supports:
+                                        Grid options configuration for the billboard widget.
+                                      items:
+                                        properties:
+                                          columns:
+                                            description: |-
+                                              Number of columns to use for the grid layout.
+                                              Number of columns in the grid.
+                                            type: number
+                                          label:
+                                            description: |-
+                                              Grid configuration for label.
+                                              Grid label setting.
+                                            type: number
+                                          value:
+                                            description: |-
+                                              A possible variable value
+                                              Grid value setting.
+                                            type: number
+                                        type: object
+                                      type: array
+                                    link:
+                                      description: |-
+                                        A nested block that configures clickable links for the billboard widget. This block supports:
+                                        Link configuration for the billboard widget.
+                                      items:
+                                        properties:
+                                          newTab:
+                                            description: |-
+                                              Boolean value indicating whether the link should open in a new tab. Defaults to false.
+                                              Whether to open the link in a new tab.
+                                            type: boolean
+                                          title:
+                                            description: |-
+                                              A title for the widget.
+                                              The title for the link.
+                                            type: string
+                                          url:
+                                            description: |-
+                                              The URL to navigate to when the billboard is clicked.
+                                              The URL for the link.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    visual:
+                                      description: |-
+                                        A nested block that configures the visual settings of the billboard widget. This block supports:
+                                        Visual configuration for the billboard widget.
+                                      items:
+                                        properties:
+                                          alignment:
+                                            description: |-
+                                              Controls the alignment of the billboard content. Accepted values are inline or stacked.
+                                              Billboard alignment type.
+                                            type: string
+                                          display:
+                                            description: |-
+                                              Controls how the billboard content is displayed. Accepted values are auto, all, none, label or value.
+                                              Billboard display type.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -7807,14 +8851,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -7930,6 +8974,32 @@ spec:
                             A bullet widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -8046,14 +9116,14 @@ spec:
                                 type: number
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -8164,6 +9234,32 @@ spec:
                             A funnel widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -8275,14 +9371,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -8393,6 +9489,32 @@ spec:
                             A heatmap widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -8516,14 +9638,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -8634,6 +9756,32 @@ spec:
                             A histogram widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -8745,14 +9893,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -8863,6 +10011,32 @@ spec:
                             A JSON widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -8974,14 +10148,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -9092,6 +10266,32 @@ spec:
                             A line widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -9208,14 +10408,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -9306,6 +10506,19 @@ spec:
                                   A title for the widget.
                                   A title for the widget.
                                 type: string
+                              tooltip:
+                                description: |-
+                                  A nested block that describes tooltip configuration for area, line, and stacked bar widgets. See Nested tooltip blocks below for details.
+                                  Tooltip configuration for the widget.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: |-
+                                        The tooltip display mode. Valid values are:
+                                        Tooltip display mode.
+                                      type: string
+                                  type: object
+                                type: array
                               units:
                                 description: A nested block that describes units on
                                   your Y axis. See Nested Units blocks below for details.
@@ -9395,6 +10608,32 @@ spec:
                             A log table widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -9506,14 +10745,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -9624,6 +10863,32 @@ spec:
                             A markdown widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -9840,6 +11105,32 @@ spec:
                             A pie widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -9963,14 +11254,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -10081,6 +11372,32 @@ spec:
                             A stacked bar widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -10192,14 +11509,14 @@ spec:
                                 type: boolean
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -10258,6 +11575,19 @@ spec:
                                   A title for the widget.
                                   A title for the widget.
                                 type: string
+                              tooltip:
+                                description: |-
+                                  A nested block that describes tooltip configuration for area, line, and stacked bar widgets. See Nested tooltip blocks below for details.
+                                  Tooltip configuration for the widget.
+                                items:
+                                  properties:
+                                    mode:
+                                      description: |-
+                                        The tooltip display mode. Valid values are:
+                                        Tooltip display mode.
+                                      type: string
+                                  type: object
+                                type: array
                               units:
                                 description: A nested block that describes units on
                                   your Y axis. See Nested Units blocks below for details.
@@ -10310,6 +11640,32 @@ spec:
                             A table widget.
                           items:
                             properties:
+                              chartStyles:
+                                description: |-
+                                  A nested block that describes chart styling configuration including line interpolation and gradient settings. See Nested chart_styles blocks below for details.
+                                  Chart styling configuration including line interpolation and gradient settings.
+                                items:
+                                  properties:
+                                    gradient:
+                                      description: |-
+                                        A nested block that enables gradient effects on charts. Contains a single required attribute:
+                                        Gradient configuration for area, stacked bar, pie, histogram widgets, etc.
+                                      items:
+                                        properties:
+                                          enabled:
+                                            description: |-
+                                              Boolean value to enable or disable gradient effect.
+                                              Enable or disable gradient effect.
+                                            type: boolean
+                                        type: object
+                                      type: array
+                                    lineInterpolation:
+                                      description: |-
+                                        Controls how data points are connected in line/area charts. Valid values are: linear, smooth, stepBefore, stepAfter
+                                        Line interpolation style. Valid values: 'linear', 'smooth', 'stepBefore', 'stepAfter'. Applicable to line widgets.
+                                      type: string
+                                  type: object
+                                type: array
                               colors:
                                 description: A nested block that describes colors
                                   of your charts per series. See Nested Colors blocks
@@ -10433,14 +11789,14 @@ spec:
                                 type: array
                               nrqlQuery:
                                 description: Configuration for variables of type nrql.
-                                  See Nested nrql_query blocks for details.
+                                  See Nested nrql_query blocks for Variables for details.
                                 items:
                                   properties:
                                     accountId:
                                       description: |-
-                                        The New Relic account ID to issue the query against. Defaults to the Account ID where the dashboard was created. When using an account ID you don't have permissions for the widget will be replaced with a widget showing the data is inaccessible.
-                                        The account id used for the NRQL query.
-                                      type: number
+                                        Determines the New Relic Account ID(s) to be used to compute the results of the queries provided, corresponding to the widget the nrql_query block is used with. Can be:
+                                        The account ID(s) used for the NRQL query. Can be a single account ID or multiple account IDs in a JSON-encoded array.
+                                      type: string
                                     query:
                                       description: |-
                                         Valid NRQL query string. See Writing NRQL Queries for help.
@@ -10632,13 +11988,14 @@ spec:
                           type: string
                         nrqlQuery:
                           description: |-
-                            Configuration for variables of type nrql. See Nested nrql_query blocks for details.
+                            Configuration for variables of type nrql. See Nested nrql_query blocks for Variables for details.
                             Configuration for variables of type NRQL.
                           items:
                             properties:
                               accountIds:
-                                description: New Relic account ID(s) to issue the
-                                  query against.
+                                description: |-
+                                  List of account IDs such as [12345, 67890].
+                                  New Relic account ID(s) to issue the query against.
                                 items:
                                   type: number
                                 type: array
@@ -10664,6 +12021,11 @@ spec:
                                 description: |-
                                   With this turned on, the time range in this query will override the time picker on dashboards and other pages. Defaults to false.
                                   Only applies to variables of type NRQL. With this turned on, the time range for the NRQL query will override the time picker on dashboards and other pages. Turn this off to use the time picker as normal.
+                                type: boolean
+                              showApplyAction:
+                                description: |-
+                                  When multi-selection is enabled (is_multi_selection = true), displays an "Apply" button that allows users to confirm and apply their selected values to the dashboard.
+                                  Show apply button when multi-selecting
                                 type: boolean
                             type: object
                           type: array
