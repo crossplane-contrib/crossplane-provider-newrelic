@@ -12,10 +12,10 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 
 export TERRAFORM_PROVIDER_SOURCE ?= newrelic/newrelic
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/newrelic/terraform-provider-newrelic
-export TERRAFORM_PROVIDER_VERSION ?= 3.53.0
+export TERRAFORM_PROVIDER_VERSION ?= 3.89.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-newrelic
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/newrelic/terraform-provider-newrelic/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-newrelic_v3.53.0
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-newrelic_v3.89.0
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 
 PLATFORMS ?= linux_amd64 linux_arm64
@@ -43,21 +43,26 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.22
-GOLANGCILINT_VERSION ?= 1.55.2
+GO_REQUIRED_VERSION ?= 1.25
+# GOLANGCILINT_VERSION is inherited from build submodule by default.
+# Uncomment below if you need to override the version.
+GOLANGCILINT_VERSION ?= 2.12.2
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
-GO_SUBDIRS += cmd internal apis
+GO_SUBDIRS += cmd internal apis generate
 -include build/makelib/golang.mk
 
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.26.0
-UP_VERSION = v0.34.2
-UP_CHANNEL = stable
-UPTEST_VERSION = v0.11.1
-CROSSPLANE_VERSION = 1.14.6
+KIND_VERSION = v0.30.0
+UPTEST_VERSION = v2.2.0
+KUSTOMIZE_VERSION = v5.3.0
+YQ_VERSION = v4.40.5
+CROSSPLANE_VERSION = 2.2.1
+CROSSPLANE_CLI_VERSION = v2.2.1
+CRDDIFF_VERSION = v0.12.1
+
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -97,7 +102,7 @@ xpkg.build.crossplane-provider-newrelic: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
-build.init: $(UP) check-terraform-version
+build.init: $(UP) $(CROSSPLANE_CLI) check-terraform-version
 
 # ====================================================================================
 # Setup Terraform for fetching provider schema

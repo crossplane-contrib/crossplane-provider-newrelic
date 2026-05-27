@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/crossplane/upjet/pkg/config"
+	"github.com/crossplane/upjet/v2/pkg/config"
 	"github.com/pkg/errors"
 )
 
@@ -30,6 +30,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"newrelic_log_parsing_rule":         config.IdentifierFromProvider,
 	"newrelic_nrql_alert_condition":     configNrqAlertCondition(),
 	"newrelic_nrql_drop_rule":           configNrqDropRule(),
+	"newrelic_pipeline_cloud_rule":      config.IdentifierFromProvider,
 	"newrelic_workflow":                 config.IdentifierFromProvider,
 }
 
@@ -60,6 +61,8 @@ func ExternalNameConfigured() []string {
 // See - https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/alert_policy#import
 // Alert policies can be imported using a composite ID of <id>:<account_id>,
 // where account_id is the account number scoped to the alert policy resource.
+//
+//nolint:dupl // Similar structure to other external name configs but with unique ID format
 func configAlertPolicy() config.ExternalName {
 	e := config.IdentifierFromProvider
 
@@ -98,6 +101,8 @@ func configAlertPolicy() config.ExternalName {
 
 // See - https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/nrql_alert_condition#import
 // NRQL alert conditions can be imported using a composite ID of <policy_id>:<condition_id>, e.g.
+//
+//nolint:dupl // Similar structure to other external name configs but with unique ID format
 func configNrqAlertCondition() config.ExternalName {
 	e := config.IdentifierFromProvider
 
@@ -155,6 +160,8 @@ func configDashboard() config.ExternalName {
 
 // See - https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/nrql_drop_rule#import
 // New Relic NRQL drop rules can be imported using a concatenated string of the format <account_id>:<rule_id>
+//
+//nolint:dupl // Similar structure to configAlertPolicy but different ID format (account_id:rule_id vs id:account_id)
 func configNrqDropRule() config.ExternalName {
 	e := config.IdentifierFromProvider
 
