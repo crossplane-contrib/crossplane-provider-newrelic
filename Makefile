@@ -12,10 +12,10 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 
 export TERRAFORM_PROVIDER_SOURCE ?= newrelic/newrelic
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/newrelic/terraform-provider-newrelic
-export TERRAFORM_PROVIDER_VERSION ?= 3.89.0
+export TERRAFORM_PROVIDER_VERSION ?= 3.90.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-newrelic
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/newrelic/terraform-provider-newrelic/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-newrelic_v3.89.0
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-newrelic_v3.90.0
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 
 PLATFORMS ?= linux_amd64 linux_arm64

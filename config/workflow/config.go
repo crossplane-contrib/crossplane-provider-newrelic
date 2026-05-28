@@ -15,7 +15,7 @@ func Configure(p *config.Provider) {
 
 		r.References = config.References{
 			"destination.channel_id": config.Reference{
-				Type: "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/alert/v1alpha1.Channel",
+				TerraformName: "newrelic_notification_channel",
 			},
 		}
 	})

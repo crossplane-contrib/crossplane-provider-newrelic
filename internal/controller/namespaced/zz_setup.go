@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Upbound Inc.
+Copyright 2026 Upbound Inc.
 */
 
 package controller
@@ -17,7 +17,6 @@ import (
 	dashboardjson "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/namespaced/dashboard/dashboardjson"
 	parsingrule "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/namespaced/log/parsingrule"
 	alertcondition "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/namespaced/nrql/alertcondition"
-	droprule "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/namespaced/nrql/droprule"
 	cloudrule "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/namespaced/pipeline/cloudrule"
 	providerconfig "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/namespaced/providerconfig"
 	workflow "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/namespaced/workflow/workflow"
@@ -35,7 +34,6 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		dashboardjson.Setup,
 		parsingrule.Setup,
 		alertcondition.Setup,
-		droprule.Setup,
 		cloudrule.Setup,
 		providerconfig.Setup,
 		workflow.Setup,
@@ -59,7 +57,6 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		dashboardjson.SetupGated,
 		parsingrule.SetupGated,
 		alertcondition.SetupGated,
-		droprule.SetupGated,
 		cloudrule.SetupGated,
 		providerconfig.SetupGated,
 		workflow.SetupGated,

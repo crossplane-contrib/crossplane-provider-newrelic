@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Upbound Inc.
+Copyright 2026 Upbound Inc.
 */
 
 // Package v1alpha1 contains the core resources of the newrelic upjet provider.
