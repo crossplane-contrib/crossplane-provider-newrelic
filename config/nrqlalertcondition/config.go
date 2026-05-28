@@ -21,7 +21,7 @@ func Configure(p *config.Provider) {
 
 		r.References = config.References{
 			"policy_id": config.Reference{
-				Type: "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/alert/v1alpha1.Policy",
+				TerraformName: "newrelic_alert_policy",
 			},
 		}
 	})

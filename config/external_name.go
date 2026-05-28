@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Upbound Inc.
+Copyright 2026 Upbound Inc.
 */
 
 package config
@@ -29,7 +29,6 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"newrelic_one_dashboard_json":       config.IdentifierFromProvider,
 	"newrelic_log_parsing_rule":         config.IdentifierFromProvider,
 	"newrelic_nrql_alert_condition":     configNrqAlertCondition(),
-	"newrelic_nrql_drop_rule":           configNrqDropRule(),
 	"newrelic_pipeline_cloud_rule":      config.IdentifierFromProvider,
 	"newrelic_workflow":                 config.IdentifierFromProvider,
 }
@@ -154,46 +153,6 @@ func configDashboard() config.ExternalName {
 			return "", errors.New("Can't format id from tfstate as string")
 		}
 		return idStr, nil
-	}
-	return e
-}
-
-// See - https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/nrql_drop_rule#import
-// New Relic NRQL drop rules can be imported using a concatenated string of the format <account_id>:<rule_id>
-//
-//nolint:dupl // Similar structure to configAlertPolicy but different ID format (account_id:rule_id vs id:account_id)
-func configNrqDropRule() config.ExternalName {
-	e := config.IdentifierFromProvider
-
-	// Gets the rule id as the external-name even though terraform internal uses account_id:rule_id
-	e.GetExternalNameFn = func(tfstate map[string]interface{}) (string, error) {
-		id, ok := tfstate["id"]
-		if !ok {
-			return "", errors.New("unable to get id from tfstate")
-		}
-		idStr, ok := id.(string)
-		if !ok {
-			return "", errors.New("Can't format id from tfstate as string")
-		}
-		// <id>:<account_id>
-		words := strings.Split(idStr, ":")
-		return words[1], nil
-	}
-
-	e.GetIDFn = func(_ context.Context, externalName string, parameters map[string]interface{}, _ map[string]interface{}) (string, error) {
-		// Using a stub value to pass validation.
-		if len(externalName) == 0 {
-			return "", nil
-		}
-
-		accountID, ok := parameters["account_id"]
-		if !ok {
-			return "", errors.New("Can't get account_id from nrql_drop_rule")
-		}
-		accountIDStr := strconv.FormatFloat(accountID.(float64), 'f', 0, 64)
-
-		// <account_id>:<rule_id>
-		return fmt.Sprintf("%s:%s", accountIDStr, externalName), nil
 	}
 	return e
 }

@@ -802,6 +802,80 @@ resources:
             loader_type: '- (Optional) Determines the browser loader configured. Valid values are SPA, PRO, and LITE. The default is SPA. Refer to the browser agent loader documentation for more information on valid loader types.'
             name: '- (Required) The name of the browser application.'
         importStatements: []
+    newrelic_cardinality_management:
+        subCategory: ""
+        description: Manage New Relic account cardinality limit overrides.
+        name: newrelic_cardinality_management
+        title: newrelic_cardinality_management
+        examples:
+            - name: account_default
+              manifest: |-
+                {
+                  "cardinality_limit": 150000,
+                  "mode": "DEFAULT"
+                }
+            - name: per_metric
+              manifest: |-
+                {
+                  "metric": [
+                    {
+                      "cardinality_limit": 200000,
+                      "name": "http.server.duration"
+                    }
+                  ],
+                  "mode": "PER_METRIC"
+                }
+            - name: high_cardinality_metrics
+              manifest: |-
+                {
+                  "metric": [
+                    {
+                      "cardinality_limit": 200000,
+                      "name": "http.server.duration"
+                    },
+                    {
+                      "cardinality_limit": 300000,
+                      "name": "otelcol_nrreceiver_incoming_request_proxy"
+                    },
+                    {
+                      "cardinality_limit": 150000,
+                      "name": "k8s.pod.cpu.usage"
+                    }
+                  ],
+                  "mode": "PER_METRIC"
+                }
+            - name: account_default
+              manifest: |-
+                {
+                  "cardinality_limit": 150000,
+                  "mode": "DEFAULT"
+                }
+            - name: per_metric
+              manifest: |-
+                {
+                  "metric": [
+                    {
+                      "cardinality_limit": 250000,
+                      "name": "http.server.duration"
+                    },
+                    {
+                      "cardinality_limit": 300000,
+                      "name": "otelcol_nrreceiver_incoming_request_proxy"
+                    }
+                  ],
+                  "mode": "PER_METRIC"
+                }
+        argumentDocs:
+            DEFAULT: — sets an account-wide limit for all metrics. cardinality_limit is required; metric blocks must not be set.
+            PER_METRIC: mode, cardinality_limit values in state reflect the last configuration applied via terraform — this is the expected behaviour for this mode. A note is displayed as a reminder.
+            cardinality_limit: '- (Optional) The account-wide cardinality limit — the maximum number of unique dimension-value combinations allowed per metric per day. Required when mode is "DEFAULT"; must not be set when mode is "PER_METRIC".'
+            id: '- The Terraform resource ID in the format <account_id>:<mode> (e.g. 12345678:DEFAULT or 12345678:PER_METRIC).'
+            metric: block. A warning is displayed as a reminder that updates may take a few minutes to be reflected in the UI.
+            metric.cardinality_limit: '- (Required) The maximum number of unique dimension-value combinations allowed per day for this metric.'
+            metric.name: '- (Required) The full name of the metric (e.g. "http.server.duration").'
+            mode: '- (Required) The override mode. Accepted values: "DEFAULT" or "PER_METRIC". Forces re-creation when changed.'
+            terraform plan: / terraform refresh on an existing resource
+        importStatements: []
     newrelic_cloud_aws_eu_sovereign_integrations:
         subCategory: ""
         description: Integrate AWS EU Sovereign services with New Relic.
@@ -3248,6 +3322,32 @@ resources:
             matched: '- (Optional) Whether the Grok pattern matched.'
             name: '- (Required) Name of rule.'
             nrql: '- (Required) The NRQL to match events to the parsing rule.'
+        importStatements: []
+    newrelic_metric_pruning_rule:
+        subCategory: ""
+        description: Create and manage New Relic metric pruning rules.
+        name: newrelic_metric_pruning_rule
+        title: newrelic_metric_pruning_rule
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "description": "Remove collector.name attribute from http.server.duration to reduce cardinality",
+                  "nrql": "SELECT collector.name FROM Metric WHERE metricName = 'http.server.duration'"
+                }
+            - name: example
+              manifest: |-
+                {
+                  "account_id": 12345678,
+                  "description": "Remove collector.name attribute from http.server.duration to reduce cardinality",
+                  "nrql": "SELECT collector.name FROM Metric WHERE metricName = 'http.server.duration'"
+                }
+        argumentDocs:
+            account_id: '- (Optional) The New Relic account ID in which to create the pruning rule. Defaults to the account ID configured on the provider.'
+            description: '- (Optional) A human-readable description of what this pruning rule does.'
+            id: '- The Terraform resource ID in the format <account_id>:<rule_id>.'
+            nrql: '- (Required) The NRQL query that identifies the metric and the specific attributes to prune. The SELECT clause must name the attributes to remove (not SELECT *), and the FROM clause must target Metric. Example: SELECT collector.name FROM Metric WHERE metricName = ''my.metric.name''.'
+            rule_id: '- The unique identifier of the pruning rule assigned by New Relic.'
         importStatements: []
     newrelic_monitor_downtime:
         subCategory: ""

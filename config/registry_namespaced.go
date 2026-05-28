@@ -17,7 +17,6 @@ import (
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/notificationchannel"
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/notificationdestination"
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/nrqlalertcondition"
-	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/nrqldroprule"
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/pipelinecloudrule"
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/config/workflow"
 
@@ -48,7 +47,6 @@ func GetProviderNamespaced() *ujconfig.Provider {
 		dashboardjson.Configure,
 		logparsingrule.Configure,
 		nrqlalertcondition.Configure,
-		nrqldroprule.Configure,
 		pipelinecloudrule.Configure,
 		workflow.Configure,
 	} {
