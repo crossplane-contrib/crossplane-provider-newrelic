@@ -24,6 +24,7 @@ import (
 	"github.com/crossplane/crossplane-runtime/v2/pkg/statemetrics"
 	tjcontroller "github.com/crossplane/upjet/v2/pkg/controller"
 	"github.com/crossplane/upjet/v2/pkg/terraform"
+	"github.com/go-logr/logr"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	authv1 "k8s.io/api/authorization/v1"
@@ -41,6 +42,7 @@ import (
 	apisCluster "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/cluster"
 	apisNamespaced "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/namespaced"
 	config "github.com/crossplane-contrib/crossplane-provider-newrelic/config"
+	resolverapis "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/apis"
 	"github.com/crossplane-contrib/crossplane-provider-newrelic/internal/clients"
 	controllerCluster "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster"
 	controllerNamespaced "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/namespaced"
@@ -94,6 +96,10 @@ func main() {
 		// *very* verbose even at info level, so we only provide it a real
 		// logger when we're running in debug mode.
 		ctrl.SetLogger(zl)
+	} else {
+		// Explicitly set a discard logger so controller-runtime does not
+		// complain that log.SetLogger(...) was never called.
+		ctrl.SetLogger(logr.Discard())
 	}
 
 	log.Debug("Starting", "sync-period", syncPeriod.String(), "poll-interval", pollInterval.String(), "max-reconcile-rate", *maxReconcileRate)
@@ -152,6 +158,8 @@ func main() {
 	kingpin.FatalIfError(apisNamespaced.AddToScheme(mgr.GetScheme()), "Cannot add namespaced NewRelic APIs to scheme")
 	kingpin.FatalIfError(apiextensionsv1.AddToScheme(mgr.GetScheme()), "Cannot add api-extensions APIs to scheme")
 	kingpin.FatalIfError(authv1.AddToScheme(mgr.GetScheme()), "Cannot add k8s authorization APIs to scheme")
+	kingpin.FatalIfError(resolverapis.BuildScheme(apisCluster.AddToSchemes), "Cannot register the cluster-scoped NewRelic APIs with the API resolver's runtime scheme")
+	kingpin.FatalIfError(resolverapis.BuildScheme(apisNamespaced.AddToSchemes), "Cannot register the namespaced NewRelic APIs with the API resolver's runtime scheme")
 
 	clusterOpts := tjcontroller.Options{
 		Options: xpcontroller.Options{
