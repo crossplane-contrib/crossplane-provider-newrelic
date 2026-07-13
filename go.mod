@@ -8,6 +8,7 @@ require (
 	github.com/crossplane/crossplane-runtime/v2 v2.2.0
 	github.com/crossplane/crossplane-tools v0.0.0-20250731192036-00d407d8b7ec
 	github.com/crossplane/upjet/v2 v2.2.1-0.20260507165441-14501756888d
+	github.com/go-logr/logr v1.4.3
 	github.com/pkg/errors v0.9.1
 	google.golang.org/grpc v1.81.1
 	k8s.io/api v0.35.3
@@ -36,7 +37,6 @@ require (
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
-	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/zapr v1.3.0 // indirect
 	github.com/go-openapi/jsonpointer v0.22.4 // indirect
 	github.com/go-openapi/jsonreference v0.21.4 // indirect
