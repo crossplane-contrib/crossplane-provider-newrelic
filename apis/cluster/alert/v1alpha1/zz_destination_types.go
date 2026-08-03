@@ -10,13 +10,13 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AuthBasicInitParameters struct {
 
 	// Specifies an authentication password for use with a destination.
-	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
+	PasswordSecretRef v2.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// The username of the basic auth.
 	User *string `json:"user,omitempty" tf:"user,omitempty"`
@@ -32,7 +32,7 @@ type AuthBasicParameters struct {
 
 	// Specifies an authentication password for use with a destination.
 	// +kubebuilder:validation:Optional
-	PasswordSecretRef v1.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
+	PasswordSecretRef v2.SecretKeySelector `json:"passwordSecretRef" tf:"-"`
 
 	// The username of the basic auth.
 	// +kubebuilder:validation:Optional
@@ -45,7 +45,7 @@ type AuthCustomHeaderInitParameters struct {
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// The secret value of the header.
-	ValueSecretRef v1.SecretKeySelector `json:"valueSecretRef" tf:"-"`
+	ValueSecretRef v2.SecretKeySelector `json:"valueSecretRef" tf:"-"`
 }
 
 type AuthCustomHeaderObservation struct {
@@ -62,7 +62,7 @@ type AuthCustomHeaderParameters struct {
 
 	// The secret value of the header.
 	// +kubebuilder:validation:Optional
-	ValueSecretRef v1.SecretKeySelector `json:"valueSecretRef" tf:"-"`
+	ValueSecretRef v2.SecretKeySelector `json:"valueSecretRef" tf:"-"`
 }
 
 type AuthTokenInitParameters struct {
@@ -71,7 +71,7 @@ type AuthTokenInitParameters struct {
 	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
 
 	// Specifies the token for integrating.
-	TokenSecretRef v1.SecretKeySelector `json:"tokenSecretRef" tf:"-"`
+	TokenSecretRef v2.SecretKeySelector `json:"tokenSecretRef" tf:"-"`
 }
 
 type AuthTokenObservation struct {
@@ -88,7 +88,7 @@ type AuthTokenParameters struct {
 
 	// Specifies the token for integrating.
 	// +kubebuilder:validation:Optional
-	TokenSecretRef v1.SecretKeySelector `json:"tokenSecretRef" tf:"-"`
+	TokenSecretRef v2.SecretKeySelector `json:"tokenSecretRef" tf:"-"`
 }
 
 type DestinationInitParameters struct {
@@ -339,7 +339,7 @@ type SecureURLInitParameters struct {
 	Prefix *string `json:"prefix,omitempty" tf:"prefix,omitempty"`
 
 	// The suffix of the URL, which contains sensitive data.
-	SecureSuffixSecretRef v1.SecretKeySelector `json:"secureSuffixSecretRef" tf:"-"`
+	SecureSuffixSecretRef v2.SecretKeySelector `json:"secureSuffixSecretRef" tf:"-"`
 }
 
 type SecureURLObservation struct {
@@ -356,13 +356,13 @@ type SecureURLParameters struct {
 
 	// The suffix of the URL, which contains sensitive data.
 	// +kubebuilder:validation:Optional
-	SecureSuffixSecretRef v1.SecretKeySelector `json:"secureSuffixSecretRef" tf:"-"`
+	SecureSuffixSecretRef v2.SecretKeySelector `json:"secureSuffixSecretRef" tf:"-"`
 }
 
 // DestinationSpec defines the desired state of Destination
 type DestinationSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     DestinationParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   DestinationParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -378,8 +378,8 @@ type DestinationSpec struct {
 
 // DestinationStatus defines the observed state of Destination.
 type DestinationStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        DestinationObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               DestinationObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

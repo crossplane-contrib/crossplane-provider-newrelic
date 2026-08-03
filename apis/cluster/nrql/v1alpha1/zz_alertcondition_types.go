@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AlertConditionInitParameters struct {
@@ -98,11 +98,11 @@ type AlertConditionInitParameters struct {
 
 	// Reference to a Policy in alert to populate policyId.
 	// +kubebuilder:validation:Optional
-	PolicyIDRef *v1.Reference `json:"policyIdRef,omitempty" tf:"-"`
+	PolicyIDRef *v2.Reference `json:"policyIdRef,omitempty" tf:"-"`
 
 	// Selector for a Policy in alert to populate policyId.
 	// +kubebuilder:validation:Optional
-	PolicyIDSelector *v1.Selector `json:"policyIdSelector,omitempty" tf:"-"`
+	PolicyIDSelector *v2.Selector `json:"policyIdSelector,omitempty" tf:"-"`
 
 	// Runbook URL to display in notifications.
 	// Runbook URL to display in notifications.
@@ -373,11 +373,11 @@ type AlertConditionParameters struct {
 
 	// Reference to a Policy in alert to populate policyId.
 	// +kubebuilder:validation:Optional
-	PolicyIDRef *v1.Reference `json:"policyIdRef,omitempty" tf:"-"`
+	PolicyIDRef *v2.Reference `json:"policyIdRef,omitempty" tf:"-"`
 
 	// Selector for a Policy in alert to populate policyId.
 	// +kubebuilder:validation:Optional
-	PolicyIDSelector *v1.Selector `json:"policyIdSelector,omitempty" tf:"-"`
+	PolicyIDSelector *v2.Selector `json:"policyIdSelector,omitempty" tf:"-"`
 
 	// Runbook URL to display in notifications.
 	// Runbook URL to display in notifications.
@@ -424,6 +424,10 @@ type AlertConditionParameters struct {
 
 type CriticalInitParameters struct {
 
+	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
+	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
+	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
+
 	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
 	// Violations will not change system health status for this term.
 	DisableHealthStatusReporting *bool `json:"disableHealthStatusReporting,omitempty" tf:"disable_health_status_reporting,omitempty"`
@@ -462,6 +466,10 @@ type CriticalInitParameters struct {
 
 type CriticalObservation struct {
 
+	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
+	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
+	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
+
 	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
 	// Violations will not change system health status for this term.
 	DisableHealthStatusReporting *bool `json:"disableHealthStatusReporting,omitempty" tf:"disable_health_status_reporting,omitempty"`
@@ -499,6 +507,11 @@ type CriticalObservation struct {
 }
 
 type CriticalParameters struct {
+
+	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
+	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
+	// +kubebuilder:validation:Optional
+	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
 
 	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
 	// Violations will not change system health status for this term.
@@ -709,6 +722,10 @@ type PredictionParameters struct {
 
 type WarningInitParameters struct {
 
+	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
+	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
+	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
+
 	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
 	// Violations will not change system health status for this term.
 	DisableHealthStatusReporting *bool `json:"disableHealthStatusReporting,omitempty" tf:"disable_health_status_reporting,omitempty"`
@@ -747,6 +764,10 @@ type WarningInitParameters struct {
 
 type WarningObservation struct {
 
+	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
+	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
+	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
+
 	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
 	// Violations will not change system health status for this term.
 	DisableHealthStatusReporting *bool `json:"disableHealthStatusReporting,omitempty" tf:"disable_health_status_reporting,omitempty"`
@@ -784,6 +805,11 @@ type WarningObservation struct {
 }
 
 type WarningParameters struct {
+
+	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
+	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
+	// +kubebuilder:validation:Optional
+	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
 
 	// true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.
 	// Violations will not change system health status for this term.
@@ -866,8 +892,8 @@ type WarningPredictionParameters struct {
 
 // AlertConditionSpec defines the desired state of AlertCondition
 type AlertConditionSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     AlertConditionParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   AlertConditionParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -883,8 +909,8 @@ type AlertConditionSpec struct {
 
 // AlertConditionStatus defines the observed state of AlertCondition.
 type AlertConditionStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        AlertConditionObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               AlertConditionObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

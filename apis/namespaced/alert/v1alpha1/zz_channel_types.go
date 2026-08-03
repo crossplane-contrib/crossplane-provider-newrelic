@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ChannelInitParameters struct {
@@ -30,11 +29,11 @@ type ChannelInitParameters struct {
 
 	// Reference to a Destination in alert to populate destinationId.
 	// +kubebuilder:validation:Optional
-	DestinationIDRef *v1.NamespacedReference `json:"destinationIdRef,omitempty" tf:"-"`
+	DestinationIDRef *v2.NamespacedReference `json:"destinationIdRef,omitempty" tf:"-"`
 
 	// Selector for a Destination in alert to populate destinationId.
 	// +kubebuilder:validation:Optional
-	DestinationIDSelector *v1.NamespacedSelector `json:"destinationIdSelector,omitempty" tf:"-"`
+	DestinationIDSelector *v2.NamespacedSelector `json:"destinationIdSelector,omitempty" tf:"-"`
 
 	// The name of the channel.
 	// (Required) The name of the channel.
@@ -108,11 +107,11 @@ type ChannelParameters struct {
 
 	// Reference to a Destination in alert to populate destinationId.
 	// +kubebuilder:validation:Optional
-	DestinationIDRef *v1.NamespacedReference `json:"destinationIdRef,omitempty" tf:"-"`
+	DestinationIDRef *v2.NamespacedReference `json:"destinationIdRef,omitempty" tf:"-"`
 
 	// Selector for a Destination in alert to populate destinationId.
 	// +kubebuilder:validation:Optional
-	DestinationIDSelector *v1.NamespacedSelector `json:"destinationIdSelector,omitempty" tf:"-"`
+	DestinationIDSelector *v2.NamespacedSelector `json:"destinationIdSelector,omitempty" tf:"-"`
 
 	// The name of the channel.
 	// (Required) The name of the channel.
@@ -215,8 +214,8 @@ type ChannelSpec struct {
 
 // ChannelStatus defines the observed state of Channel.
 type ChannelStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ChannelObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ChannelObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
