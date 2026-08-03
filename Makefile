@@ -12,10 +12,10 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 
 export TERRAFORM_PROVIDER_SOURCE ?= newrelic/newrelic
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/newrelic/terraform-provider-newrelic
-export TERRAFORM_PROVIDER_VERSION ?= 3.90.0
+export TERRAFORM_PROVIDER_VERSION ?= 3.95.2
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-newrelic
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/newrelic/terraform-provider-newrelic/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-newrelic_v3.90.0
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-newrelic_v3.95.2
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 
 PLATFORMS ?= linux_amd64 linux_arm64
@@ -43,7 +43,7 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.25
+GO_REQUIRED_VERSION ?= $(shell grep -E '^go ' go.mod | awk '{print $2}')
 # GOLANGCILINT_VERSION is inherited from build submodule by default.
 # Uncomment below if you need to override the version.
 GOLANGCILINT_VERSION ?= 2.12.2
@@ -55,12 +55,12 @@ GO_SUBDIRS += cmd internal apis generate
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.30.0
+KIND_VERSION = v0.32.0
 UPTEST_VERSION = v2.2.0
 KUSTOMIZE_VERSION = v5.3.0
 YQ_VERSION = v4.40.5
-CROSSPLANE_VERSION = 2.2.1
-CROSSPLANE_CLI_VERSION = v2.2.1
+CROSSPLANE_VERSION = 2.3.4
+CROSSPLANE_CLI_VERSION = v2.3.4
 CRDDIFF_VERSION = v0.12.1
 
 -include build/makelib/k8s_tools.mk

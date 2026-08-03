@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BillboardSettingsInitParameters struct {
@@ -1117,8 +1116,8 @@ type VariableInitParameters struct {
 
 type VariableNrqlQueryInitParameters struct {
 
-	// List of account IDs such as [12345, 67890].
-	// New Relic account ID(s) to issue the query against.
+	// List of account IDs to run the variable's NRQL query against, such as [12345, 67890]. If omitted, defaults to the account ID the provider is configured with.
+	// New Relic account ID(s) to issue the query against. Defaults to the account ID specified in the provider configuration.
 	AccountIds []*float64 `json:"accountIds,omitempty" tf:"account_ids,omitempty"`
 
 	// Valid NRQL query string. See Writing NRQL Queries for help.
@@ -1128,8 +1127,8 @@ type VariableNrqlQueryInitParameters struct {
 
 type VariableNrqlQueryObservation struct {
 
-	// List of account IDs such as [12345, 67890].
-	// New Relic account ID(s) to issue the query against.
+	// List of account IDs to run the variable's NRQL query against, such as [12345, 67890]. If omitted, defaults to the account ID the provider is configured with.
+	// New Relic account ID(s) to issue the query against. Defaults to the account ID specified in the provider configuration.
 	AccountIds []*float64 `json:"accountIds,omitempty" tf:"account_ids,omitempty"`
 
 	// Valid NRQL query string. See Writing NRQL Queries for help.
@@ -1139,8 +1138,8 @@ type VariableNrqlQueryObservation struct {
 
 type VariableNrqlQueryParameters struct {
 
-	// List of account IDs such as [12345, 67890].
-	// New Relic account ID(s) to issue the query against.
+	// List of account IDs to run the variable's NRQL query against, such as [12345, 67890]. If omitted, defaults to the account ID the provider is configured with.
+	// New Relic account ID(s) to issue the query against. Defaults to the account ID specified in the provider configuration.
 	// +kubebuilder:validation:Optional
 	AccountIds []*float64 `json:"accountIds,omitempty" tf:"account_ids,omitempty"`
 
@@ -9286,8 +9285,8 @@ type DashboardSpec struct {
 
 // DashboardStatus defines the observed state of Dashboard.
 type DashboardStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        DashboardObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               DashboardObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

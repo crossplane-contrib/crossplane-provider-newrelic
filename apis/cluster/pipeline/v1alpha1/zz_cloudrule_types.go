@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type CloudRuleInitParameters struct {
@@ -79,8 +79,8 @@ type CloudRuleParameters struct {
 
 // CloudRuleSpec defines the desired state of CloudRule
 type CloudRuleSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     CloudRuleParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   CloudRuleParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -96,8 +96,8 @@ type CloudRuleSpec struct {
 
 // CloudRuleStatus defines the observed state of CloudRule.
 type CloudRuleStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        CloudRuleObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               CloudRuleObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

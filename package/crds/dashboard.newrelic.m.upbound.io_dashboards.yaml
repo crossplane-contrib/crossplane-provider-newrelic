@@ -3940,8 +3940,8 @@ spec:
                             properties:
                               accountIds:
                                 description: |-
-                                  List of account IDs such as [12345, 67890].
-                                  New Relic account ID(s) to issue the query against.
+                                  List of account IDs to run the variable's NRQL query against, such as [12345, 67890]. If omitted, defaults to the account ID the provider is configured with.
+                                  New Relic account ID(s) to issue the query against. Defaults to the account ID specified in the provider configuration.
                                 items:
                                   type: number
                                 type: array
@@ -7887,8 +7887,8 @@ spec:
                             properties:
                               accountIds:
                                 description: |-
-                                  List of account IDs such as [12345, 67890].
-                                  New Relic account ID(s) to issue the query against.
+                                  List of account IDs to run the variable's NRQL query against, such as [12345, 67890]. If omitted, defaults to the account ID the provider is configured with.
+                                  New Relic account ID(s) to issue the query against. Defaults to the account ID specified in the provider configuration.
                                 items:
                                   type: number
                                 type: array
@@ -11952,8 +11952,8 @@ spec:
                             properties:
                               accountIds:
                                 description: |-
-                                  List of account IDs such as [12345, 67890].
-                                  New Relic account ID(s) to issue the query against.
+                                  List of account IDs to run the variable's NRQL query against, such as [12345, 67890]. If omitted, defaults to the account ID the provider is configured with.
+                                  New Relic account ID(s) to issue the query against. Defaults to the account ID specified in the provider configuration.
                                 items:
                                   type: number
                                 type: array
@@ -12051,6 +12051,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation
