@@ -15,6 +15,7 @@ import (
 	v1alpha1log "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/namespaced/log/v1alpha1"
 	v1alpha1nrql "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/namespaced/nrql/v1alpha1"
 	v1alpha1pipeline "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/namespaced/pipeline/v1alpha1"
+	v1alpha1synthetics "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/namespaced/synthetics/v1alpha1"
 	v1alpha1namespaced "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/namespaced/v1alpha1"
 	v1beta1 "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/namespaced/v1beta1"
 	v1alpha1workflow "github.com/crossplane-contrib/crossplane-provider-newrelic/apis/namespaced/workflow/v1alpha1"
@@ -28,6 +29,7 @@ func init() {
 		v1alpha1log.SchemeBuilder.AddToScheme,
 		v1alpha1nrql.SchemeBuilder.AddToScheme,
 		v1alpha1pipeline.SchemeBuilder.AddToScheme,
+		v1alpha1synthetics.SchemeBuilder.AddToScheme,
 		v1alpha1namespaced.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 		v1alpha1workflow.SchemeBuilder.AddToScheme,

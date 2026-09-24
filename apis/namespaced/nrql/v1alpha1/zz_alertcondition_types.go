@@ -424,7 +424,6 @@ type AlertConditionParameters struct {
 
 type CriticalInitParameters struct {
 
-	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
 	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
 	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
 
@@ -466,7 +465,6 @@ type CriticalInitParameters struct {
 
 type CriticalObservation struct {
 
-	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
 	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
 	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
 
@@ -508,7 +506,6 @@ type CriticalObservation struct {
 
 type CriticalParameters struct {
 
-	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
 	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
 	// +kubebuilder:validation:Optional
 	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
@@ -722,7 +719,6 @@ type PredictionParameters struct {
 
 type WarningInitParameters struct {
 
-	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
 	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
 	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
 
@@ -764,7 +760,6 @@ type WarningInitParameters struct {
 
 type WarningObservation struct {
 
-	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
 	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
 	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`
 
@@ -806,7 +801,6 @@ type WarningObservation struct {
 
 type WarningParameters struct {
 
-	// BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.
 	// BETA PREVIEW: the `disable_event_creation` field is in limited release and only enabled for preview on a per-account basis. When set to true, violations will not create events.
 	// +kubebuilder:validation:Optional
 	DisableEventCreation *bool `json:"disableEventCreation,omitempty" tf:"disable_event_creation,omitempty"`

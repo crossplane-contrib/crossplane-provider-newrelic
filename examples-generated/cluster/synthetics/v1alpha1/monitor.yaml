@@ -1,0 +1,28 @@
+apiVersion: synthetics.newrelic.upbound.io/v1alpha1
+kind: Monitor
+metadata:
+  annotations:
+    meta.upbound.io/example-id: synthetics/v1alpha1/monitor
+  labels:
+    testing.upbound.io/example-name: monitor
+  name: monitor
+spec:
+  forProvider:
+    bypassHeadRequest: true
+    customHeader:
+    - name: some_name
+      value: some_value
+    locationsPublic:
+    - AP_SOUTH_1
+    name: monitor
+    period: EVERY_MINUTE
+    status: ENABLED
+    tag:
+    - key: some_key
+      values:
+      - some_value
+    treatRedirectAsFailure: true
+    type: SIMPLE
+    uri: https://www.one.newrelic.com
+    validationString: success
+    verifySsl: true
