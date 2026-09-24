@@ -19,6 +19,7 @@ import (
 	alertcondition "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/nrql/alertcondition"
 	cloudrule "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/pipeline/cloudrule"
 	providerconfig "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/providerconfig"
+	monitor "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/synthetics/monitor"
 	workflow "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/workflow/workflow"
 )
 
@@ -36,6 +37,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		alertcondition.Setup,
 		cloudrule.Setup,
 		providerconfig.Setup,
+		monitor.Setup,
 		workflow.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
@@ -59,6 +61,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		alertcondition.SetupGated,
 		cloudrule.SetupGated,
 		providerconfig.SetupGated,
+		monitor.SetupGated,
 		workflow.SetupGated,
 	} {
 		if err := setup(mgr, o); err != nil {
@@ -81,6 +84,7 @@ func SetupWebhookWithManager(mgr ctrl.Manager) error {
 		alertcondition.SetupWebhookWithManager,
 		cloudrule.SetupWebhookWithManager,
 		providerconfig.SetupWebhookWithManager,
+		monitor.SetupWebhookWithManager,
 		workflow.SetupWebhookWithManager,
 	} {
 		if err := setup(mgr); err != nil {

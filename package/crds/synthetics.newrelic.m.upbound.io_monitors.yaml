@@ -1,0 +1,712 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.20.1
+  name: monitors.synthetics.newrelic.m.upbound.io
+spec:
+  group: synthetics.newrelic.m.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - newrelic
+    kind: Monitor
+    listKind: MonitorList
+    plural: monitors
+    singular: monitor
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Monitor is the Schema for the Monitors API. Create and manage
+          a Synthetics monitor in New Relic.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: MonitorSpec defines the desired state of Monitor
+            properties:
+              forProvider:
+                properties:
+                  accountId:
+                    description: |-
+                      The account in which the Synthetics monitor will be created.
+                      ID of the newrelic account
+                    type: number
+                  browsers:
+                    description: |-
+                      The multiple browsers list on which synthetic monitors will run. Valid values are CHROME and FIREFOX.
+                      The multiple browsers list on which synthetic monitors will run. Valid values are array of CHROME,and FIREFOX
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  bypassHeadRequest:
+                    description: |-
+                      Monitor should skip default HEAD request and instead use GET verb in check.
+                      Bypass HEAD request.
+                    type: boolean
+                  customHeader:
+                    description: |-
+                      Custom headers to use in monitor job. See Nested custom_header blocks below for details.
+                      Custom headers to use in monitor job
+                    items:
+                      properties:
+                        name:
+                          description: |-
+                            Header name.
+                            Header name
+                          type: string
+                        value:
+                          description: |-
+                            Header Value.
+                            Header value
+                          type: string
+                      type: object
+                    type: array
+                  deviceOrientation:
+                    description: |-
+                      Device emulation orientation field. Valid values are LANDSCAPE and PORTRAIT.
+                      The device orientation the user would like to represent. Valid values are LANDSCAPE, PORTRAIT, or NONE.
+                    type: string
+                  deviceType:
+                    description: |-
+                      Device emulation type field. Valid values are MOBILE and TABLET.
+                      The device type that a user can select. Valid values are MOBILE, TABLET, or NONE.
+                    type: string
+                  devices:
+                    description: |-
+                      The multiple devices list on which synthetic monitors will run. Valid values are DESKTOP, MOBILE_LANDSCAPE, MOBILE_PORTRAIT, TABLET_LANDSCAPE and TABLET_PORTRAIT.
+                      The multiple devices list on which synthetic monitors will run. Valid values are array of DESKTOP, MOBILE_LANDSCAPE, MOBILE_PORTRAIT, TABLET_LANDSCAPE and TABLET_PORTRAIT
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  enableScreenshotOnFailureAndScript:
+                    description: |-
+                      Capture a screenshot during job execution.
+                      Capture a screenshot during job execution
+                    type: boolean
+                  locationsPrivate:
+                    description: |-
+                      The location the monitor will run from. Accepts a list of private location GUIDs. At least one of either locations_public or locations_private is required.
+                      The locations in which this monitor should be run.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  locationsPublic:
+                    description: |-
+                      The location the monitor will run from. Check out this page for a list of valid public locations. You don't need the AWS_ prefix as the provider uses NerdGraph. At least one of either locations_public or location_private is required.
+                      The locations in which this monitor should be run.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  name:
+                    description: |-
+                      The human-readable identifier for the monitor.
+                      The title of this monitor.
+                    type: string
+                  period:
+                    description: |-
+                      The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.
+                      The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.
+                    type: string
+                  runtimeType:
+                    description: |-
+                      The runtime that the monitor will use to run jobs (CHROME_BROWSER).
+                      The runtime type that the monitor will run
+                    type: string
+                  runtimeTypeVersion:
+                    description: |-
+                      The specific version of the runtime type selected. Use LATEST to automatically use the latest Chrome version (currently 146, will be automatically upgraded to Chrome 147 or higher on Aug 18, 2026, updated automatically as new versions are released). We recommend explicitly setting runtime_type_version = "LATEST" in your configuration to avoid drift.
+                      The specific version of the runtime type selected
+                    type: string
+                  scriptLanguage:
+                    description: |-
+                      The programing language that should execute the script.
+                      The programing language that should execute the script
+                    type: string
+                  status:
+                    description: |-
+                      The run state of the monitor. (ENABLED or DISABLED).
+                      The monitor status (ENABLED or DISABLED).
+                    type: string
+                  tag:
+                    description: |-
+                      The tags that will be associated with the monitor. See Nested tag blocks below for details.
+                      The tags that will be associated with the monitor
+                    items:
+                      properties:
+                        key:
+                          description: |-
+                            Name of the tag key.
+                            Name of the tag key
+                          type: string
+                        values:
+                          description: |-
+                            Values associated with the tag key.
+                            Values associated with the tag key
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  treatRedirectAsFailure:
+                    description: |-
+                      Categorize redirects during a monitor job as a failure.
+                      Fail the monitor check if redirected.
+                    type: boolean
+                  type:
+                    description: |-
+                      The monitor type. Valid values are SIMPLE and BROWSER.
+                      The monitor type. Valid values are SIMPLE AND BROWSER.
+                    type: string
+                  uri:
+                    description: |-
+                      The URI the monitor runs against.
+                      The URI for the monitor to hit.
+                    type: string
+                  useUnsupportedLegacyRuntime:
+                    description: A boolean attribute to be set true by the customer,
+                      if they would like to use the unsupported legacy runtime of
+                      Synthetic Monitors by means of an exemption given until the
+                      October 22, 2024 Legacy Runtime EOL.43.0 to disallow using the
+                      legacy runtime with new monitors. This would, hence, allow creation
+                      of monitors in the legacy runtime until the October 22, 2024
+                      Legacy Runtime EOL, if exempt by the API.
+                    type: boolean
+                  validationString:
+                    description: |-
+                      Validation text for monitor to search for at given URI.
+                      The string to validate against in the response.
+                    type: string
+                  verifySsl:
+                    description: |-
+                      Monitor should validate SSL certificate chain.
+                      Verify SSL.
+                    type: boolean
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  accountId:
+                    description: |-
+                      The account in which the Synthetics monitor will be created.
+                      ID of the newrelic account
+                    type: number
+                  browsers:
+                    description: |-
+                      The multiple browsers list on which synthetic monitors will run. Valid values are CHROME and FIREFOX.
+                      The multiple browsers list on which synthetic monitors will run. Valid values are array of CHROME,and FIREFOX
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  bypassHeadRequest:
+                    description: |-
+                      Monitor should skip default HEAD request and instead use GET verb in check.
+                      Bypass HEAD request.
+                    type: boolean
+                  customHeader:
+                    description: |-
+                      Custom headers to use in monitor job. See Nested custom_header blocks below for details.
+                      Custom headers to use in monitor job
+                    items:
+                      properties:
+                        name:
+                          description: |-
+                            Header name.
+                            Header name
+                          type: string
+                        value:
+                          description: |-
+                            Header Value.
+                            Header value
+                          type: string
+                      type: object
+                    type: array
+                  deviceOrientation:
+                    description: |-
+                      Device emulation orientation field. Valid values are LANDSCAPE and PORTRAIT.
+                      The device orientation the user would like to represent. Valid values are LANDSCAPE, PORTRAIT, or NONE.
+                    type: string
+                  deviceType:
+                    description: |-
+                      Device emulation type field. Valid values are MOBILE and TABLET.
+                      The device type that a user can select. Valid values are MOBILE, TABLET, or NONE.
+                    type: string
+                  devices:
+                    description: |-
+                      The multiple devices list on which synthetic monitors will run. Valid values are DESKTOP, MOBILE_LANDSCAPE, MOBILE_PORTRAIT, TABLET_LANDSCAPE and TABLET_PORTRAIT.
+                      The multiple devices list on which synthetic monitors will run. Valid values are array of DESKTOP, MOBILE_LANDSCAPE, MOBILE_PORTRAIT, TABLET_LANDSCAPE and TABLET_PORTRAIT
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  enableScreenshotOnFailureAndScript:
+                    description: |-
+                      Capture a screenshot during job execution.
+                      Capture a screenshot during job execution
+                    type: boolean
+                  locationsPrivate:
+                    description: |-
+                      The location the monitor will run from. Accepts a list of private location GUIDs. At least one of either locations_public or locations_private is required.
+                      The locations in which this monitor should be run.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  locationsPublic:
+                    description: |-
+                      The location the monitor will run from. Check out this page for a list of valid public locations. You don't need the AWS_ prefix as the provider uses NerdGraph. At least one of either locations_public or location_private is required.
+                      The locations in which this monitor should be run.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  name:
+                    description: |-
+                      The human-readable identifier for the monitor.
+                      The title of this monitor.
+                    type: string
+                  period:
+                    description: |-
+                      The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.
+                      The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.
+                    type: string
+                  runtimeType:
+                    description: |-
+                      The runtime that the monitor will use to run jobs (CHROME_BROWSER).
+                      The runtime type that the monitor will run
+                    type: string
+                  runtimeTypeVersion:
+                    description: |-
+                      The specific version of the runtime type selected. Use LATEST to automatically use the latest Chrome version (currently 146, will be automatically upgraded to Chrome 147 or higher on Aug 18, 2026, updated automatically as new versions are released). We recommend explicitly setting runtime_type_version = "LATEST" in your configuration to avoid drift.
+                      The specific version of the runtime type selected
+                    type: string
+                  scriptLanguage:
+                    description: |-
+                      The programing language that should execute the script.
+                      The programing language that should execute the script
+                    type: string
+                  status:
+                    description: |-
+                      The run state of the monitor. (ENABLED or DISABLED).
+                      The monitor status (ENABLED or DISABLED).
+                    type: string
+                  tag:
+                    description: |-
+                      The tags that will be associated with the monitor. See Nested tag blocks below for details.
+                      The tags that will be associated with the monitor
+                    items:
+                      properties:
+                        key:
+                          description: |-
+                            Name of the tag key.
+                            Name of the tag key
+                          type: string
+                        values:
+                          description: |-
+                            Values associated with the tag key.
+                            Values associated with the tag key
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  treatRedirectAsFailure:
+                    description: |-
+                      Categorize redirects during a monitor job as a failure.
+                      Fail the monitor check if redirected.
+                    type: boolean
+                  type:
+                    description: |-
+                      The monitor type. Valid values are SIMPLE and BROWSER.
+                      The monitor type. Valid values are SIMPLE AND BROWSER.
+                    type: string
+                  uri:
+                    description: |-
+                      The URI the monitor runs against.
+                      The URI for the monitor to hit.
+                    type: string
+                  useUnsupportedLegacyRuntime:
+                    description: A boolean attribute to be set true by the customer,
+                      if they would like to use the unsupported legacy runtime of
+                      Synthetic Monitors by means of an exemption given until the
+                      October 22, 2024 Legacy Runtime EOL.43.0 to disallow using the
+                      legacy runtime with new monitors. This would, hence, allow creation
+                      of monitors in the legacy runtime until the October 22, 2024
+                      Legacy Runtime EOL, if exempt by the API.
+                    type: boolean
+                  validationString:
+                    description: |-
+                      Validation text for monitor to search for at given URI.
+                      The string to validate against in the response.
+                    type: string
+                  verifySsl:
+                    description: |-
+                      Monitor should validate SSL certificate chain.
+                      Verify SSL.
+                    type: boolean
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  kind: ClusterProviderConfig
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  kind:
+                    description: Kind of the referenced object.
+                    type: string
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.status is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.status)
+                || (has(self.initProvider) && has(self.initProvider.status))'
+            - message: spec.forProvider.type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || (has(self.initProvider) && has(self.initProvider.type))'
+          status:
+            description: MonitorStatus defines the observed state of Monitor.
+            properties:
+              atProvider:
+                properties:
+                  accountId:
+                    description: |-
+                      The account in which the Synthetics monitor will be created.
+                      ID of the newrelic account
+                    type: number
+                  browsers:
+                    description: |-
+                      The multiple browsers list on which synthetic monitors will run. Valid values are CHROME and FIREFOX.
+                      The multiple browsers list on which synthetic monitors will run. Valid values are array of CHROME,and FIREFOX
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  bypassHeadRequest:
+                    description: |-
+                      Monitor should skip default HEAD request and instead use GET verb in check.
+                      Bypass HEAD request.
+                    type: boolean
+                  customHeader:
+                    description: |-
+                      Custom headers to use in monitor job. See Nested custom_header blocks below for details.
+                      Custom headers to use in monitor job
+                    items:
+                      properties:
+                        name:
+                          description: |-
+                            Header name.
+                            Header name
+                          type: string
+                        value:
+                          description: |-
+                            Header Value.
+                            Header value
+                          type: string
+                      type: object
+                    type: array
+                  deviceOrientation:
+                    description: |-
+                      Device emulation orientation field. Valid values are LANDSCAPE and PORTRAIT.
+                      The device orientation the user would like to represent. Valid values are LANDSCAPE, PORTRAIT, or NONE.
+                    type: string
+                  deviceType:
+                    description: |-
+                      Device emulation type field. Valid values are MOBILE and TABLET.
+                      The device type that a user can select. Valid values are MOBILE, TABLET, or NONE.
+                    type: string
+                  devices:
+                    description: |-
+                      The multiple devices list on which synthetic monitors will run. Valid values are DESKTOP, MOBILE_LANDSCAPE, MOBILE_PORTRAIT, TABLET_LANDSCAPE and TABLET_PORTRAIT.
+                      The multiple devices list on which synthetic monitors will run. Valid values are array of DESKTOP, MOBILE_LANDSCAPE, MOBILE_PORTRAIT, TABLET_LANDSCAPE and TABLET_PORTRAIT
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  enableScreenshotOnFailureAndScript:
+                    description: |-
+                      Capture a screenshot during job execution.
+                      Capture a screenshot during job execution
+                    type: boolean
+                  id:
+                    description: The ID (GUID) of the Synthetics monitor that the
+                      script is attached to.
+                    type: string
+                  locationsPrivate:
+                    description: |-
+                      The location the monitor will run from. Accepts a list of private location GUIDs. At least one of either locations_public or locations_private is required.
+                      The locations in which this monitor should be run.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  locationsPublic:
+                    description: |-
+                      The location the monitor will run from. Check out this page for a list of valid public locations. You don't need the AWS_ prefix as the provider uses NerdGraph. At least one of either locations_public or location_private is required.
+                      The locations in which this monitor should be run.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  monitorId:
+                    description: |-
+                      The monitor id of the Synthetics monitor (not to be confused with the GUID of the monitor).
+                      ID of the monitor
+                    type: string
+                  name:
+                    description: |-
+                      The human-readable identifier for the monitor.
+                      The title of this monitor.
+                    type: string
+                  period:
+                    description: |-
+                      The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.
+                      The interval at which this monitor should run. Valid values are EVERY_MINUTE, EVERY_5_MINUTES, EVERY_10_MINUTES, EVERY_15_MINUTES, EVERY_30_MINUTES, EVERY_HOUR, EVERY_6_HOURS, EVERY_12_HOURS, or EVERY_DAY.
+                    type: string
+                  periodInMinutes:
+                    description: |-
+                      The interval in minutes at which Synthetic monitor should run.
+                      The interval in minutes at which this monitor should run.
+                    type: number
+                  runtimeType:
+                    description: |-
+                      The runtime that the monitor will use to run jobs (CHROME_BROWSER).
+                      The runtime type that the monitor will run
+                    type: string
+                  runtimeTypeVersion:
+                    description: |-
+                      The specific version of the runtime type selected. Use LATEST to automatically use the latest Chrome version (currently 146, will be automatically upgraded to Chrome 147 or higher on Aug 18, 2026, updated automatically as new versions are released). We recommend explicitly setting runtime_type_version = "LATEST" in your configuration to avoid drift.
+                      The specific version of the runtime type selected
+                    type: string
+                  scriptLanguage:
+                    description: |-
+                      The programing language that should execute the script.
+                      The programing language that should execute the script
+                    type: string
+                  status:
+                    description: |-
+                      The run state of the monitor. (ENABLED or DISABLED).
+                      The monitor status (ENABLED or DISABLED).
+                    type: string
+                  tag:
+                    description: |-
+                      The tags that will be associated with the monitor. See Nested tag blocks below for details.
+                      The tags that will be associated with the monitor
+                    items:
+                      properties:
+                        key:
+                          description: |-
+                            Name of the tag key.
+                            Name of the tag key
+                          type: string
+                        values:
+                          description: |-
+                            Values associated with the tag key.
+                            Values associated with the tag key
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  treatRedirectAsFailure:
+                    description: |-
+                      Categorize redirects during a monitor job as a failure.
+                      Fail the monitor check if redirected.
+                    type: boolean
+                  type:
+                    description: |-
+                      The monitor type. Valid values are SIMPLE and BROWSER.
+                      The monitor type. Valid values are SIMPLE AND BROWSER.
+                    type: string
+                  uri:
+                    description: |-
+                      The URI the monitor runs against.
+                      The URI for the monitor to hit.
+                    type: string
+                  useUnsupportedLegacyRuntime:
+                    description: A boolean attribute to be set true by the customer,
+                      if they would like to use the unsupported legacy runtime of
+                      Synthetic Monitors by means of an exemption given until the
+                      October 22, 2024 Legacy Runtime EOL.43.0 to disallow using the
+                      legacy runtime with new monitors. This would, hence, allow creation
+                      of monitors in the legacy runtime until the October 22, 2024
+                      Legacy Runtime EOL, if exempt by the API.
+                    type: boolean
+                  validationString:
+                    description: |-
+                      Validation text for monitor to search for at given URI.
+                      The string to validate against in the response.
+                    type: string
+                  verifySsl:
+                    description: |-
+                      Monitor should validate SSL certificate chain.
+                      Verify SSL.
+                    type: boolean
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

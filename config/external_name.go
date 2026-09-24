@@ -30,6 +30,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"newrelic_log_parsing_rule":         config.IdentifierFromProvider,
 	"newrelic_nrql_alert_condition":     configNrqAlertCondition(),
 	"newrelic_pipeline_cloud_rule":      config.IdentifierFromProvider,
+	"newrelic_synthetics_monitor":       config.IdentifierFromProvider,
 	"newrelic_workflow":                 config.IdentifierFromProvider,
 }
 
