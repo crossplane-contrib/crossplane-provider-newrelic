@@ -104,7 +104,7 @@ type DestinationInitParameters struct {
 	// Basic username and password authentication credentials.
 	AuthBasic []AuthBasicInitParameters `json:"authBasic,omitempty" tf:"auth_basic,omitempty"`
 
-	// A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
+	// A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. See Nested auth_custom_header blocks below for details.
 	// Custom header based authentication
 	AuthCustomHeader []AuthCustomHeaderInitParameters `json:"authCustomHeader,omitempty" tf:"auth_custom_header,omitempty"`
 
@@ -145,7 +145,7 @@ type DestinationObservation struct {
 	// Basic username and password authentication credentials.
 	AuthBasic []AuthBasicObservation `json:"authBasic,omitempty" tf:"auth_basic,omitempty"`
 
-	// A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
+	// A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. See Nested auth_custom_header blocks below for details.
 	// Custom header based authentication
 	AuthCustomHeader []AuthCustomHeaderObservation `json:"authCustomHeader,omitempty" tf:"auth_custom_header,omitempty"`
 
@@ -202,7 +202,7 @@ type DestinationParameters struct {
 	// +kubebuilder:validation:Optional
 	AuthBasic []AuthBasicParameters `json:"authBasic,omitempty" tf:"auth_basic,omitempty"`
 
-	// A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
+	// A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. See Nested auth_custom_header blocks below for details.
 	// Custom header based authentication
 	// +kubebuilder:validation:Optional
 	AuthCustomHeader []AuthCustomHeaderParameters `json:"authCustomHeader,omitempty" tf:"auth_custom_header,omitempty"`
