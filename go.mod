@@ -1,6 +1,6 @@
 module github.com/crossplane-contrib/crossplane-provider-newrelic
 
-go 1.26.5
+go 1.27.2
 
 require (
 	dario.cat/mergo v1.0.2

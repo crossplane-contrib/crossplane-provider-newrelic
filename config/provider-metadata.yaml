@@ -9,13 +9,11 @@ resources:
             - name: foo
               manifest: |-
                 {
-                  "name": "Test Account Name",
-                  "region": "us01"
+                  "name": "Test Account Name"
                 }
         argumentDocs:
             id: '- The ID of the account created.'
             name: '- (Required) The name of the Account.'
-            region: '- (Required) The region code of the account.  One of: us01, eu01.'
         importStatements: []
     newrelic_alert_channel:
         subCategory: ""
@@ -386,6 +384,7 @@ resources:
             component_conditions: '- (Required) The list of conditions to be combined. Each component condition must be enabled. Must include at least 2. See Component Conditions below for details.'
             component_conditions.alias: '- (Required) The identifier that will be used in the compound alert condition''s trigger_expression (e.g., ''a'', ''b'', ''c'', ''d'', ''e'').'
             component_conditions.id: '- (Required) The ID of the existing alert condition to use as a component.'
+            description: '- (Optional) BETA PREVIEW: the  The custom violation description.'
             enabled: '- Whether or not the compound alert condition is enabled. Defaults to true.'
             entity_guid: '- The unique entity identifier of the compound alert condition in New Relic.'
             facet_matching_behavior: '- (Optional) How the compound condition will take into account the component conditions'' facets during evaluation. Valid values are:'
@@ -395,6 +394,7 @@ resources:
             policy_id: '- (Required) The ID of the policy where this alert compound condition should be used.'
             runbook_url: '- (Optional) Runbook URL to display in notifications.'
             threshold_duration: '- (Optional) The duration, in seconds, that the trigger expression must be true before the compound alert condition will activate. Between 30-86400 seconds.'
+            title_template: '- (Optional) BETA PREVIEW: the  This field allows you to create a custom title to be used when incidents are opened by the condition. Setting this field will override the default title. Must be Handlebars format.'
             trigger_expression: '- (Required) Expression that defines how component condition evaluations are combined. Valid operators are ''AND'', ''OR'', ''NOT''. For more complex expressions, use parentheses. Use the aliases from component_conditions to build expressions like "A AND B", "A OR B", "(A AND B) OR C", or "A AND (B OR C) AND NOT (D AND E)".'
         importStatements: []
     newrelic_alert_condition:
@@ -778,6 +778,52 @@ resources:
             transaction_tracer: '- (Optional) Configuration block for transaction tracer. Providing this block enables transaction tracing. The following arguments are supported:'
             use_server_side_config: '- (Optional) Enable or disable server side monitoring for the New Relic application.'
         importStatements: []
+    newrelic_aws_connection:
+        subCategory: ""
+        description: Create and manage an AWS Connection entity in New Relic.
+        name: newrelic_aws_connection
+        title: newrelic_aws_connection
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "credential": [
+                    {
+                      "assume_role": [
+                        {
+                          "external_id": "external id",
+                          "role_arn": "arn:aws:iam::123456789012:role/newrelic-fed-logs-ingest"
+                        }
+                      ]
+                    }
+                  ],
+                  "description": "AWS Connection wrapping the role",
+                  "enabled": true,
+                  "name": "test-aws-connection",
+                  "region": "us-east-1",
+                  "scope_id": "YOUR_ORG_ID_HERE",
+                  "scope_type": "ORGANIZATION"
+                }
+        argumentDocs:
+            account_id: '- (Optional) New Relic account ID where the connection will be created. Used when scope_type = ACCOUNT.'
+            credential: '- (Required) Credentials block describing how New Relic should authenticate into the AWS account. See Nested credential block below.'
+            credential.assume_role: '- (Required) STS:AssumeRole configuration. See below.'
+            credential.assume_role.external_id: '- (Optional) External ID supplied by New Relic during STS:AssumeRole.'
+            credential.assume_role.role_arn: '- (Required) ARN of the IAM role New Relic should assume.'
+            description: '- (Optional) A description of the AWS Connection.'
+            enabled: '- (Optional) Flag to indicate whether the connection is enabled. Defaults to true.'
+            external_id: '- (Optional) Consumer-managed identifier — useful for caller-side idempotent tracking. Distinct from credential.assume_role.external_id (the IAM cross-account External ID).'
+            id: '- The entity GUID of the AWS Connection.'
+            key: '- (Required) The setting key.'
+            name: '- (Required) The name of the AWS connection.'
+            region: '- (Optional) AWS region for this connection (e.g. us-east-1).'
+            scope_id: '- (Optional) Scope ID matching scope_type — a New Relic account ID for ACCOUNT scope, or an organization ID for ORGANIZATION scope.'
+            scope_type: '- (Optional) Scope type for the connection. Valid values: ACCOUNT, ORGANIZATION.'
+            settings: '- (Optional) Optional list of connection settings. Each entry takes:'
+            tag: '- (Optional) Tags applied to the AWS Connection entity. Each entry takes:'
+            value: '- (Required) The setting value.'
+            values: '- (Required) Set of tag values.'
+        importStatements: []
     newrelic_browser_application:
         subCategory: ""
         description: Create, update, and delete a standalone New Relic browser application.
@@ -844,6 +890,28 @@ resources:
                   ],
                   "mode": "PER_METRIC"
                 }
+            - name: bulk
+              manifest: |-
+                {
+                  "dynamic": {
+                    "metric": [
+                      {
+                        "content": [
+                          {
+                            "cardinality_limit": "${metric.value.limit}",
+                            "name": "${metric.value.name}"
+                          }
+                        ],
+                        "for_each": "${local.high_cardinality_metrics}"
+                      }
+                    ]
+                  },
+                  "mode": "PER_METRIC"
+                }
+              references:
+                dynamic.content.cardinality_limit: metric.value.limit
+                dynamic.content.name: metric.value.name
+                dynamic.for_each: local.high_cardinality_metrics
             - name: account_default
               manifest: |-
                 {
@@ -2282,6 +2350,247 @@ resources:
             subscription_id: '- (Required) - Subscription ID of the Azure cloud account.'
             tenant_id: '- (Required) - Tenant ID of the Azure cloud account.'
         importStatements: []
+    newrelic_cloud_gcp_dm_integrations:
+        subCategory: ""
+        description: Configure which GCP services New Relic polls for the GCP Dimensional Metrics integration.
+        name: newrelic_cloud_gcp_dm_integrations
+        title: newrelic_cloud_gcp_dm_integrations
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "account_id": "${var.newrelic_account_id}",
+                  "ai_platform": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "alloy_db": [
+                    {
+                      "metrics_polling_interval": 60
+                    }
+                  ],
+                  "api_gateway": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "app_engine": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "big_query": [
+                    {
+                      "metrics_polling_interval": 60
+                    }
+                  ],
+                  "big_table": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "composer": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "data_flow": [
+                    {
+                      "metrics_polling_interval": 60
+                    }
+                  ],
+                  "data_proc": [
+                    {
+                      "metrics_polling_interval": 60
+                    }
+                  ],
+                  "data_store": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "edge_container": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "firebase_app_hosting": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "firebase_auth": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "firebase_database": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "firebase_hosting": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "firebase_storage": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "firebase_vertex_ai": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "firestore": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "functions": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "interconnect": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "istio": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "kubernetes": [
+                    {
+                      "metrics_polling_interval": 60
+                    }
+                  ],
+                  "linked_account_id": "${newrelic_cloud_gcp_link_account.example.id}",
+                  "load_balancing": [
+                    {
+                      "metrics_polling_interval": 60
+                    }
+                  ],
+                  "managed_kafka": [
+                    {
+                      "metrics_polling_interval": 60
+                    }
+                  ],
+                  "mem_cache": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "memory_store": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "pub_sub": [
+                    {
+                      "metrics_polling_interval": 60
+                    }
+                  ],
+                  "redis": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "router": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "run": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "spanner": [
+                    {
+                      "metrics_polling_interval": 60
+                    }
+                  ],
+                  "sql": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "storage": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "virtual_machines": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ],
+                  "vpc_access": [
+                    {
+                      "metrics_polling_interval": 300
+                    }
+                  ]
+                }
+              references:
+                account_id: var.newrelic_account_id
+                linked_account_id: newrelic_cloud_gcp_link_account.example.id
+              dependencies:
+                newrelic_cloud_gcp_link_account.example: |-
+                    {
+                      "account_id": "${var.newrelic_account_id}",
+                      "audience": "//iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID",
+                      "name": "my-gcp-project",
+                      "project_id": "my-gcp-project-id",
+                      "service_account_email": "newrelic-integration@my-gcp-project-id.iam.gserviceaccount.com",
+                      "use_workload_identity_federation": true
+                    }
+        argumentDocs:
+            account_id: '- (Optional) The New Relic account ID to operate on. Defaults to the account_id set on the provider.'
+            ai_platform: '- (Optional) AI Platform integration. See Integration blocks below.'
+            alloy_db: '- (Optional) AlloyDB integration. See Integration blocks below.'
+            api_gateway: '- (Optional) API Gateway integration (DM only). See Integration blocks below.'
+            app_engine: '- (Optional) App Engine integration. See Integration blocks below.'
+            big_query: '- (Optional) BigQuery integration. See Integration blocks below.'
+            big_table: '- (Optional) Bigtable integration. See Integration blocks below.'
+            composer: '- (Optional) Cloud Composer integration. See Integration blocks below.'
+            data_flow: '- (Optional) Dataflow integration. See Integration blocks below.'
+            data_proc: '- (Optional) Dataproc integration. See Integration blocks below.'
+            data_store: '- (Optional) Datastore integration. See Integration blocks below.'
+            edge_container: '- (Optional) Distributed Cloud Edge integration (DM only, metrics only — no entity support). See Integration blocks below.'
+            firebase_app_hosting: '- (Optional) Firebase App Hosting integration (DM only, metrics only — no entity support). See Integration blocks below.'
+            firebase_auth: '- (Optional) Firebase Authentication integration (DM only). See Integration blocks below.'
+            firebase_database: '- (Optional) Firebase Realtime Database integration. See Integration blocks below.'
+            firebase_hosting: '- (Optional) Firebase Hosting integration. See Integration blocks below.'
+            firebase_storage: '- (Optional) Firebase Storage integration. See Integration blocks below.'
+            firebase_vertex_ai: '- (Optional) Firebase Vertex AI integration (DM only, metrics only — no entity support). See Integration blocks below.'
+            firestore: '- (Optional) Firestore integration. See Integration blocks below.'
+            functions: '- (Optional) Cloud Functions integration. See Integration blocks below.'
+            id: '- The ID of the GCP DM integrations resource.'
+            interconnect: '- (Optional) Cloud Interconnect integration. See Integration blocks below.'
+            istio: '- (Optional) Istio integration (DM only, metrics only — no entity support). See Integration blocks below.'
+            kubernetes: '- (Optional) Kubernetes Engine integration (metrics only — no entity support). See Integration blocks below.'
+            linked_account_id: '- (Required) The ID of the linked GCP account created by newrelic_cloud_gcp_link_account (in keyless/WIF mode).'
+            load_balancing: '- (Optional) Cloud Load Balancing integration. See Integration blocks below.'
+            managed_kafka: '- (Optional) Managed Apache Kafka integration (DM only). See Integration blocks below.'
+            mem_cache: '- (Optional) Memcache integration. See Integration blocks below.'
+            memory_store: '- (Optional) Memorystore integration (DM only). See Integration blocks below.'
+            metrics_polling_interval: '- (Optional) How often New Relic polls the service for metrics, in seconds. Minimum values: 60 s for services where 1-minute polling is in Limited Preview (alloy_db, big_query, data_flow, data_proc, kubernetes, load_balancing, managed_kafka, pub_sub, spanner); 300 s for all other services. All services accept the standard 300 s interval.'
+            pub_sub: '- (Optional) Cloud Pub/Sub integration. See Integration blocks below.'
+            redis: '- (Optional) Memorystore for Redis integration. See Integration blocks below.'
+            router: '- (Optional) Cloud Router integration. See Integration blocks below.'
+            run: '- (Optional) Cloud Run integration. See Integration blocks below.'
+            spanner: '- (Optional) Cloud Spanner integration. See Integration blocks below.'
+            sql: '- (Optional) Cloud SQL integration. See Integration blocks below.'
+            storage: '- (Optional) Cloud Storage integration. See Integration blocks below.'
+            virtual_machines: '- (Optional) Compute Engine (virtual machines) integration. See Integration blocks below.'
+            vpc_access: '- (Optional) VPC Access integration. See Integration blocks below.'
+        importStatements: []
     newrelic_cloud_gcp_integrations:
         subCategory: ""
         description: Integrate GCP services with New Relic.
@@ -2477,11 +2786,24 @@ resources:
                   "name": "account name",
                   "project_id": "id of the Project"
                 }
+            - name: dm
+              manifest: |-
+                {
+                  "account_id": "account id of newrelic account",
+                  "audience": "//iam.googleapis.com/projects/123456789/locations/global/workloadIdentityPools/newrelic-wif-pool/providers/newrelic-oidc-provider",
+                  "name": "account name",
+                  "project_id": "id of the Project",
+                  "service_account_email": "newrelic-integration@my-project.iam.gserviceaccount.com",
+                  "use_workload_identity_federation": true
+                }
         argumentDocs:
             account_id: '- (Optional) - Account ID of the New Relic account.'
+            audience: '- (Optional) - The Workload Identity Federation pool provider audience URI. Format: //iam.googleapis.com/projects/{PROJECT_NUMBER}/locations/global/workloadIdentityPools/{POOL_ID}/providers/{PROVIDER_ID}. Required when use_workload_identity_federation = true.'
             id: '- The id of the GCP linked account.'
             name: '- (Required) - The name of the GCP account in New Relic.'
             project_id: '- (Required) - Project ID of the GCP account.'
+            service_account_email: '- (Optional) - The GCP service account email New Relic impersonates to collect metrics when linking via WIF. The service account must grant the WIF pool the roles/iam.workloadIdentityUser binding. Required when use_workload_identity_federation = true.'
+            use_workload_identity_federation: '- (Optional) - Set to true to link the GCP account for GCP Dimensional Metrics using keyless Workload Identity Federation (WIF) instead of a service-account key. When true, audience and service_account_email are required. Defaults to false (legacy service-account-key linking).'
         importStatements: []
     newrelic_cloud_oci_link_account:
         subCategory: ""
@@ -2536,7 +2858,9 @@ resources:
             oci_domain_url: '- (Required) Base URL of the OCI Identity Domain (e.g. https://idcs-<hash>.identity.oraclecloud.com).'
             oci_home_region: '- (Required) Home region of the tenancy (e.g. us-ashburn-1).'
             oci_region: '- (Optional, Update-only) OCI region for the linkage (ignored on create, applied on update).'
+            resource_tag: '- (Optional, ForceNew, RPST only) A value propagated as the ext_resource_tag claim on the RPST so customer IAM policies can scope authorization on a specific tag value (for example, env=prod). Ignored when trust_type = "UPST". Cannot be changed after creation.'
             tenant_id: '- (Required, ForceNew) OCI tenancy OCID (root tenancy). Changing forces a new linked account.'
+            trust_type: '- (Optional, ForceNew) The OCI WIF trust type. Allowed values are UPST (default) or RPST. Set this to RPST to use Resource Principal Session Token (claim-based) authorization instead of the default User Principal Session Token (service-user-based) flow. The corresponding identity propagation trust must be configured with the matching trust type in your OCI tenancy. Cannot be changed after creation — re-create the linked account to switch trust types. See the WIF setup module for details.'
             user_vault_ocid: '- (Required) Vault secret OCID containing a user or auxiliary secret.'
         importStatements: []
     newrelic_data_partition_rule:
@@ -2639,12 +2963,180 @@ resources:
                   "nrql": "SELECT uniqueCount(account_id) AS ``Transaction.account_id`` FROM Transaction FACET appName, name"
                 }
         argumentDocs:
-            account_id: '- (Required) Account with the event and where the metrics will be put.'
+            account_id: '- (Optional) The account ID where the Events to Metrics rule will be created. If not specified, defaults to the provider''s configured account ID.'
             description: '- (Optional) Provides additional information about the rule.'
             enabled: '- (Optional) True means this rule is enabled. False means the rule is currently not creating metrics.'
             name: '- (Required) The name of the rule. This must be unique within an account.'
             nrql: '- (Required) Explains how to create metrics from events.'
             rule_id: '- The id, uniquely identifying the rule.'
+        importStatements: []
+    newrelic_federated_logs_partition:
+        subCategory: ""
+        description: Create and manage an additional partition under an existing Federated Logs setup.
+        name: newrelic_federated_logs_partition
+        title: newrelic_federated_logs_partition
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "data_retention_policy": [
+                    {
+                      "duration": 365,
+                      "unit": "DAYS"
+                    }
+                  ],
+                  "description": "test partition for logs",
+                  "forwarder_configuration": [
+                    {
+                      "pipeline_control": [
+                        {
+                          "partition_rule": [
+                            {
+                              "expression": "attributes[\"log.type\"] == \"partition\""
+                            }
+                          ]
+                        }
+                      ],
+                      "type": "PIPELINE_CONTROL"
+                    }
+                  ],
+                  "name": "test-partition-logs",
+                  "setup_id": "${newrelic_federated_logs_setup.setup.id}",
+                  "storage": [
+                    {
+                      "data_location_uri": "s3://my-app-fed-logs/my_app_partition_logs",
+                      "table": "my_app_partition_logs"
+                    }
+                  ]
+                }
+              references:
+                setup_id: newrelic_federated_logs_setup.setup.id
+        argumentDocs:
+            active: '- (Optional) Whether the partition is active.'
+            created_at: '- Creation timestamp.'
+            data_retention_policy: '- (Optional) Retention policy for logs in this partition. See Nested data_retention_policy block below.'
+            data_retention_policy.duration: '- (Required) Retention duration value.'
+            data_retention_policy.unit: '- (Required) Time unit. One of DAYS, WEEKS, or MONTHS.'
+            description: '- (Optional) A description for partition.'
+            forwarder_configuration: '- (Optional) Forwarder configuration for routing specific logs to this partition. See Nested forwarder_configuration block below.'
+            forwarder_configuration.pipeline_control: '- (Optional) Pipeline control configuration. See below.'
+            forwarder_configuration.pipeline_control.partition_rule: '- (Optional) Rule that determines which logs are routed to this partition. See below.'
+            forwarder_configuration.pipeline_control.partition_rule.expression: '- (Required) OTTL expression for routing logs to this partition. Example: attributes["log.type"] == "partition".'
+            forwarder_configuration.type: '- (Required) Forwarder type. Must match the parent setup''s forwarder type. Currently only PIPELINE_CONTROL is supported.'
+            health_check: '- Aggregate health check status for the partition.'
+            id: '- The entity GUID of the partition.'
+            is_default: '- Whether this is the default partition for the parent setup.'
+            lifecycle_status: '- Current lifecycle status of the partition.'
+            name: '- (Required) The name of the partition.'
+            setup_id: '- (Required) Entity GUID of the setup.'
+            storage: '- (Required) Storage details for this partition. See Nested storage block below.'
+            storage.data_location_uri: '- (Required) S3 URI of the partition''s data location.'
+            storage.table: '- (Required) Glue table name for the partition.'
+            updated_at: '- Last-updated timestamp.'
+        importStatements: []
+    newrelic_federated_logs_setup:
+        subCategory: ""
+        description: Create and manage a Federated Logs setup in New Relic.
+        name: newrelic_federated_logs_setup
+        title: newrelic_federated_logs_setup
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "default_partition": [
+                    {
+                      "data_retention_policy": [
+                        {
+                          "duration": 30,
+                          "unit": "DAYS"
+                        }
+                      ],
+                      "storage": [
+                        {
+                          "data_location_uri": "s3://my-app-fed-logs/my_app_default_partition",
+                          "table": "my_app_default_partition"
+                        }
+                      ]
+                    }
+                  ],
+                  "description": "Federated logs setup for my-app",
+                  "forwarder": [
+                    {
+                      "pipeline_control": [
+                        {
+                          "fleet_id": "\u003cfleet-entity-guid\u003e"
+                        }
+                      ],
+                      "type": "PIPELINE_CONTROL"
+                    }
+                  ],
+                  "name": "my-app-logs",
+                  "storage": [
+                    {
+                      "cloud_provider_configuration": [
+                        {
+                          "provider": "AWS",
+                          "region": "us-east-1"
+                        }
+                      ],
+                      "data_ingest_connection_id": "${newrelic_aws_connection.ingest.id}",
+                      "data_location_bucket": "my-app-fed-logs",
+                      "database": "my_app_fed_logs_db",
+                      "query_connection_id": "${newrelic_aws_connection.query.id}"
+                    }
+                  ]
+                }
+              references:
+                storage.data_ingest_connection_id: newrelic_aws_connection.ingest.id
+                storage.query_connection_id: newrelic_aws_connection.query.id
+              dependencies:
+                newrelic_aws_connection.ingest: |-
+                    {
+                      "name": "fed-logs-ingest",
+                      "region": "us-east-1",
+                      "role_arn": "arn:aws:iam::123456789012:role/newrelic-fed-logs-ingest",
+                      "scope_id": "YOUR_ORG_ID_HERE",
+                      "scope_type": "ORGANIZATION"
+                    }
+                newrelic_aws_connection.query: |-
+                    {
+                      "name": "fed-logs-query",
+                      "region": "us-east-1",
+                      "role_arn": "arn:aws:iam::123456789012:role/newrelic-fed-logs-query",
+                      "scope_id": "YOUR_ORG_ID_HERE",
+                      "scope_type": "ORGANIZATION"
+                    }
+        argumentDocs:
+            active: '- (Optional) Whether the setup is active.'
+            created_at: '- Creation timestamp.'
+            default_partition: '- (Required) Default partition created alongside the setup. See Nested default_partition block below.'
+            default_partition.data_retention_policy: '- (Optional) Retention policy for logs in the default partition. See below.'
+            default_partition.data_retention_policy.duration: '- (Required) Retention duration value.'
+            default_partition.data_retention_policy.unit: '- (Required) Time unit for the duration. One of DAYS, WEEKS, or MONTHS.'
+            default_partition.storage: '- (Required) Storage details for the default partition. See below.'
+            default_partition.storage.data_location_uri: '- (Required) S3 URI of the default partition''s data location.'
+            default_partition.storage.table: '- (Required) Glue table name for the default partition.'
+            default_partition_id: '- The entity GUID of the default partition created alongside this setup.'
+            description: '- (Optional) A description for federated logs setup.'
+            forwarder: '- (Optional) Forwarder configuration that wires a fleet to this setup. See Nested forwarder block below.'
+            forwarder.pipeline_control: '- (Optional) Pipeline control configuration. Required when type is PIPELINE_CONTROL. See below.'
+            forwarder.pipeline_control.fleet_id: '- (Required) The fleet entity GUID.'
+            forwarder.pipeline_control.routing_rule: '- (Optional) Routing rule that determines how incoming logs are routed to this setup. See below.'
+            forwarder.pipeline_control.routing_rule.expression: '- (Required) OTTL expression for routing logs to this setup. Example: attributes["service.name"] == "python-apm".'
+            forwarder.type: '- (Required) The forwarder type. Currently only PIPELINE_CONTROL is supported.'
+            health_check: '- Aggregate health check status for the setup.'
+            id: '- The entity GUID of the federated logs setup. Used as setup_id on newrelic_federated_logs_partition.'
+            lifecycle_status: '- Current lifecycle status of the setup.'
+            name: '- (Required) The name of the federated log setup.'
+            storage: '- (Required) Storage configuration. Cannot be changed after creation. See Nested storage block below.'
+            storage.cloud_provider_configuration: '- (Required) Cloud provider configuration. See below.'
+            storage.cloud_provider_configuration.provider: '- (Required) The cloud provider. Currently only AWS is supported.'
+            storage.cloud_provider_configuration.region: '- (Required) The cloud provider region (e.g. us-east-1).'
+            storage.data_ingest_connection_id: '- (Required) Entity GUID of the newrelic_aws_connection used for writing data (the fleet ingest role).'
+            storage.data_location_bucket: '- (Required) S3 bucket where log data is stored.'
+            storage.database: '- (Required) Glue catalog database name associated with the setup.'
+            storage.query_connection_id: '- (Required) Entity GUID of the newrelic_aws_connection used for reading data.'
+            updated_at: '- Last-updated timestamp.'
         importStatements: []
     newrelic_fleet:
         subCategory: ""
@@ -2687,7 +3179,7 @@ resources:
             id: '- The ID of the fleet.'
             managed_entity_type: '- (Required) The type of entities this fleet will manage. Valid values are HOST or KUBERNETESCLUSTER. Note: This cannot be changed after creation (forces new resource).'
             name: '- (Required) The name of the fleet. This can be changed after creation.'
-            operating_system: '- (Optional) The operating system type for HOST fleets. Required when . Valid values are LINUX or WINDOWS. Must not be set when . Note: This cannot be changed after creation (forces new resource).'
+            operating_system: '- (Optional) The operating system type for HOST fleets. Required when . Valid values are LINUX or WINDOWS. Must not be set when . Both pairings are validated at plan time so misconfigurations surface before apply. Note: This cannot be changed after creation (forces new resource).'
             organization_id: '- (Optional) The organization ID. If not provided, it will be automatically fetched from your account. Note: This cannot be changed after creation (forces new resource).'
             tags: '- (Optional) A list of tags for the fleet. Each tag should be in the format "key:value1,value2" where multiple values can be comma-separated.'
         importStatements: []
@@ -2701,81 +3193,81 @@ resources:
               manifest: |-
                 {
                   "agent_type": "NRInfra",
+                  "configuration_content": "log:\n  level: info\n  file: /var/log/newrelic-infra/newrelic-infra.log\nmetrics:\n  enabled: true\n  system_sample_rate: 15\n",
                   "managed_entity_type": "HOST",
                   "name": "Production Infrastructure Config",
-                  "version": [
-                    {
-                      "configuration_content": "log:\n  level: info\n  file: /var/log/newrelic-infra/newrelic-infra.log\nmetrics:\n  enabled: true\n  system_sample_rate: 15\n"
-                    }
-                  ]
+                  "operating_system": "LINUX"
                 }
             - name: infra
               manifest: |-
                 {
                   "agent_type": "NRInfra",
+                  "configuration_content": "${file(\"${path.module}/configs/infra.yaml\")}",
                   "managed_entity_type": "HOST",
                   "name": "Production Infrastructure Config",
-                  "version": [
-                    {
-                      "configuration_content": "${file(\"${path.module}/configs/infra-v1.yaml\")}"
-                    }
-                  ]
-                }
-            - name: infra
-              manifest: |-
-                {
-                  "agent_type": "NRInfra",
-                  "managed_entity_type": "HOST",
-                  "name": "Production Infrastructure Config",
-                  "version": [
-                    {
-                      "configuration_content": "${file(\"${path.module}/configs/infra-v1.yaml\")}"
-                    },
-                    {
-                      "configuration_content": "${file(\"${path.module}/configs/infra-v2.yaml\")}"
-                    }
-                  ]
+                  "operating_system": "LINUX"
                 }
             - name: k8s
               manifest: |-
                 {
                   "agent_type": "NRDOT",
+                  "configuration_content": "${file(\"${path.module}/configs/k8s-config.yaml\")}",
                   "managed_entity_type": "KUBERNETESCLUSTER",
-                  "name": "Production K8s Config",
-                  "version": [
-                    {
-                      "configuration_content": "${file(\"${path.module}/configs/k8s-config.yaml\")}"
-                    }
-                  ]
+                  "name": "Production K8s Config"
                 }
             - name: infra
               manifest: |-
                 {
                   "agent_type": "NRInfra",
+                  "configuration_content": "${file(\"${path.module}/config.yaml\")}",
                   "managed_entity_type": "HOST",
                   "name": "my-infra-config",
-                  "version": [
-                    {
-                      "configuration_content": "${file(\"${path.module}/config.yaml\")}"
-                    }
-                  ]
+                  "operating_system": "LINUX"
+                }
+            - name: infra
+              manifest: |-
+                {
+                  "agent_type": "NRInfra",
+                  "configuration_content": "${file(\"${path.module}/configs/infra.yaml\")}",
+                  "configuration_type": "AgentConfig",
+                  "managed_entity_type": "HOST",
+                  "name": "Production Infrastructure Config",
+                  "operating_system": "LINUX"
+                }
+            - name: infra_legacy
+              manifest: |-
+                {
+                  "agent_type": "NRInfra",
+                  "configuration_content": "${file(\"${path.module}/configs/infra.yaml\")}",
+                  "legacy_config": true,
+                  "managed_entity_type": "HOST",
+                  "name": "Legacy Infrastructure Config",
+                  "operating_system": "LINUX"
+                }
+            - name: infra
+              manifest: |-
+                {
+                  "agent_type": "NRInfra",
+                  "configuration_content": "${file(\"${path.module}/config.yaml\")}",
+                  "managed_entity_type": "HOST",
+                  "name": "my-infra-config",
+                  "operating_system": "LINUX"
                 }
         argumentDocs:
             agent_type: '- (Required, ForceNew) The type of agent this configuration is for. Valid values: NRInfra, NRDOT, FluentBit, NRPrometheusAgent. Cannot be changed after creation.'
-            configuration_content.version: block with the updated content.
+            configuration_content: '- (Required) The YAML or JSON content for this configuration. Use file() to load content from a file. Each change to this field creates a new immutable version on the API; the resource ID remains constant.'
             configuration_id: '- The entity GUID of the configuration.'
+            configuration_type: '- (Optional, ForceNew, Computed) The configuration type. Currently only AgentConfig is a supported value, and it is the default — a fleet configuration can no longer be created with a null configuration type through this argument. Use legacy_config = true instead to create a legacy configuration. Mutually exclusive with legacy_config. This is an interim restriction pending further product guidance and may change. Cannot be changed after creation.'
             id: '- The entity GUID of the configuration (same as configuration_id).'
             latest_version_entity_id: '- The entity GUID of the highest-numbered version.'
-            latest_version_number: '- The highest version number across all versions.'
+            latest_version_number: '- The highest version number across all versions created so far.'
+            legacy_config: '- (Optional, ForceNew) Set to true to create a legacy configuration with no configuration type (null), instead of the "AgentConfig" default. Mutually exclusive with configuration_type. Cannot be changed after creation.'
             managed_entity_type: '- (Required, ForceNew) The type of entities this configuration manages. Valid values: HOST, KUBERNETESCLUSTER. Cannot be changed after creation.'
-            name: '- (Required) The name of the configuration.'
+            name: '- (Required, ForceNew) The name of the configuration. Changing this forces resource recreation — the API does not support renaming a configuration in place.'
             operating_system: '- (Optional, ForceNew) The operating system this configuration targets. Valid values: LINUX, WINDOWS. Applicable to HOST configurations only — must not be set when managed_entity_type is KUBERNETESCLUSTER. Cannot be changed after creation.'
             organization_id: '- (Optional, ForceNew) The organization ID. Auto-fetched from the account when not provided. Cannot be changed after creation.'
             total_versions: '- Total number of versions currently in the configuration.'
-            version: '- (Required) One or more version blocks. At least one is required. See Nested  below.'
-            version.configuration_content: '- (Required) The YAML or JSON content for this version. Must be unique across all version blocks in the resource. Use file() to load content from a file: file("${path.module}/config.yaml").'
-            version.version_entity_id: '- The entity GUID of this version.'
-            version.version_number: '- The version number assigned by the API (1, 2, 3, …).'
+            version_entity_ids: '- A list of entity GUIDs for all versions, sorted oldest-first. Use with the newrelic_fleet_configuration data source to retrieve the content of a specific historical version.'
         importStatements:
             - |-
               terraform import newrelic_fleet_configuration.infra <configuration_guid>:HOST
@@ -2786,21 +3278,6 @@ resources:
         name: newrelic_fleet_deployment
         title: newrelic_fleet_deployment
         examples:
-            - name: infra
-              manifest: |-
-                {
-                  "agent": [
-                    {
-                      "agent_type": "NRInfra",
-                      "version": "1.58.0"
-                    }
-                  ],
-                  "description": "Deploys NRInfra v1.58.0 to the production fleet",
-                  "fleet_id": "${newrelic_fleet.prod.id}",
-                  "name": "Production Infra Deployment"
-                }
-              references:
-                fleet_id: newrelic_fleet.prod.id
             - name: infra
               manifest: |-
                 {
@@ -2822,13 +3299,10 @@ resources:
                 newrelic_fleet_configuration.infra_cfg: |-
                     {
                       "agent_type": "NRInfra",
+                      "configuration_content": "log:\n  level: info\n",
                       "managed_entity_type": "HOST",
                       "name": "Production Infra Config",
-                      "version": [
-                        {
-                          "configuration_content": "log:\n  level: info\n"
-                        }
-                      ]
+                      "operating_system": "LINUX"
                     }
             - name: full_stack
               manifest: |-
@@ -2841,6 +3315,7 @@ resources:
                     },
                     {
                       "agent_type": "FluentBit",
+                      "configuration_version_id": "${newrelic_fleet_configuration.fb_cfg.latest_version_entity_id}",
                       "version": "3.2.0"
                     }
                   ],
@@ -2848,7 +3323,31 @@ resources:
                   "name": "Full Stack Deployment"
                 }
               references:
-                agent.configuration_version_id: newrelic_fleet_configuration.infra_cfg.latest_version_entity_id
+                agent.configuration_version_id: newrelic_fleet_configuration.fb_cfg.latest_version_entity_id
+                fleet_id: newrelic_fleet.prod.id
+            - name: drained
+              manifest: |-
+                {
+                  "fleet_id": "${newrelic_fleet.prod.id}",
+                  "name": "Drained deployment"
+                }
+              references:
+                fleet_id: newrelic_fleet.prod.id
+            - name: pinned
+              manifest: |-
+                {
+                  "agent": [
+                    {
+                      "agent_type": "NRInfra",
+                      "configuration_version_id": "${newrelic_fleet_configuration.infra_cfg.version_entity_ids[0]}",
+                      "version": "1.58.0"
+                    }
+                  ],
+                  "fleet_id": "${newrelic_fleet.prod.id}",
+                  "name": "Stable v1 rollout"
+                }
+              references:
+                agent.configuration_version_id: newrelic_fleet_configuration.infra_cfg.version_entity_ids[0]
                 fleet_id: newrelic_fleet.prod.id
             - name: infra
               manifest: |-
@@ -2856,6 +3355,7 @@ resources:
                   "agent": [
                     {
                       "agent_type": "NRInfra",
+                      "configuration_version_id": "${newrelic_fleet_configuration.infra_cfg.latest_version_entity_id}",
                       "version": "1.58.0"
                     }
                   ],
@@ -2867,17 +3367,18 @@ resources:
                   ]
                 }
               references:
+                agent.configuration_version_id: newrelic_fleet_configuration.infra_cfg.latest_version_entity_id
                 fleet_id: newrelic_fleet.prod.id
         argumentDocs:
-            agent: '- (Required on create, may be empty on update) One or more agent blocks. At least one is required when creating a deployment. On update, the list may be set to empty (agent = []) to uninstall all agent assignments from the deployment. Each agent_type may appear at most once per deployment. See Nested  below.'
+            agent: '- (Optional) Zero or more agent blocks. An empty list is accepted on both create and update — useful to drain agent assignments. Each agent_type may appear at most once per deployment. See Nested  below.'
             agent.agent_type: '- (Required) The agent type. Valid values: NRInfra, NRDOT, FluentBit, NRPrometheusAgent.'
-            agent.configuration_version_id: '- (Required) A configuration version entity GUID (from newrelic_fleet_configuration) to associate with this agent in the deployment.'
+            agent.configuration_version_id: '- (Required) The entity GUID of the configuration version (from newrelic_fleet_configuration) to associate with this agent. Reference latest_version_entity_id to follow the current version, or version_entity_ids[N] to pin to a specific historical version.'
             agent.version: '- (Required) The agent version string to deploy (e.g. "1.58.0").'
             deployment_id: '- The entity GUID of the deployment.'
             description: '- (Optional) A description of the deployment.'
             fleet_id: '- (Required, ForceNew) The entity GUID of the fleet this deployment belongs to. Cannot be changed after creation.'
             id: '- The entity GUID of the deployment (same as deployment_id).'
-            name: '- (Optional) The name of the deployment.'
+            name: '- (Required) The name of the deployment. Updatable while the deployment is in CREATED phase.'
             organization_id: '- (Optional, ForceNew) The organization ID. Auto-fetched from the account when not provided. Cannot be changed after creation.'
             phase: '- The current phase of the deployment. Possible values: CREATED, IN_PROGRESS, FAILED, COMPLETED.'
             tags: '- (Optional) A list of tags in key:value1,value2 format.'
@@ -3342,12 +3843,22 @@ resources:
                   "description": "Remove collector.name attribute from http.server.duration to reduce cardinality",
                   "nrql": "SELECT collector.name FROM Metric WHERE metricName = 'http.server.duration'"
                 }
+            - name: bulk
+              manifest: |-
+                {
+                  "description": "Remove ${local.pruned_attribute} from ${each.value} to reduce cardinality",
+                  "for_each": "${local.metrics_to_prune}",
+                  "nrql": "SELECT ${local.pruned_attribute} FROM Metric WHERE metricName = '${each.value}'"
+                }
+              references:
+                for_each: local.metrics_to_prune
         argumentDocs:
             account_id: '- (Optional) The New Relic account ID in which to create the pruning rule. Defaults to the account ID configured on the provider.'
             description: '- (Optional) A human-readable description of what this pruning rule does.'
             id: '- The Terraform resource ID in the format <account_id>:<rule_id>.'
             nrql: '- (Required) The NRQL query that identifies the metric and the specific attributes to prune. The SELECT clause must name the attributes to remove (not SELECT *), and the FROM clause must target Metric. Example: SELECT collector.name FROM Metric WHERE metricName = ''my.metric.name''.'
             rule_id: '- The unique identifier of the pruning rule assigned by New Relic.'
+            terraform plan: / terraform refresh on an existing resource
         importStatements: []
     newrelic_monitor_downtime:
         subCategory: ""
@@ -3499,6 +4010,129 @@ resources:
             start_time: '- (Required) The time at which the monitor downtime would begin to operate, a timestamp specified in the ISO 8601 format without the offset/timezone - for instance, 2023-12-20T10:48:53.'
             timezone: '- (Required) The timezone in which timestamps start_time and end_time have been specified. Valid timezones which may be specified with this argument can be found in this list, under the column ''TZ identifier''.'
             week_day: '- A day of the week (one of "SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY" or "SATURDAY").'
+        importStatements: []
+    newrelic_notebook:
+        subCategory: ""
+        description: Create and manage New Relic Notebooks.
+        name: newrelic_notebook
+        title: newrelic_notebook
+        examples:
+            - name: incident_runbook
+              manifest: |-
+                {
+                  "content": "{\n  \"type\": \"declarative\",\n  \"version\": 1,\n  \"content\": [\n    {\n      \"type\": \"container\",\n      \"props\": { \"layout\": \"stack\" },\n      \"content\": [\n        {\n          \"type\": \"widget\",\n          \"content\": {\n            \"type\": \"visualization\",\n            \"id\": \"viz.markdown\",\n            \"props\": {\n              \"text\": \"# Production API Incident\\n\\n**Status**: Resolved\\n**Impact**: ~15% of API requests failed\\n\\nUse this notebook to walk through what happened and track action items.\"\n            }\n          }\n        },\n        {\n          \"type\": \"widget\",\n          \"props\": { \"title\": \"Peak error rate\" },\n          \"content\": {\n            \"type\": \"visualization\",\n            \"id\": \"viz.billboard\",\n            \"props\": {\n              \"nrqlQueries\": [\n                {\n                  \"accountIds\": [1234567],\n                  \"query\": \"SELECT percentage(count(*), WHERE httpResponseCode \u003e= 400) AS 'Error Rate %' FROM Transaction WHERE appName = 'api-production' SINCE 1 hour ago\"\n                }\n              ],\n              \"thresholdsWithSeriesOverrides\": {\n                \"thresholds\": [\n                  { \"to\": 1,   \"severity\": \"success\"  },\n                  { \"from\": 1, \"to\": 5, \"severity\": \"warning\"  },\n                  { \"from\": 5, \"severity\": \"critical\" }\n                ]\n              }\n            }\n          }\n        },\n        {\n          \"type\": \"widget\",\n          \"props\": { \"title\": \"Error rate over time\" },\n          \"content\": {\n            \"type\": \"visualization\",\n            \"id\": \"viz.line\",\n            \"props\": {\n              \"nrqlQueries\": [\n                {\n                  \"accountIds\": [1234567],\n                  \"query\": \"SELECT percentage(count(*), WHERE httpResponseCode \u003e= 400) FROM Transaction WHERE appName = 'api-production' TIMESERIES 1 minute SINCE 1 hour ago\"\n                }\n              ],\n              \"legend\":    { \"enabled\": true },\n              \"yAxisLeft\": { \"zero\": true },\n              \"nullValues\": { \"nullValue\": \"zero\" }\n            }\n          }\n        }\n      ]\n    }\n  ]\n}\n",
+                  "title": "Production API Incident - Investigation"
+                }
+            - name: weekly_review
+              manifest: |-
+                {
+                  "content": "${file(\"${path.module}/notebooks/weekly-health.json\")}",
+                  "title": "Weekly Service Health Review"
+                }
+            - name: runbooks
+              manifest: |-
+                {
+                  "content": "${jsonencode({\n    type    = \"declarative\"\n    version = 1\n    content = [{\n      type  = \"container\"\n      props = { layout = \"stack\" }\n      content = [\n        {\n          type  = \"widget\"\n          content = {\n            type = \"visualization\"\n            id   = \"viz.markdown\"\n            props = { text = \"# ${each.value}\\n\\nAdd investigation steps and runbook content here.\" }\n          }\n        },\n        {\n          type  = \"widget\"\n          props = { title = \"Error rate\" }\n          content = {\n            type = \"visualization\"\n            id   = \"viz.billboard\"\n            props = {\n              nrqlQueries = [{\n                accountIds = [var.account_id]\n                query      = \"SELECT percentage(count(*), WHERE error IS true) AS 'Error %' FROM Transaction WHERE appName = '${each.value}' SINCE 1 hour ago\"\n              }]\n            }\n          }\n        }\n      ]\n    }]\n  })}",
+                  "for_each": "${var.services}",
+                  "title": "${each.value} - Runbook"
+                }
+              references:
+                for_each: var.services
+        argumentDocs:
+            '"content"': 'containing "type": "visualization", "id": "<chart-type>" (see Supported Visualization Types for all valid values), and "props": { ... } (content-level - chart configuration such as queries, thresholds, axis options).'
+            '"props": { "title": "..." }': (widget-level - display title only, not chart config) - Required for all chart types. Omit entirely for viz.markdown widgets.
+            '"type": "widget"': '- always.'
+            accountIds: '- (Required) Account IDs the alert query runs against.'
+            alertQueries: '- (Optional) Alert violation objects to overlay warning/critical bands on the chart. Only available for viz.line. Each object supports:'
+            alignment: '- (Optional) Alignment of values on the billboard. Valid values: "auto", "stacked", "inline".'
+            billboardSettings: '- (Optional) Fine-grained layout and linking options.'
+            blob_id: '- The blob identifier of the current notebook content, updated after each Terraform-managed write.'
+            chartStyles: '- (Optional) Visual style overrides for the chart.'
+            chartType: '- (Required) Valid values: "line", "area".'
+            chartTypes: '- (Optional) Override the chart type per series.'
+            color: '- (Required) RGB hex color, e.g. "#FF0000".'
+            colorPalette: '- (Optional) Color palette. Valid values are "consistent" (default) and "dynamic".'
+            colors: '- (Optional) Controls chart coloring.'
+            columnName: '- (Required) The column name to hide, as it appears in the query results.'
+            columns: '- (Optional) Number of columns in the grid.'
+            content: '- (Required) The notebook body as a JSON string. Accepts the raw JSON exported from the New Relic UI, a file() reference, or a jsonencode({...}) expression. Produces line-level diffs of the normalized JSON in terraform plan.'
+            dataFormatters: '- (Optional) Custom per-column data format configuration.'
+            direction: '- (Required) Sort direction. Valid values: "asc", "desc".'
+            display: '- (Optional) What to show on the billboard. Valid values: "auto", "all", "value", "label", "none".'
+            displayMode: '- (Optional) Gauge shape. Valid values: "arc" (default), "circular", "bar".'
+            duration: '- (Required) Duration in milliseconds.'
+            enabled: '- (Optional) Show or hide the legend. Defaults to true.'
+            endTime: '- (Required) End time as an epoch millisecond timestamp.'
+            facet: '- (Optional) Controls FACET grouping behaviour.'
+            frequency: '- (Optional) Refresh interval in milliseconds, or "auto". See Valid .'
+            from: '- (Optional) Lower bound of the threshold range (inclusive).'
+            gaugeSettings: '- (Optional) Appearance and scale options for the gauge.'
+            gradient: '- (Optional) Gradient fill under the line.'
+            gridOptions: '- (Optional) Grid layout for multi-value billboards.'
+            guid: '- The unique entity identifier (GUID) of the notebook in New Relic.'
+            hiddenColumns: '- (Optional) Columns to suppress from the rendered table.'
+            id: identifies the chart type - for example "viz.markdown", "viz.line", "viz.area". See Supported visualization types for the full list.
+            ignoreTimeRange: '- (Optional) Use the query''s own time range instead of the notebook time picker. Defaults to false.'
+            initialSorting: '- (Optional) Default sort applied when the table first renders.'
+            isLabelVisible: '- (Optional) Show threshold labels on the chart. Defaults to false.'
+            label: '- (Optional) Label display size configuration.'
+            legend: '- (Optional) Controls the chart legend.'
+            limit: '- (Required) The target value shown as the goal line on the chart.'
+            lineInterpolation: '- (Optional) Line interpolation mode. Valid values: "linear" (default), "smooth", "stepBefore", "stepAfter".'
+            link: '- (Optional) A clickable link attached to the billboard.'
+            max: '- (Optional) Fixed maximum value for the axis.'
+            min: '- (Optional) Fixed minimum value for the axis.'
+            mode: '- (Optional) Valid values: "single" (default), "all", "hidden".'
+            name: '- (Required) The series name to bind to the right axis.'
+            newTab: '- (Optional) Open the link in a new tab. Defaults to false.'
+            nrqlQueries: '- (Required) Array of NRQL query objects. See Nested .'
+            nrqlQueries.accountIds: '- (Required) An array of one or more New Relic account IDs to run the query against.'
+            nrqlQueries.offset: '- (Optional) Number of milliseconds to offset the query time window.'
+            nrqlQueries.query: '- (Required) A valid NRQL query string.'
+            nullValue: '- (Optional) Default null handling. Valid values: "default", "zero", "preserve", "remove".'
+            nullValues: '- (Optional) Controls how null data points are rendered.'
+            organization_id: '- The New Relic organization ID the notebook belongs to. Resolved automatically from the provider credentials.'
+            platformOptions: '- (Optional) Platform-level rendering options.'
+            position: '- (Optional) Where to place the legend. Valid values are "bottom" (default), "left", or "right".'
+            props: 'must always be { "layout": "stack" }.'
+            refreshRate: '- (Optional) Auto-refresh configuration.'
+            refreshRate.frequency: values
+            scale: '- (Optional) Axis scale. Valid values are "linear" (default) and "logarithmic".'
+            series: '- (Optional) List of series names to plot against the right axis.'
+            seriesName: '- (Required) The series to override.'
+            seriesOverrides: '- (Optional) Per-series null value overrides.'
+            severity: '- (Required) Color coding. Valid values: "success", "warning", "severe", "critical", "unavailable".'
+            showOtherSeries: '- (Optional) Show the "Other" group for FACET queries. Defaults to false.'
+            showThresholdLabels: '- (Optional) Show labels at threshold boundaries. Defaults to false.'
+            showThresholdMarkers: '- (Optional) Show tick marks at threshold boundaries. Defaults to true.'
+            stacked: '- (Optional) Stack multiple series on top of each other.'
+            text: '- (Required) The Markdown source string. Supports headings, bold, italic, code, lists, task lists (- [ ]), tables, and links. Use \n for newlines within the string.'
+            thresholds: '- (Optional) Horizontal threshold bands drawn across the chart. See Nested .'
+            thresholds.columnName: '- (Required) The column to apply the threshold to, as it appears in the query results.'
+            thresholds.from: '- (Optional) Lower bound of the threshold range (inclusive).'
+            thresholds.name: '- (Optional) A label shown on the threshold band.'
+            thresholds.severity: '- (Required) Color coding applied to data in this range. Valid values: "success", "warning", "severe", "critical", "unavailable".'
+            thresholds.to: '- (Optional) Upper bound of the threshold range (inclusive).'
+            thresholdsColorMode: '- (Optional) How threshold colors are applied. Valid values: "solid" (default), "gradient".'
+            thresholdsWithSeriesOverrides: '- (Optional) Threshold configuration for the billboard. See Nested .'
+            thresholdsWithSeriesOverrides.seriesOverrides: '- (Optional) Per-series threshold overrides for multi-value billboards.'
+            thresholdsWithSeriesOverrides.thresholds: '- (Optional) Global threshold ranges applied to all series.'
+            title: '- (Required) The title of the notebook. Must be unique within the organization.'
+            to: '- (Optional) Upper bound of the threshold range (inclusive).'
+            tooltip: '- (Optional) Tooltip display behaviour.'
+            type: must always be "declarative".
+            unit: '- (Optional) Default unit for all series. See Valid .'
+            units: '- (Optional) Data units for display formatting.'
+            units.unit: values
+            url: '- (Required) The destination URL.'
+            value: '- (Optional) Value display size configuration.'
+            version: must always be the integer 1.
+            violationId: '- (Required) The violation ID to overlay.'
+            visual: '- (Optional) Controls the visual presentation of the billboard.'
+            viz.markdown: 'only:'
+            yAxisLeft: '- (Optional) Configuration for the left Y axis.'
+            yAxisRight: '- (Optional) Configuration for the right Y axis. Supports the same sub-keys as yAxisLeft, plus:'
+            zero: '- (Optional) Force zero as the axis origin. Defaults to true.'
         importStatements: []
     newrelic_notification_channel:
         subCategory: ""
@@ -4022,7 +4656,7 @@ resources:
             auth_basic: '- (Optional) A nested block that describes a basic username and password authentication credentials. Only one auth_basic block is permitted per notification destination definition.  See Nested auth_basic blocks below for details.'
             auth_basic.password: '- (Required) Specifies an authentication password for use with a destination.'
             auth_basic.user: '- (Required) The username of the basic auth.'
-            auth_custom_header: '- (Optional) A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.'
+            auth_custom_header: '- (Optional) A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. See Nested auth_custom_header blocks below for details.'
             auth_custom_header.key: '- (Required) The key of the header.'
             auth_custom_header.value: '- (Required) The secret value of the header.'
             auth_token: '- (Optional) A nested block that describes a token authentication credentials. Only one auth_token block is permitted per notification destination definition.  See Nested auth_token blocks below for details.'
@@ -4360,6 +4994,7 @@ resources:
             slide_by: '- (Optional) Gathers data in overlapping time windows to smooth the chart line, making it easier to spot trends. The slide_by value is specified in seconds and must be smaller than and a factor of the aggregation_window.'
             target_entity: '- (Optional) BETA PREVIEW: The GUID of the entity explicitly targeted by the condition. Issues triggered by this condition will affect the health status of this entity instead of having the affected entity detected automatically. The entity''s account ID must be either account_id or nrql.data_account_id.'
             term: '- (Optional) DEPRECATED Use critical, and warning instead. A list of terms for this condition. See Terms below for details.'
+            term.disable_event_creation: '- (Optional) BETA PREVIEW: the  true or false. Defaults to false when field not included in TF config. When set to true, violations will not create events.'
             term.disable_health_status_reporting: '- (Optional) true or false. Defaults to false when field not included in TF config. Violations will not change system health status for this term.'
             term.duration: '- (Optional) DEPRECATED: Use threshold_duration instead. The duration of time, in minutes, that the threshold must violate for in order to create an incident. Must be within 1-120 (inclusive).'
             term.operator: '- (Optional) Valid values are above, above_or_equals, below, below_or_equals, equals, or not_equals (case insensitive). Defaults to equals. Note that when using a type of baseline, the only valid option here is above.'
@@ -4386,41 +5021,10 @@ resources:
         importStatements: []
     newrelic_nrql_drop_rule:
         subCategory: ""
-        description: Create and manage NRQL Drop Rules.
+        description: This resource has reached end-of-life and is no longer supported. Please refer to the migration guide for alternatives.
         name: newrelic_nrql_drop_rule
         title: newrelic_nrql_drop_rule
-        examples:
-            - name: foo
-              manifest: |-
-                {
-                  "account_id": 12345,
-                  "action": "drop_data",
-                  "description": "Drops all data for MyCustomEvent that comes from the LoadGeneratingApp in the dev environment, because there is too much and we don’t look at it.",
-                  "nrql": "SELECT * FROM MyCustomEvent WHERE appName='LoadGeneratingApp' AND environment='development'"
-                }
-            - name: bar
-              manifest: |-
-                {
-                  "account_id": 12345,
-                  "action": "drop_attributes",
-                  "description": "Removes the user name and email fields from MyCustomEvent",
-                  "nrql": "SELECT userEmail, userName FROM MyCustomEvent"
-                }
-            - name: baz
-              manifest: |-
-                {
-                  "account_id": 12345,
-                  "action": "drop_attributes_from_metric_aggregates",
-                  "description": "Removes containerId from metric aggregates to reduce metric cardinality.",
-                  "nrql": "SELECT containerId FROM Metric"
-                }
-        argumentDocs:
-            account_id: '- (Optional) Account where the drop rule will be put. Defaults to the account associated with the API key used.'
-            action: '- (Required) An action type specifying how to apply the NRQL string (either drop_data, drop_attributes, or  drop_attributes_from_metric_aggregates).'
-            description: '- (Optional) The description of the drop rule.'
-            nrql: '- (Required) A NRQL string that specifies what data types to drop.'
-            pipeline_cloud_rule_entity_id: '- The ID (GUID) of the corresponding Pipeline Cloud Rule, (migrated upstream by New Relic, in light of the upcoming EOL, as stated in the Deprecation Warning above). This can be used to import the corresponding Pipeline Cloud Rule as a newrelic_pipeline_cloud_rule resource, as explained in our Drop Rules EOL Migration Guide.'
-            rule_id: '- The id, uniquely identifying the rule.'
+        argumentDocs: {}
         importStatements: []
     newrelic_obfuscation_expression:
         subCategory: ""
@@ -4926,7 +5530,7 @@ resources:
             variable.item: '- (Optional) List of possible values for variables of type enum. See Nested item blocks below for details.'
             variable.name: '- (Required) The variable identifier.'
             variable.nrql_query: '- (Optional) Configuration for variables of type nrql. See Nested nrql_query blocks for Variables for details.'
-            variable.nrql_query.account_ids: '- (Required) List of account IDs such as [12345, 67890].'
+            variable.nrql_query.account_ids: '- (Optional) List of account IDs to run the variable''s NRQL query against, such as [12345, 67890]. If omitted, defaults to the account ID the provider is configured with.'
             variable.nrql_query.query: '- (Required) Valid NRQL query string. See Writing NRQL Queries for help.'
             variable.options: '- (Optional) Specifies additional options to be added to dashboard variables. Supports the following nested attribute(s) -'
             variable.replacement_strategy: '- (Optional) Indicates the strategy to apply when replacing a variable in a NRQL query. One of default, identifier, number or string.'
@@ -5083,6 +5687,194 @@ resources:
             widget.visualization_id: '- (Required) The visualization ID of the widget'
             widget.width: '- (Optional) Width of the widget. Valid values are 1 to 12 inclusive. Defaults to 4.'
         importStatements: []
+    newrelic_pathpoint_flow:
+        subCategory: ""
+        description: Create and manage a New Relic Pathpoint flow.
+        name: newrelic_pathpoint_flow
+        title: newrelic_pathpoint_flow
+        examples:
+            - name: checkout
+              manifest: |-
+                {
+                  "account_id": 1234,
+                  "description": "End-to-end checkout pipeline",
+                  "kpis": [
+                    {
+                      "category": "Revenue",
+                      "description": "Percentage of orders completed successfully",
+                      "name": "Order Success Rate",
+                      "query": [
+                        {
+                          "from": "Transaction",
+                          "select": [
+                            {
+                              "aggregation_type": "COUNT",
+                              "alias": "orders"
+                            }
+                          ],
+                          "where": "name='checkout'"
+                        }
+                      ]
+                    }
+                  ],
+                  "name": "Checkout Flow",
+                  "refresh_interval": "ONE_MINUTE",
+                  "stages": [
+                    {
+                      "health_rollup": "ALERT_CONDITIONS",
+                      "levels": [
+                        {
+                          "steps": [
+                            {
+                              "entity_search_query": [
+                                {
+                                  "query": "accountId=123 AND domain='APM' AND name='OrderService'"
+                                }
+                              ],
+                              "name": "Order Service"
+                            }
+                          ]
+                        }
+                      ],
+                      "link": "https://runbooks.example.com/checkout/revenue",
+                      "name": "Revenue",
+                      "related": [
+                        {
+                          "source": false,
+                          "target": true
+                        }
+                      ],
+                      "stage_kpis": [
+                        {
+                          "category": "Reliability",
+                          "name": "Payment Errors",
+                          "query": [
+                            {
+                              "from": "TransactionError",
+                              "select": [
+                                {
+                                  "aggregation_type": "COUNT",
+                                  "alias": "errors"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "levels": [
+                        {
+                          "steps": [
+                            {
+                              "entity_search_query": [
+                                {
+                                  "query": "accountId=1234 AND domain='BROWSER' AND name='Login'"
+                                }
+                              ],
+                              "name": "Login Page",
+                              "signals": [
+                                {
+                                  "guid": "GUID1",
+                                  "name": "Cart Service",
+                                  "type": "ENTITY"
+                                },
+                                {
+                                  "guid": "GUID2",
+                                  "name": "Checkout Error Rate",
+                                  "type": "ALERT"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "link": "https://runbooks.example.com/checkout/frontend",
+                      "name": "Frontend",
+                      "related": [
+                        {
+                          "source": true,
+                          "target": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+            - name: checkout
+              manifest: |-
+                {
+                  "health_rollup": "AUTOMATIC_ROLL_UP",
+                  "name": "Checkout Flow"
+                }
+        argumentDocs:
+            ALERT_CONDITIONS: — health is tied directly to the flow's KPI alert conditions instead of stage rollup. Typically paired with flow-level kpis.
+            AUTOMATIC_ROLL_UP: (the default) — health rolls up automatically from the flow's stages.
+            account_id: '- (Optional) The New Relic account ID that owns this Pathpoint flow. Defaults to the provider account ID.'
+            category: '- (Optional) A category used to group flows (e.g. Marketing, Checkout).'
+            compare_against: '- (Optional) An earlier window to compare the current result against (maps to NRQL COMPARE WITH). Valid values are the same as since.'
+            config.health_rollup: — WORST_STATUS_WINS (the default) marks the step unhealthy if any signal is unhealthy; BEST_STATUS_WINS marks it healthy if any signal is healthy.
+            description: '- (Optional) A brief description of the flow.'
+            entity_search_query: '): the API runs the filter and auto-discovers matching entities at each refresh. The search is scoped to the accounts in scoped_accounts; if that is not set, it falls back to the account the flow belongs to. To target a specific account, include accountId directly in the filter query.'
+            entity_search_query.is_excluded: '- (Optional) When true, results from this query are excluded from the step''s health calculation. Defaults to false.'
+            entity_search_query.query: '- (Required) A New Relic entity filter expression, e.g. accountId=1234 AND domain=''APM'' AND name=''OrderService''.'
+            "false": (default) — the stage participates in the flow's health rollup normally.
+            from: '- (Required) The NRQL event type to query (e.g. Transaction, JavaScriptError).'
+            guid: '- The entity GUID assigned to this Pathpoint flow in New Relic.'
+            health_rollup: '- (Optional) Health rollup strategy for the flow, derived from its stages. Valid values: ALERT_CONDITIONS, AUTOMATIC_ROLL_UP.'
+            is_excluded: 'controls whether the stage contributes to the flow''s overall health calculation:'
+            kpis: '- (Optional) A list of Key Performance Indicators tracked at the flow level. See Nested  below for details.'
+            kpis.#.id: '- The internal ID of the flow-level KPI. Populated after creation.'
+            kpis.#.metric_query: '- The resolved NRQL metric query string synthesized from the KPI''s query block. This is a read-only computed value set by the API.'
+            kpis.account_id: '- (Optional) The account whose data this KPI queries. Defaults to the flow''s account ID.'
+            kpis.category: '- (Optional) A label used to group related KPIs (e.g. Revenue, Reliability).'
+            kpis.description: '- (Optional) A short description explaining what the KPI measures.'
+            kpis.metric_query: '- (Computed) The resolved NRQL metric query string synthesized by the API from the query block. Read-only.'
+            kpis.name: '- (Required) The display name of the KPI.'
+            kpis.query: '- (Required) The NRQL query definition for this KPI. See Nested  below for details.'
+            name: '- (Required) The display name of the Pathpoint flow.'
+            refresh_interval: '- (Optional) How often the flow, stage, level, and step health statuses are refreshed. Defaults to ONE_MINUTE if not set. Valid values: ONE_MINUTE, FIVE_MINUTES, TEN_MINUTES, FIFTEEN_MINUTES, THIRTY_MINUTES.'
+            select: '- (Required) The aggregation to compute. See Nested  below for details.'
+            select.aggregation_type: '- (Required) The aggregation function. Valid values: AVERAGE, COUNT, HISTOGRAM, MAX, MIN, PERCENTILE, SUM, UNIQUE_COUNT.'
+            select.alias: '- (Optional) A display name for the aggregated result.'
+            select.attribute: '- (Optional) The event attribute to aggregate. Required for all functions except COUNT.'
+            select.threshold: '- (Optional) A threshold value used by the selected aggregation function (e.g. the percentile for PERCENTILE).'
+            signals: 'with type = "ENTITY"): a specific New Relic entity pinned by its GUID. Use when you always want the same exact entity regardless of naming changes.'
+            signals.guid: '- (Required) The entity GUID of the signal to attach.'
+            signals.is_excluded: '- (Optional) When true, this signal is excluded from the step''s health calculation. Defaults to false.'
+            signals.name: '- (Optional) A display name for the signal as it appears in the step.'
+            signals.type: '- (Optional) Whether the GUID refers to a monitored entity (ENTITY) or an alert condition (ALERT). Valid values: ENTITY, ALERT.'
+            since: '- (Required) How far back the KPI is evaluated (maps to NRQL SINCE). Valid values: THIRTY_MINUTES, SIXTY_MINUTES, THREE_HOURS, SIX_HOURS, TWENTY_FOUR_HOURS, SEVEN_DAYS, THIRTY_DAYS.'
+            stages: '- (Optional) An ordered list of stages that make up this flow. Maximum 50 stages. A flow can be created without stages and stages can be added later. See Nested  below for details.'
+            stages.#.id: '- The internal workload ID of the stage. Populated after creation and used to identify stages on updates.'
+            stages.#.levels.#.id: '- The internal workload ID of the level. Populated after creation and used to identify levels on updates.'
+            stages.#.levels.#.steps.#.id: '- The internal workload ID of the step. Populated after creation and used to identify steps on updates.'
+            stages.#.stage_kpis.#.id: '- The internal ID of the stage-level KPI. Populated after creation.'
+            stages.health_rollup: '- (Optional) How this stage''s health is derived from its levels. Defaults to AUTOMATIC_ROLL_UP. Valid values: ALERT_CONDITIONS, AUTOMATIC_ROLL_UP.'
+            stages.is_excluded: '- (Optional) When true, this stage is excluded from the flow''s health calculation without being deleted. Defaults to false.'
+            stages.levels: '- (Optional) An ordered list of levels within this stage. Maximum 50 levels. See Nested  below for details.'
+            stages.link: '- (Optional) A URL to an external resource (e.g. runbook, wiki page) associated with this stage.'
+            stages.name: '- (Required) The display name of the stage.'
+            stages.related: '- (Optional) Controls the stage''s visual shape and position in the sequential chain. See Nested  below for details.'
+            stages.related.source: '- (Optional) When true, this stage has an incoming connection from the preceding stage. Defaults to false.'
+            stages.related.target: '- (Optional) When true, this stage has an outgoing connection to the following stage. Defaults to false.'
+            stages.stage_kpis: '- (Optional) KPIs scoped to this stage only. Uses the same schema as the top-level kpis blocks.'
+            steps: '- (Optional) An ordered list of steps within this level. Maximum 50 steps. See Nested  below for details.'
+            steps.config: '- (Optional) Health evaluation thresholds for this step. See Nested  below for details.'
+            steps.entity_search_query: '- (Optional) A dynamic filter that the API evaluates at each refresh to auto-discover matching signals. See Nested  below for details.'
+            steps.is_excluded: '- (Optional) When true, this step is excluded from the level''s health calculation without being deleted. Defaults to false.'
+            steps.link: '- (Optional) A URL to an external resource associated with this step.'
+            steps.name: '- (Required) The display name of the step.'
+            steps.scoped_accounts: '- (Optional) A list of account IDs to restrict this step''s signal search to. Useful in multi-account setups to prevent signals from unrelated accounts being included.'
+            steps.signals: '- (Optional) Explicitly pinned signals for this step. See Nested  below for details.'
+            threshold_type: / threshold_value — instead of an all-or-nothing rollup, require a FIXED count or PERCENTAGE of signals to be healthy before the step is considered healthy.
+            threshold_value: '- (Optional) The numeric threshold value applied against threshold_type to determine step health.'
+            time_window: '- (Optional) The time window over which the KPI is evaluated. Provide either custom_range or relative_range, not both. See Nested  below for details.'
+            time_window.custom_range: '- (Optional) A raw NRQL time expression, e.g. SINCE 3 days ago COMPARE WITH 1 day ago. Mutually exclusive with relative_range.'
+            time_window.relative_range: '- (Optional) A relative time window built from predefined durations. Mutually exclusive with custom_range. See Nested  below for details.'
+            "true": — the stage is excluded from the flow's health rollup. Its levels, steps, and signals are still evaluated and shown in the Pathpoint UI, but the stage does not affect the flow's overall health status. Useful for stages under construction or temporarily removed from the scope.
+            version: '- The last-updated epoch-millisecond timestamp used for optimistic concurrency control. This is managed automatically and must not be modified. It is persisted to state after every create/update and sent to the API on each subsequent update.'
+            where: '- (Optional) A NRQL WHERE clause to filter which events are included.'
+        importStatements: []
     newrelic_pipeline_cloud_rule:
         subCategory: ""
         description: Use this resource to create and manage a New Relic Pipeline Cloud Rule.
@@ -5103,6 +5895,320 @@ resources:
             id: '- The ID of the Pipeline Cloud Rule.'
             name: '- (Required) The name of the rule. This must be unique within an account.'
             nrql: '- (Required) The NRQL query that defines the data to be processed by this Pipeline Cloud Rule.'
+        importStatements: []
+    newrelic_scorecard:
+        subCategory: ""
+        description: Create and manage New Relic Scorecards.
+        name: newrelic_scorecard
+        title: newrelic_scorecard
+        examples:
+            - name: engineering
+              manifest: |-
+                {
+                  "description": "Tracks key observability standards across all APM services",
+                  "name": "Engineering Quality",
+                  "progress_levels": [
+                    {
+                      "description": "Score below 60%",
+                      "hex_color_code": "#FF4444",
+                      "id": "red",
+                      "name": "Needs Work"
+                    },
+                    {
+                      "description": "Score 60–80%",
+                      "hex_color_code": "#FFAA00",
+                      "id": "amber",
+                      "name": "Improving"
+                    },
+                    {
+                      "description": "Score above 80%",
+                      "hex_color_code": "#00CC44",
+                      "id": "green",
+                      "name": "Healthy"
+                    }
+                  ],
+                  "rule_ids": [
+                    "${newrelic_scorecard_rule.alert_coverage.id}"
+                  ],
+                  "tags": [
+                    {
+                      "key": "team",
+                      "values": [
+                        "platform"
+                      ]
+                    }
+                  ]
+                }
+              references:
+                rule_ids: newrelic_scorecard_rule.alert_coverage.id
+              dependencies:
+                newrelic_scorecard_rule.alert_coverage: |-
+                    {
+                      "enabled": true,
+                      "name": "APM alert coverage",
+                      "nrql_engine": [
+                        {
+                          "accounts": [
+                            "${var.account_id}"
+                          ],
+                          "query": "SELECT if(latest(alertSeverity) != 'NOT_CONFIGURED', 1, 0) AS 'score' FROM Entity WHERE type = 'APM-APPLICATION' FACET id LIMIT MAX SINCE 1 day ago"
+                        }
+                      ],
+                      "run_interval": 1440
+                    }
+            - name: minimal
+              manifest: |-
+                {
+                  "name": "Service Health Check",
+                  "rule_ids": [
+                    "${newrelic_scorecard_rule.alert_coverage.id}"
+                  ]
+                }
+              references:
+                rule_ids: newrelic_scorecard_rule.alert_coverage.id
+            - name: platform_standards
+              manifest: |-
+                {
+                  "name": "Platform Standards",
+                  "rule_ids": [
+                    "${newrelic_scorecard_rule.alert_coverage.id}",
+                    "${newrelic_scorecard_rule.latency_threshold.id}",
+                    "${newrelic_scorecard_rule.error_rate.id}"
+                  ],
+                  "tags": [
+                    {
+                      "key": "team",
+                      "values": [
+                        "platform"
+                      ]
+                    }
+                  ]
+                }
+              references:
+                rule_ids: newrelic_scorecard_rule.alert_coverage.id
+            - name: engineering
+              manifest: |-
+                {
+                  "name": "Engineering Standards",
+                  "progress_levels": [
+                    {
+                      "description": "Baseline requirements met",
+                      "hex_color_code": "#CD7F32",
+                      "id": "bronze",
+                      "name": "Bronze"
+                    },
+                    {
+                      "description": "Strong operational posture",
+                      "hex_color_code": "#C0C0C0",
+                      "id": "silver",
+                      "name": "Silver"
+                    },
+                    {
+                      "description": "Exemplary reliability and observability",
+                      "hex_color_code": "#FFD700",
+                      "id": "gold",
+                      "name": "Gold"
+                    }
+                  ]
+                }
+        argumentDocs:
+            description: '- (Optional) A description of the scorecard''s purpose.'
+            id: '- The entity GUID of the scorecard.'
+            key: '- (Required) The tag key.'
+            name: '- (Required) The name of the scorecard.'
+            organization_id: '- The organisation UUID, resolved automatically from the provider account.'
+            progress_levels: '- (Optional, Computed) One or more blocks defining the scorecard''s scoring tiers (e.g. Red / Amber / Green). Levels can be added, updated, or removed in-place without recreating the scorecard. If omitted, the organisation''s default levels are applied and stored in state. See Nested  below.'
+            progress_levels.description: '- (Optional) A short explanation of what this tier represents.'
+            progress_levels.hex_color_code: '- (Optional) Hex colour for the tier indicator badge, e.g. "#FF4444". Must be 4–9 characters.'
+            progress_levels.id: '- (Required) A short identifier for this tier, used by the rule''s progress_level field (e.g. "red", "amber", "green").'
+            progress_levels.name: '- (Required) The display label shown in the New Relic UI (e.g. "Needs Work").'
+            rule_ids: '- (Optional) A set of newrelic_scorecard_rule entity GUIDs to attach to this scorecard. Removing a GUID detaches the rule without deleting it, making it available for another scorecard.'
+            rules_collection_id: '- The GUID of the auto-created rules collection. Managed by the provider via rule_ids; do not modify directly.'
+            tags: '- (Optional) One or more tags blocks assigning key-value metadata to this scorecard. Tags prefixed with nr. are managed by New Relic and are preserved automatically. Each block supports:'
+            values: '- (Required) One or more tag values.'
+        importStatements: []
+    newrelic_scorecard_rule:
+        subCategory: ""
+        description: Create and manage New Relic Scorecard Rules.
+        name: newrelic_scorecard_rule
+        title: newrelic_scorecard_rule
+        examples:
+            - name: alert_coverage
+              manifest: |-
+                {
+                  "description": "All APM services must have alerts configured",
+                  "enabled": true,
+                  "name": "APM alert coverage",
+                  "nrql_engine": [
+                    {
+                      "accounts": [
+                        "${var.account_id}"
+                      ],
+                      "query": "SELECT if(latest(alertSeverity) != 'NOT_CONFIGURED', 1, 0) AS 'score' FROM Entity WHERE type = 'APM-APPLICATION' FACET id LIMIT MAX SINCE 1 day ago"
+                    }
+                  ],
+                  "run_interval": 1440,
+                  "tags": [
+                    {
+                      "key": "team",
+                      "values": [
+                        "platform"
+                      ]
+                    }
+                  ]
+                }
+              references:
+                nrql_engine.accounts: var.account_id
+            - name: alert_configured
+              manifest: |-
+                {
+                  "enabled": true,
+                  "name": "Alerts configured",
+                  "nrql_engine": [
+                    {
+                      "accounts": [
+                        "${var.account_id}"
+                      ],
+                      "query": "SELECT if(latest(alertSeverity) != 'NOT_CONFIGURED', 1, 0) AS 'score' FROM Entity WHERE type = 'APM-APPLICATION' FACET id LIMIT MAX SINCE 1 day ago"
+                    }
+                  ],
+                  "progress_level": "foundation",
+                  "run_interval": 1440
+                }
+              references:
+                nrql_engine.accounts: var.account_id
+              dependencies:
+                newrelic_scorecard.engineering: |-
+                    {
+                      "name": "Engineering Standards",
+                      "progress_levels": [
+                        {
+                          "hex_color_code": "#CC4400",
+                          "id": "foundation",
+                          "name": "Foundation"
+                        },
+                        {
+                          "hex_color_code": "#00CC44",
+                          "id": "excellence",
+                          "name": "Excellence"
+                        }
+                      ],
+                      "rule_ids": [
+                        "${newrelic_scorecard_rule.alert_configured.id}",
+                        "${newrelic_scorecard_rule.low_latency.id}"
+                      ]
+                    }
+            - name: low_latency
+              manifest: |-
+                {
+                  "enabled": true,
+                  "name": "P95 latency below 500ms",
+                  "nrql_engine": [
+                    {
+                      "accounts": [
+                        "${var.account_id}"
+                      ],
+                      "query": "SELECT if(percentile(duration, 95) \u003c 0.5, 1, 0) AS 'score' FROM Transaction FACET entity.guid LIMIT MAX SINCE 1 hour ago"
+                    }
+                  ],
+                  "progress_level": "excellence",
+                  "run_interval": 60
+                }
+              references:
+                nrql_engine.accounts: var.account_id
+              dependencies:
+                newrelic_scorecard.engineering: |-
+                    {
+                      "name": "Engineering Standards",
+                      "progress_levels": [
+                        {
+                          "hex_color_code": "#CC4400",
+                          "id": "foundation",
+                          "name": "Foundation"
+                        },
+                        {
+                          "hex_color_code": "#00CC44",
+                          "id": "excellence",
+                          "name": "Excellence"
+                        }
+                      ],
+                      "rule_ids": [
+                        "${newrelic_scorecard_rule.alert_configured.id}",
+                        "${newrelic_scorecard_rule.low_latency.id}"
+                      ]
+                    }
+            - name: latency_threshold
+              manifest: |-
+                {
+                  "enabled": false,
+                  "name": "P95 latency below 500ms",
+                  "nrql_engine": [
+                    {
+                      "accounts": [
+                        "${var.account_id}"
+                      ],
+                      "query": "SELECT if(percentile(duration, 95) \u003c 0.5, 1, 0) AS 'score' FROM Transaction FACET entity.guid LIMIT MAX SINCE 1 hour ago"
+                    }
+                  ],
+                  "run_interval": 720
+                }
+              references:
+                nrql_engine.accounts: var.account_id
+            - name: cross_account_errors
+              manifest: |-
+                {
+                  "enabled": true,
+                  "name": "Cross-account error rate below 1%",
+                  "nrql_engine": [
+                    {
+                      "accounts": [
+                        "${var.primary_account_id}"
+                      ],
+                      "join_accounts": [
+                        "${var.secondary_account_id}"
+                      ],
+                      "query": "SELECT if(percentage(count(*), WHERE error IS true) \u003c 1.0, 1, 0) AS 'score' FROM Transaction FACET entity.guid LIMIT MAX SINCE 1 hour ago"
+                    }
+                  ],
+                  "run_interval": 60
+                }
+              references:
+                nrql_engine.accounts: var.primary_account_id
+                nrql_engine.join_accounts: var.secondary_account_id
+            - name: critical_alert_check
+              manifest: |-
+                {
+                  "enabled": true,
+                  "impact_weight": 3,
+                  "name": "Critical alerts configured",
+                  "nrql_engine": [
+                    {
+                      "accounts": [
+                        "${var.account_id}"
+                      ],
+                      "query": "SELECT if(latest(alertSeverity) = 'CRITICAL', 1, 0) AS 'score' FROM Entity WHERE type = 'APM-APPLICATION' FACET id LIMIT MAX SINCE 1 day ago"
+                    }
+                  ],
+                  "run_interval": 1440
+                }
+              references:
+                nrql_engine.accounts: var.account_id
+        argumentDocs:
+            description: '- (Optional) A description of what this rule measures.'
+            enabled: '- (Required) Whether the rule is active. Set to false to pause evaluation without deleting the rule.'
+            id: '- The entity GUID of the scorecard rule.'
+            impact_weight: '- (Optional) A non-negative integer weighting this rule''s contribution to the overall scorecard score relative to other rules. Omit for equal weighting.'
+            key: '- (Required) The tag key.'
+            name: '- (Required) The name of the rule.'
+            nrql_engine: '- (Required) A block defining the NRQL query that produces the score. See Nested  below.'
+            nrql_engine.accounts: '- (Required) A list of New Relic account IDs the query runs against.'
+            nrql_engine.join_accounts: '- (Optional) Additional account IDs whose data is joined into the query for cross-account checks. Must not overlap with accounts.'
+            nrql_engine.query: '- (Required) A NRQL query that returns a numeric score column with value 0 (fail) or 1 (pass) per entity, using FACET id or FACET entity.guid to attribute results. Example: SELECT if(count(*) > 0, 1, 0) AS ''score'' FROM Transaction FACET entity.guid LIMIT MAX SINCE 1 hour ago.'
+            organization_id: '- The organisation UUID, resolved automatically from the provider account.'
+            progress_level: '- (Optional) The id of a progress tier defined in the parent newrelic_scorecard. Assigns the rule to a visual grouping in the UI. The value must exactly match a progress_levels.id on the scorecard (e.g. "red", "amber", "green"). Omit to leave the rule ungrouped. See Progress Level Relationship below.'
+            run_interval: '- (Optional) How frequently the NRQL query runs, in minutes. Accepted values: 60 (hourly), 360 (6 hours), 720 (12 hours), 1440 (daily). Omit to use the API default.'
+            tags: '- (Optional) One or more tags blocks assigning key-value metadata to this rule. Tags prefixed with nr. are managed by New Relic and are preserved automatically. Each block supports:'
+            values: '- (Required) One or more tag values.'
         importStatements: []
     newrelic_service_level:
         subCategory: ""
@@ -6235,6 +7341,309 @@ resources:
             tag.key: '- (Required) Name of the tag key.'
             tag.values: '- (Required) Values associated with the tag key.'
         importStatements: []
+    newrelic_team:
+        subCategory: ""
+        description: Create and manage New Relic Teams.
+        name: newrelic_team
+        title: newrelic_team
+        examples:
+            - name: platform
+              manifest: |-
+                {
+                  "aliases": [
+                    "platform",
+                    "infra"
+                  ],
+                  "description": "Owns core platform services and shared infrastructure",
+                  "entities": [
+                    "MjUyMDUyOHxBUE18QVBQTElDQVRJT058MjE1MDM3Nzk1",
+                    "${newrelic_scorecard.engineering_standards.id}"
+                  ],
+                  "entity_management_mode": "managed",
+                  "managers": [
+                    1234567
+                  ],
+                  "members": [
+                    1234567,
+                    2345678
+                  ],
+                  "name": "Platform Engineering",
+                  "resources": [
+                    {
+                      "content": "https://github.com/example-org/platform",
+                      "title": "GitHub Repository",
+                      "type": "GITHUB"
+                    },
+                    {
+                      "content": "https://example.slack.com/channels/platform-eng",
+                      "title": "Team Slack Channel",
+                      "type": "SLACK"
+                    }
+                  ],
+                  "tags": [
+                    {
+                      "key": "department",
+                      "values": [
+                        "engineering"
+                      ]
+                    },
+                    {
+                      "key": "tier",
+                      "values": [
+                        "1"
+                      ]
+                    }
+                  ]
+                }
+            - name: example
+              manifest: |-
+                {
+                  "entities": [
+                    "MjUyMDUyOHxBUE18QVBQTElDQVRJT058MjE1MDM3Nzk1",
+                    "${newrelic_scorecard.platform_standards.id}"
+                  ],
+                  "entity_management_mode": "managed",
+                  "name": "Payments Service"
+                }
+            - name: example
+              manifest: |-
+                {
+                  "entity_management_mode": "unmanaged",
+                  "name": "Payments Service"
+                }
+            - name: division
+              manifest: |-
+                {
+                  "name": "Engineering Division"
+                }
+              dependencies:
+                newrelic_teams_organization_settings.org: |-
+                    {
+                      "hierarchy_levels": [
+                        {
+                          "id": "${newrelic_team.division.hierarchy_level_id}",
+                          "name": "Division"
+                        },
+                        {
+                          "id": "${newrelic_team.squad.hierarchy_level_id}",
+                          "name": "Squad"
+                        }
+                      ]
+                    }
+            - name: squad
+              manifest: |-
+                {
+                  "name": "Backend Squad",
+                  "parent_id": "${newrelic_team.division.id}"
+                }
+              references:
+                parent_id: newrelic_team.division.id
+              dependencies:
+                newrelic_teams_organization_settings.org: |-
+                    {
+                      "hierarchy_levels": [
+                        {
+                          "id": "${newrelic_team.division.hierarchy_level_id}",
+                          "name": "Division"
+                        },
+                        {
+                          "id": "${newrelic_team.squad.hierarchy_level_id}",
+                          "name": "Squad"
+                        }
+                      ]
+                    }
+            - name: backend
+              manifest: |-
+                {
+                  "name": "Backend Engineering"
+                }
+            - name: engineering
+              manifest: |-
+                {
+                  "description": "Top-level engineering division",
+                  "name": "Engineering"
+                }
+            - name: backend
+              manifest: |-
+                {
+                  "name": "Backend",
+                  "parent_id": "${newrelic_team.engineering.id}"
+                }
+              references:
+                parent_id: newrelic_team.engineering.id
+            - name: platform
+              manifest: |-
+                {
+                  "entities": [
+                    "${newrelic_scorecard.standards.id}"
+                  ],
+                  "entity_management_mode": "managed",
+                  "name": "Platform"
+                }
+              references:
+                entities: newrelic_scorecard.standards.id
+              dependencies:
+                newrelic_scorecard.standards: |-
+                    {
+                      "name": "Engineering Standards",
+                      "rule_ids": [
+                        "${newrelic_scorecard_rule.alert_coverage.id}"
+                      ]
+                    }
+            - name: payments
+              manifest: |-
+                {
+                  "aliases": [
+                    "payments-service"
+                  ],
+                  "entity_management_mode": "unmanaged",
+                  "name": "Payments"
+                }
+            - name: platform
+              manifest: |-
+                {
+                  "description": "Owns shared infrastructure and developer tooling",
+                  "managers": [
+                    1234567
+                  ],
+                  "members": [
+                    1234567,
+                    2345678,
+                    3456789
+                  ],
+                  "name": "Platform Engineering",
+                  "resources": [
+                    {
+                      "content": "https://github.com/example-org/platform",
+                      "title": "Source Repository",
+                      "type": "GITHUB"
+                    },
+                    {
+                      "content": "https://example.slack.com/channels/platform-eng",
+                      "title": "Team Channel",
+                      "type": "SLACK"
+                    },
+                    {
+                      "content": "https://example.pagerduty.com/teams/platform",
+                      "title": "On-Call Schedule",
+                      "type": "PAGERDUTY"
+                    }
+                  ]
+                }
+        argumentDocs:
+            aliases: '- (Optional) A set of alternate names for the team, used alongside the primary name for tag-based entity discovery and searching.'
+            content: '- (Required) The resource URL or contact address.'
+            description: '- (Optional) A free-text description of the team''s purpose. Can be cleared by setting to an empty string "".'
+            entities: '- (Optional, Computed) A set of entity GUIDs that Terraform tracks within the team''s ownership collection. Valid only when entity_management_mode = "managed". Cannot be set when mode is "unmanaged".'
+            entity_management_mode: '- (Optional) Controls how Terraform manages the team''s owned entities. Accepted values: managed (default) and unmanaged. See Entity Ownership Modes below.'
+            hierarchy_level_id: '- The GUID of the hierarchy level this team is assigned to. The platform assigns this automatically based on the team''s depth in the parent_id chain. It becomes available on the plan cycle after parent_id is first set (one refresh cycle of eventual consistency). Matches a level GUID from the newrelic_teams_organization_settings hierarchy_levels list. See Hierarchy Levels.'
+            id: '- The entity GUID of the team.'
+            key: '- (Required) The tag key.'
+            managers: '- (Optional) A set of New Relic user IDs (integers) to designate as team managers. Each ID must also appear in members.'
+            members: '- (Optional) A set of New Relic user IDs (integers) to add as team members. Every manager must also be listed here.'
+            membership_collection_id: '- The GUID of the auto-created team membership collection. Managed by the provider; do not modify directly.'
+            name: '- (Required) The display name of the team. Must be unique within the organisation.'
+            organization_id: '- The organisation UUID, resolved automatically from the provider account.'
+            ownership_collection_id: '- The GUID of the auto-created team ownership collection. Managed by the provider; do not modify directly.'
+            parent_id: '- (Optional) The entity GUID of a parent team. Setting this places the team within the organisational hierarchy. Must reference another newrelic_team resource and cannot be set to the team''s own GUID.'
+            resources: '- (Optional) A set of supplemental links for this team, such as runbooks, wikis, or communication channels. These appear in the team''s Settings page in the New Relic UI under Contacts or Links, automatically categorised by the type field. Each block supports:'
+            tags: '- (Optional) One or more tags blocks assigning key-value metadata to this team. Tags prefixed with nr. are managed by New Relic and preserved automatically during updates. Each block supports:'
+            title: '- (Optional) A short label shown next to the resource in the UI.'
+            type: '- (Required) The resource category. Accepted values: ATLASSIAN_CONFLUENCE, ATLASSIAN_JIRA, ATLASSIAN_JIRA_SCORECARDS, BASECAMP, BLAMELESS, EMAIL, FACEBOOK_WORKPLACE, GITHUB, GITLAB, GOOGLE_CHAT, GOOGLE_CLOUD_PLATFORM, GOOGLE_DRIVE, MICROSOFT_AZURE, MICROSOFT_SHAREPOINT, MICROSOFT_TEAMS, OPSGENIE, OTHER_CONTACT, OTHER_LINK, PAGERDUTY, ROCKET_CHAT, SERVICENOW, SKYPE, SLACK, ZENDESK.'
+            values: '- (Required) One or more tag values.'
+        importStatements: []
+    newrelic_teams_organization_settings:
+        subCategory: ""
+        description: Manage New Relic Teams organisation-level settings.
+        name: newrelic_teams_organization_settings
+        title: newrelic_teams_organization_settings
+        examples:
+            - name: org
+              manifest: |-
+                {
+                  "discovery_enabled": true,
+                  "discovery_tag_keys": [
+                    "team",
+                    "teamId"
+                  ],
+                  "hierarchy_levels": [
+                    {
+                      "id": "${data.newrelic_teams_hierarchy_levels.all.levels[0].id}",
+                      "name": "Division"
+                    },
+                    {
+                      "id": "${data.newrelic_teams_hierarchy_levels.all.levels[1].id}",
+                      "name": "Squad"
+                    }
+                  ],
+                  "sync_group_rules": [
+                    {
+                      "conditions": [
+                        {
+                          "type": "STARTS_WITH",
+                          "value": "team-"
+                        }
+                      ]
+                    },
+                    {
+                      "conditions": [
+                        {
+                          "type": "CONTAINS",
+                          "value": "-engineering-"
+                        },
+                        {
+                          "type": "ENDS_WITH",
+                          "value": "-prod"
+                        }
+                      ]
+                    }
+                  ],
+                  "sync_groups_enabled": true
+                }
+              references:
+                hierarchy_levels.id: data.newrelic_teams_hierarchy_levels.all.levels[1].id
+            - name: org
+              manifest: |-
+                {
+                  "hierarchy_levels": [
+                    {
+                      "id": "${newrelic_team.division.hierarchy_level_id}",
+                      "name": "Division"
+                    }
+                  ]
+                }
+              references:
+                hierarchy_levels.id: newrelic_team.division.hierarchy_level_id
+              dependencies:
+                newrelic_team.division: |-
+                    {
+                      "name": "Engineering Division"
+                    }
+            - name: org
+              manifest: |-
+                {
+                  "discovery_enabled": true,
+                  "discovery_tag_keys": [
+                    "team"
+                  ]
+                }
+            - name: org
+              manifest: |-
+                {
+                  "discovery_enabled": false
+                }
+        argumentDocs:
+            conditions: '- (Required) One or more conditions that a group name must satisfy. All conditions within a rule must match (AND logic). Each condition has:'
+            discovery_enabled: '- (Optional, Computed) Whether tag-based entity discovery is enabled. When true, entities whose tags match a team''s name or an alias are automatically assigned to that team.'
+            discovery_tag_keys: '- (Optional, Computed) Tag keys used for automatic entity discovery (e.g. ["team"]). An entity is auto-assigned to a team when one of these tag keys has a value equal to the team''s name or an alias. Must contain at least one key when declared — the API rejects an empty list.'
+            hierarchy_levels: '- (Optional, Computed) Set of organisation hierarchy levels to manage. Order in config does not matter — the platform controls depth ordering automatically based on the parent_id chain of your teams, and rejects any attempt to change it via Terraform. Use these blocks to rename existing levels; the IDs are fixed. Use the newrelic_teams_hierarchy_levels data source to obtain level GUIDs. Each block supports:'
+            id: '- (Required) The entity GUID of the hierarchy level. Obtain from the newrelic_teams_hierarchy_levels data source or from the hierarchy_level_id attribute on a newrelic_team resource.'
+            name: '- (Required) The display name of this level (e.g. "Division", "Squad"). Changing this renames the level entity in the API.'
+            sync_group_rules: '- (Optional, Computed) At most one rule controlling which IdP groups automatically create teams. Omitting this block preserves existing rules in state (Computed). The NGEP API currently enforces a single rule per organisation. To deactivate existing rules without removing them, set sync_groups_enabled = false; rules are preserved in state and reactivated if sync_groups_enabled is later set back to true. Each rule has:'
+            sync_groups_enabled: '- (Optional, Computed) Whether automatic team creation from IdP groups is enabled.'
+            type: '- (Required) The match type: STARTS_WITH, ENDS_WITH, or CONTAINS.'
+            value: '- (Required) The string to match against the IdP group name.'
+        importStatements: []
     newrelic_user:
         subCategory: ""
         description: Create and manage users in New Relic.
@@ -6492,86 +7901,35 @@ resources:
         description: Create and manage workflow automation in New Relic.
         name: newrelic_workflow_automation
         title: newrelic_workflow_automation
-        examples:
-            - name: test_query
-              manifest: |-
-                {
-                  "definition": "name: test_query_workflow\ndescription: Simple workflow that queries NRDB and waits\nsteps:\n  - name: queryNrdb\n    type: action\n    action: newrelic.nrdb.query\n    version: 1\n    inputs:\n      query: SELECT count(*) from Log LIMIT 10\n  - name: wait\n    type: wait\n    seconds: 3\n    signals: []\n    next: end\n",
-                  "name": "test_query_workflow",
-                  "scope_id": "your-account-id",
-                  "scope_type": "ACCOUNT"
-                }
-            - name: org_query
-              manifest: |-
-                {
-                  "definition": "name: org_query_workflow\ndescription: Organization-level workflow that queries NRDB\nsteps:\n  - name: queryNrdb\n    type: action\n    action: newrelic.nrdb.query\n    version: 1\n    inputs:\n      query: SELECT count(*) from Transaction LIMIT 10\n  - name: wait\n    type: wait\n    seconds: 5\n    signals: []\n    next: end\n",
-                  "name": "org_query_workflow",
-                  "scope_id": "your-organization-id",
-                  "scope_type": "ORGANIZATION"
-                }
-            - name: ccu_governance
-              manifest: |-
-                {
-                  "definition": "name: CCUGovernance\ndescription: Workflow to review CCU consumption\n\nworkflowInputs:\n  skipUsers:\n    type: List\n    defaultValue:\n      - \"user1@example.com\"\n      - \"user2@example.com\"\n  ccuThreshold:\n    type: Int\n    defaultValue: 5000\n    validations:\n      - type: minIntValue\n        errorMessage: \"Minimum CCU must be at least 100\"\n        minValue: 100\n      - type: maxIntValue\n        errorMessage: \"Maximum CCU must be less than 10000\"\n        maxValue: 10000\n  maxCcu:\n    type: Int\n    defaultValue: 15000\n    validations:\n      - type: minIntValue\n        errorMessage: \"Minimum CCU must be at least 10\"\n        minValue: 10\n      - type: maxIntValue\n        errorMessage: \"Maximum CCU must be less than 100000\"\n        maxValue: 100000\n  emailDestinationId:\n    type: String\n    required: false\n    validations:\n      - type: regex\n        errorMessage: \"destinationId must be a valid UUID\"\n        pattern: ^[a-fA-F0-9]{8}-([a-fA-F0-9]{4}-){3}[a-fA-F0-9]{12}$\n\nsteps:\n  - name: query1\n    type: action\n    action: newrelic.nrdb.query\n    version: 1\n    inputs:\n      query: \u003e-\n        FROM (FROM NrConsumption SELECT sum(consumption) as dailyConsumption,\n        latest(toDateTime(timestamp,'MM-dd-yyyy')) as notificationDate,\n        latest(toDateTime(timestamp + 432000000,'MM-dd-yyyy')) as\n        terminationDate WHERE metric = 'CCU' AND dimension_productFeature != 'Cloud bytes received'\n        FACET dimension_email as email, dimension_userId as userId limit max)\n        SELECT dailyConsumption, email, notificationDate, terminationDate WHERE\n        dailyConsumption \u003e ${{ .workflowInputs.ccuThreshold }} SINCE 24 hours ago limit max\n      selectors:\n        - name: results\n          expression: .results\n\n  - name: ifCheck\n    type: switch\n    switch:\n      - condition: ${{ .steps.query1.outputs.results | length \u003c 1 }}\n        next: end\n\n  - name: loopStep\n    type: loop\n    for:\n      in: ${{ .steps.query1.outputs.results }}\n      steps:\n        - name: checkSkipUser\n          type: switch\n          switch:\n            - condition: \u003e-\n                ${{ .workflowInputs.skipUsers | contains(.steps.loopStep.loop.element.email) and (.steps.loopStep.loop.element.dailyConsumption \u003c .workflowInputs.maxCcu) }}\n              next: continue\n\n        - name: createEvent\n          type: action\n          action: newrelic.ingest.sendEvents\n          version: 1\n          inputs:\n            events:\n              - eventType: ccuTerminator\n                DailyConsumption: ${{ .steps.loopStep.loop.element.dailyConsumption }}\n                NotificationDate: ${{ .steps.loopStep.loop.element.notificationDate }}\n                TerminationDate: ${{ .steps.loopStep.loop.element.terminationDate }}\n                userId: ${{ .steps.loopStep.loop.element.userId }}\n            selectors:\n              - name: success\n                expression: .success\n\n        - name: ifEmail\n          type: switch\n          switch:\n            - condition: ${{ .workflowInputs.emailDestinationId | length \u003e 0 }}\n              next: emailUser\n          next: logUser\n\n        - name: emailUser\n          type: action\n          action: newrelic.notification.sendEmail\n          version: 1\n          inputs:\n            destinationId: ${{ .workflowInputs.emailDestinationId }}\n            subject: CCU Consumption Alert ${{ .steps.loopStep.loop.element.userId }} - Action Required\n            message: \u003e-\n              ${{ .steps.loopStep.loop.element.email }}\n              You are exceeding the daily CCU consumption limit within NewRelic.\n              Please reduce your CCU usage to avoid service termination.\n            selectors:\n              - name: success\n                expression: '.success'\n\n        - name: logUser\n          type: action\n          action: newrelic.ingest.sendLogs\n          version: 1\n          inputs:\n            logs:\n              - message: \u003e-\n                  Sent email notification for ${{ .steps.loopStep.loop.element.userId }}\n                  success: ${{ .steps.emailUser.outputs.success }}\n",
-                  "name": "CCUGovernance",
-                  "scope_id": "1234567",
-                  "scope_type": "ACCOUNT"
-                }
-            - name: example
-              manifest: |-
-                {
-                  "definition": "name: my-workflow      # This matches the resource name\ndescription: Example workflow\nsteps:\n  - name: waitStep\n    type: wait\n    seconds: 10\n",
-                  "name": "my-workflow",
-                  "scope_id": "1234567",
-                  "scope_type": "ACCOUNT"
-                }
-            - name: example
-              manifest: |-
-                {
-                  "definition": "name: different-name   # This doesn't match the resource name - ERROR!\ndescription: Example workflow\nsteps:\n  - name: waitStep\n    type: wait\n    seconds: 10\n",
-                  "name": "my-workflow",
-                  "scope_id": "1234567",
-                  "scope_type": "ACCOUNT"
-                }
-            - name: from_file
-              manifest: |-
-                {
-                  "definition": "${file(\"${path.module}/workflows/my-workflow.yaml\")}",
-                  "name": "workflow-from-file",
-                  "scope_id": "${var.account_id}",
-                  "scope_type": "ACCOUNT"
-                }
-              references:
-                scope_id: var.account_id
         argumentDocs:
-            action: '- The action to execute (e.g., newrelic.nrdb.query, utils.transform.toCSV, slack.chat.postMessage)'
-            condition: '- Expression to evaluate (uses JQ syntax)'
-            definition: '- (Required) The YAML definition of the workflow automation. This should be a valid YAML string that includes a name field matching the resource name argument, and defines the workflow steps and configuration.'
-            description: '- The description of the workflow automation, as defined in the YAML definition.'
-            for.in: '- Expression defining the iteration (e.g., ${{ [range(1; 30)] }})'
-            id: '- The ID of the workflow automation. The ID format is <scope_type>#<scope_id>#<workflow_name>.'
-            inputs: '- Input parameters for the action'
-            name: '- (Required) The name of the workflow automation. This must match the name field in the YAML definition provided in the definition argument. Important: Changes to this field will force a new resource to be created.'
+            account ID: is numeric (e.g., "1234567", not "account-1234567").
+            action: '- The specific action to execute (example, newrelic.nrdb.query).'
+            condition: '- A JQ expression that evaluates to true or false.'
+            definition: '- (Required) The YAML definition of the workflow. This must be a valid YAML string that defines the workflow''s configuration.'
+            description: '- The description of the workflow, as defined in the YAML.'
+            for.in: '- A JQ expression that returns an array to iterate over.'
+            id: '- The composite ID of the workflow, with the format <scope_type>#<scope_id>#<workflow_name>.'
+            inputs: '- A map of input parameters for the action.'
+            name: '- (Required) The name of the workflow. This must match the name field in the YAML definition. Important: Changing this field will force a new resource to be created.'
             newrelic.nrdb.query: '- Query New Relic database'
-            next: '- Optional next step name (use "end" to terminate)'
-            'next: break': to exit the loop early
-            scope_id: '- (Required) The scope ID for the workflow automation. For ACCOUNT scope, this should be your New Relic account ID (numeric). For ORGANIZATION scope, this should be your organization ID (string). Important: Changes to this field will force a new resource to be created.'
-            scope_type: '- (Required) The scope type for the workflow automation. Must be either ACCOUNT or ORGANIZATION. Important: Changes to this field will force a new resource to be created.'
-            seconds: '- Number of seconds to wait'
-            signals: '- Optional array of signals to wait for'
+            next: '- (Optional) The name of the next step. Use end to terminate the workflow.'
+            scope_id: '- (Required) The ID of the scope for the workflow. For ACCOUNT scope, this is your New Relic account ID (numeric). For ORGANIZATION scope, this is your organization ID (string). Important: Changing this field will force a new resource to be created.'
+            scope_type: '- (Required) The scope type for the workflow. Must be either ACCOUNT or ORGANIZATION. Important: Changing this field will force a new resource to be created.'
+            seconds: '- The number of seconds to pause.'
+            signals: '- (Optional) An array of signals to wait for. See SignalWorkflowRun for more information'
             slack.chat.postMessage: '- Send messages to Slack'
-            steps: '- (Required) An array of steps that define the workflow automation logic.'
-            switch: '- Array of conditions to evaluate'
-            'type: action': '- Executes an action'
-            'type: loop': '- Repeats a set of steps'
-            'type: switch': '- Conditional branching based on expressions'
-            'type: wait': '- Pauses the workflow execution'
+            steps: '- An array of steps to execute for each iteration. Inside the loop, you can use next: continue to skip to the next iteration or next: break to exit the loop.'
+            switch: '- An array of conditions to evaluate in order.'
+            'type: action': '- Defines the step as an action.'
+            'type: loop': ""
+            'type: switch': ""
+            'type: wait': ""
             utils.transform.toCSV: '- Transform data to CSV format'
-            version: '- The current version number of the workflow automation.'
+            version: '- The current version number of the workflow. This number increments with each update to the definition.'
         importStatements: []
     newrelic_workload:
         subCategory: ""
-        description: Create and manage a New Relic One workload.
+        description: Create and manage New Relic One workloads. Supports standard workloads (entity GUIDs and search queries) and intelligent workloads powered by Transaction 360 auto-discovery via dynamic flows.
         name: newrelic_workload
         title: newrelic_workload
         examples:
@@ -6588,23 +7946,6 @@ resources:
                     }
                   ],
                   "name": "Example workload",
-                  "scope_account_ids": [
-                    12345678
-                  ]
-                }
-            - name: foo
-              manifest: |-
-                {
-                  "account_id": 12345678,
-                  "entity_guids": [
-                    "MjUyMDUyOHxBUE18QVBQTElDQVRJT058MjE1MDM3Nzk1"
-                  ],
-                  "entity_search_query": [
-                    {
-                      "query": "tags.accountId = '12345678' AND tags.environment='production' AND tags.language='java'"
-                    }
-                  ],
-                  "name": "Example workload with tags",
                   "scope_account_ids": [
                     12345678
                   ]
@@ -6706,12 +8047,78 @@ resources:
                     }
                   ]
                 }
+            - name: intelligent
+              manifest: |-
+                {
+                  "account_id": 12345678,
+                  "dynamic_flows": [
+                    {
+                      "entity_guid": "MjUyMDUyOHxBUE18QVBQTElDQVRJT058MjE1MDM3Nzk1",
+                      "transaction_name": "WebTransaction/Action/index"
+                    }
+                  ],
+                  "name": "Example intelligent workload",
+                  "scope_account_ids": [
+                    12345678
+                  ]
+                }
+            - name: intelligent
+              manifest: |-
+                {
+                  "account_id": 12345678,
+                  "dynamic_flows": [
+                    {
+                      "entity_guid": "MjUyMDUyOHxBUE18QVBQTElDQVRJT058MjE1MDM3Nzk1",
+                      "transaction_name": "WebTransaction/Action/index"
+                    }
+                  ],
+                  "name": "Example intelligent workload",
+                  "scope_account_ids": [
+                    12345678
+                  ],
+                  "status_config_alert_policy": [
+                    {
+                      "enabled": true
+                    }
+                  ]
+                }
+              dependencies:
+                newrelic_alert_policy.foo: |-
+                    {
+                      "name": "foo"
+                    }
+                newrelic_nrql_alert_condition.foo: |-
+                    {
+                      "account_id": 12345678,
+                      "critical": [
+                        {
+                          "operator": "above",
+                          "threshold": 5.5,
+                          "threshold_duration": 300,
+                          "threshold_occurrences": "ALL"
+                        }
+                      ],
+                      "enabled": true,
+                      "name": "foo",
+                      "nrql": [
+                        {
+                          "query": "SELECT count(*) FROM Transaction WHERE appName = 'Your App'"
+                        }
+                      ],
+                      "policy_id": "${newrelic_alert_policy.foo.id}",
+                      "target_entity": "${newrelic_workload.intelligent.guid}",
+                      "type": "static",
+                      "violation_time_limit_seconds": 3600
+                    }
         argumentDocs:
             account_id: '- (Required) The New Relic account ID where you want to create the workload.'
             composite_entity_search_query: '- The composite query used to compose a dynamic workload.'
             description: '- (Optional) Relevant information about the workload.'
-            entity_guids: '- (Optional) A list of entity GUIDs manually assigned to this workload. At least one of either entity_guids or entity_search_query is required.'
-            entity_search_query: '- (Optional) A list of search queries that define a dynamic workload. At least one of either entity_guids or entity_search_query is required. See Nested entity_search_query blocks below for details.'
+            dynamic_flows: to anchor the workload to a transaction entry point. If it is set alongside entity_guids or entity_search_query, dynamic_flows takes precedence and an intelligent workload is created. New Relic auto-discovers and refreshes related entities every five minutes using Transaction 360 distributed tracing data. Supports status_config_alert_policy in addition to the standard status_config_automatic and status_config_static options.
+            dynamic_flows.entity_guid: '- (Required) The unique entity identifier of the dynamic flow entry.'
+            dynamic_flows.transaction_name: '- (Required) The transaction name associated with the dynamic flow entry.'
+            entity_guids: ) and/or dynamic search queries (entity_search_query). Membership updates automatically as query results change. Cannot be used together with dynamic_flows.
+            entity_search_query: '- (Optional) A list of search queries that define a dynamic workload. At least one of entity_guids, entity_search_query, or dynamic_flows must be specified. See Nested entity_search_query blocks below for details.'
             entity_search_query.query: '- (Required) A valid entity search query; empty, and null values are considered invalid.'
             guid: '- The unique entity identifier of the workload in New Relic.'
             name: '- (Required) The workload''s name.'
@@ -6726,11 +8133,13 @@ resources:
             rule.nrql_query: '- (Optional) A list of entity search queries used to retrieve the entities that compose the rule. See Nested nrql_query blocks below for details. At least one of entity_guids or nrql_query must be defined.'
             rule.rollup: '- (Required) The input object used to represent a rollup strategy. See Nested rollup blocks below for details.'
             scope_account_ids: '- (Optional) A list of account IDs that will be used to get entities from.'
-            status_config_automatic: '- (Optional) An input object used to represent an automatic status configuration.See Nested status_config_automatic blocks below for details.'
+            status_config_alert_policy: '- (Optional) An alert policy status configuration for intelligent workloads. Requires dynamic_flows to be set. See Nested status_config_alert_policy blocks below for details.'
+            status_config_alert_policy.enabled: '- (Required) Whether the alert policy status configuration is enabled or not.'
+            status_config_automatic: '- (Optional) An input object used to represent an automatic status configuration. See Nested status_config_automatic blocks below for details.'
             status_config_automatic.enabled: '- (Required) Whether the automatic status configuration is enabled or not.'
             status_config_automatic.remaining_entities_rule: '- (Optional) An additional meta-rule that can consider all entities that haven''t been evaluated by any other rule. See Nested remaining_entities_rule blocks below for details.'
             status_config_automatic.rule: '- (Optional) The input object used to represent a rollup strategy. See Nested rule blocks below for details.'
-            status_config_static: '- (Optional) A list of static status configurations. You can only configure one static status for a workload.See Nested status_config_static blocks below for details.'
+            status_config_static: '- (Optional) A list of static status configurations. You can only configure one static status for a workload. See Nested status_config_static blocks below for details.'
             status_config_static.description: '- (Optional) A description that provides additional details about the status of the workload.'
             status_config_static.enabled: '- (Required) Whether the static status configuration is enabled or not.'
             status_config_static.status: '- (Required) The status of the workload.'

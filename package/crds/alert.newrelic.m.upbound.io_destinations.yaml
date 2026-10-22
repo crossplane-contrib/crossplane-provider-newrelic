@@ -93,7 +93,7 @@ spec:
                     type: array
                   authCustomHeader:
                     description: |-
-                      A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
+                      A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. See Nested auth_custom_header blocks below for details.
                       Custom header based authentication
                     items:
                       properties:
@@ -265,7 +265,7 @@ spec:
                     type: array
                   authCustomHeader:
                     description: |-
-                      A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
+                      A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. See Nested auth_custom_header blocks below for details.
                       Custom header based authentication
                     items:
                       properties:
@@ -491,7 +491,7 @@ spec:
                     type: array
                   authCustomHeader:
                     description: |-
-                      A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. Nested auth_custom_header blocks below for details.
+                      A nested block that describes a custom header authentication credentials. This field is required when the destination type is WORKFLOW_AUTOMATION and optional for other destination types. Multiple blocks are permitted per notification destination definition. See Nested auth_custom_header blocks below for details.
                       Custom header based authentication
                     items:
                       properties:
