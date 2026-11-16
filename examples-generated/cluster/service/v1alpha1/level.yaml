@@ -1,0 +1,28 @@
+apiVersion: service.newrelic.upbound.io/v1alpha1
+kind: Level
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/level
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    description: Proportion of requests that are served faster than a threshold.
+    events:
+    - accountId: 12345678
+      goodEvents:
+      - from: Transaction
+        where: appName = 'Example application' AND (transactionType= 'Web') AND duration
+          < 0.1
+      validEvents:
+      - from: Transaction
+        where: appName = 'Example application' AND (transactionType='Web')
+    guid: MXxBUE18QVBQTElDQVRJT058MQ
+    name: Latency
+    objective:
+    - target: 99
+      timeWindow:
+      - rolling:
+        - count: 7
+          unit: DAY

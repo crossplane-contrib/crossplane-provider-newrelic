@@ -19,6 +19,7 @@ import (
 	alertcondition "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/nrql/alertcondition"
 	cloudrule "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/pipeline/cloudrule"
 	providerconfig "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/providerconfig"
+	level "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/service/level"
 	monitor "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/synthetics/monitor"
 	workflow "github.com/crossplane-contrib/crossplane-provider-newrelic/internal/controller/cluster/workflow/workflow"
 )
@@ -37,6 +38,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		alertcondition.Setup,
 		cloudrule.Setup,
 		providerconfig.Setup,
+		level.Setup,
 		monitor.Setup,
 		workflow.Setup,
 	} {
@@ -61,6 +63,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		alertcondition.SetupGated,
 		cloudrule.SetupGated,
 		providerconfig.SetupGated,
+		level.SetupGated,
 		monitor.SetupGated,
 		workflow.SetupGated,
 	} {
@@ -84,6 +87,7 @@ func SetupWebhookWithManager(mgr ctrl.Manager) error {
 		alertcondition.SetupWebhookWithManager,
 		cloudrule.SetupWebhookWithManager,
 		providerconfig.SetupWebhookWithManager,
+		level.SetupWebhookWithManager,
 		monitor.SetupWebhookWithManager,
 		workflow.SetupWebhookWithManager,
 	} {
